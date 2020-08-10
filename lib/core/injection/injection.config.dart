@@ -13,6 +13,8 @@ import '../../data/data_source/hardware/bluetooth/external/injection.dart';
 import '../../domain/facades_declaration/bluetooth_service/bluetooth_service.dart';
 import '../../data/facades_implementation/bluetooth_service.dart';
 import '../../presentation/ui_logic_holders/bluetooth_state_cubit/bluetooth_state_cubit.dart';
+import '../../presentation/ui_logic_holders/discovered_bt_devices_cubit/discovered_bt_devices_cubit.dart';
+import '../../domain/use_cases/watch_available_bt_devices/watch_available_bt_devices.dart';
 import '../../domain/use_cases/watch_bluetooth_state/watch_bluetooth_state.dart';
 
 /// adds generated dependencies
@@ -32,10 +34,15 @@ GetIt $initGetIt(
           bluetoothSerial: get<FlutterBluetoothSerial>()));
   gh.lazySingleton<BluetoothServiceDec>(() => BluetoothServiceImp(
       bluetoothHardwareDataSource: get<BluetoothHardwareDataSourceDec>()));
+  gh.lazySingleton<WatchAvailableBtDevicesUseCase>(() =>
+      WatchAvailableBtDevicesUseCase(
+          bluetoothService: get<BluetoothServiceDec>()));
   gh.lazySingleton<WatchBluetoothStateUseCase>(() =>
       WatchBluetoothStateUseCase(bluetoothService: get<BluetoothServiceDec>()));
   gh.factory<BluetoothStateCubit>(() => BluetoothStateCubit(
       watchBluetoothStateUseCase: get<WatchBluetoothStateUseCase>()));
+  gh.factory<DiscoveredBtDevicesCubit>(() => DiscoveredBtDevicesCubit(
+      watchAvailableBtDevicesUseCase: get<WatchAvailableBtDevicesUseCase>()));
   return get;
 }
 

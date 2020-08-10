@@ -17,6 +17,9 @@ dependencies:
   injectable: ^1.0.4
   provider: ^4.3.2
 
+  # Functional programming
+  dartz: ^0.9.1
+
   # Linting
   lint: ^1.2.0
 

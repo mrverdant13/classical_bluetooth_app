@@ -17,5 +17,8 @@ class BluetoothHardwareDataSourceImp extends BluetoothHardwareDataSourceDec {
   });
 
   @override
-  Stream<BluetoothState> stateStream() => bluetoothSerial.onStateChanged();
+  Stream<BluetoothState> stateStream() async* {
+    yield await bluetoothSerial.state;
+    yield* bluetoothSerial.onStateChanged();
+  }
 }

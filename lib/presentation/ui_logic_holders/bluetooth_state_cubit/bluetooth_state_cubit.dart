@@ -58,4 +58,10 @@ class BluetoothStateCubit extends Cubit<BluetoothStateState> {
           ),
         ),
       );
+
+  @override
+  Future<void> close() async {
+    await _failureOrBluetoothStateStreamSubscription?.cancel();
+    return super.close();
+  }
 }

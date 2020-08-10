@@ -1,7 +1,7 @@
 import 'package:logger/logger.dart';
 
 final Logger kUseCaseLogger = Logger(
-  level: Level.warning,
+  level: Level.verbose,
   printer: PrettyPrinter(
     methodCount: 1,
   ),

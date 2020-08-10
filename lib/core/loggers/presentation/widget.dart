@@ -1,7 +1,7 @@
 import 'package:logger/logger.dart';
 
-final Logger kPresentationLogger = Logger(
-  level: Level.warning,
+final Logger kWidgetLogger = Logger(
+  level: Level.verbose,
   printer: PrettyPrinter(
     methodCount: 1,
   ),

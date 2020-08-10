@@ -20,6 +20,9 @@ dependencies:
   # Functional programming
   dartz: ^0.9.1
 
+  # Hardware usage
+  flutter_bluetooth_serial: ^0.2.2
+
   # Linting
   lint: ^1.2.0
 

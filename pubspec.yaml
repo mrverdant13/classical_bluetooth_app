@@ -27,5 +27,8 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
+  # Code generator
+  build_runner: any
+
 flutter:
   uses-material-design: true

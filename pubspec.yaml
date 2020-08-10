@@ -23,6 +23,10 @@ dependencies:
   # Linting
   lint: ^1.2.0
 
+  # Value types, data classes, enum classes, sealed unions generation
+  freezed_annotation: ^0.11.0+1
+  built_value: ^7.1.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -32,6 +36,10 @@ dev_dependencies:
 
   # Dependency injection
   injectable_generator: any
+
+  # Value types, data classes, enum classes, sealed unions generation
+  freezed: any
+  built_value_generator: any
 
 flutter:
   uses-material-design: true

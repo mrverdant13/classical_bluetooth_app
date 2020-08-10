@@ -142,3 +142,140 @@ abstract class _WatchStatusFailureUnexpected implements WatchStatusFailure {
   const factory _WatchStatusFailureUnexpected() =
       _$_WatchStatusFailureUnexpected;
 }
+
+class _$WatchBtDevicesFailureTearOff {
+  const _$WatchBtDevicesFailureTearOff();
+
+// ignore: unused_element
+  _WatchBtDevicesFailureUnexpected unexpected() {
+    return const _WatchBtDevicesFailureUnexpected();
+  }
+}
+
+// ignore: unused_element
+const $WatchBtDevicesFailure = _$WatchBtDevicesFailureTearOff();
+
+mixin _$WatchBtDevicesFailure {
+  @optionalTypeArgs
+  Result when<Result extends Object>({
+    @required Result unexpected(),
+  });
+  @optionalTypeArgs
+  Result maybeWhen<Result extends Object>({
+    Result unexpected(),
+    @required Result orElse(),
+  });
+  @optionalTypeArgs
+  Result map<Result extends Object>({
+    @required Result unexpected(_WatchBtDevicesFailureUnexpected value),
+  });
+  @optionalTypeArgs
+  Result maybeMap<Result extends Object>({
+    Result unexpected(_WatchBtDevicesFailureUnexpected value),
+    @required Result orElse(),
+  });
+}
+
+abstract class $WatchBtDevicesFailureCopyWith<$Res> {
+  factory $WatchBtDevicesFailureCopyWith(WatchBtDevicesFailure value,
+          $Res Function(WatchBtDevicesFailure) then) =
+      _$WatchBtDevicesFailureCopyWithImpl<$Res>;
+}
+
+class _$WatchBtDevicesFailureCopyWithImpl<$Res>
+    implements $WatchBtDevicesFailureCopyWith<$Res> {
+  _$WatchBtDevicesFailureCopyWithImpl(this._value, this._then);
+
+  final WatchBtDevicesFailure _value;
+  // ignore: unused_field
+  final $Res Function(WatchBtDevicesFailure) _then;
+}
+
+abstract class _$WatchBtDevicesFailureUnexpectedCopyWith<$Res> {
+  factory _$WatchBtDevicesFailureUnexpectedCopyWith(
+          _WatchBtDevicesFailureUnexpected value,
+          $Res Function(_WatchBtDevicesFailureUnexpected) then) =
+      __$WatchBtDevicesFailureUnexpectedCopyWithImpl<$Res>;
+}
+
+class __$WatchBtDevicesFailureUnexpectedCopyWithImpl<$Res>
+    extends _$WatchBtDevicesFailureCopyWithImpl<$Res>
+    implements _$WatchBtDevicesFailureUnexpectedCopyWith<$Res> {
+  __$WatchBtDevicesFailureUnexpectedCopyWithImpl(
+      _WatchBtDevicesFailureUnexpected _value,
+      $Res Function(_WatchBtDevicesFailureUnexpected) _then)
+      : super(_value, (v) => _then(v as _WatchBtDevicesFailureUnexpected));
+
+  @override
+  _WatchBtDevicesFailureUnexpected get _value =>
+      super._value as _WatchBtDevicesFailureUnexpected;
+}
+
+class _$_WatchBtDevicesFailureUnexpected
+    implements _WatchBtDevicesFailureUnexpected {
+  const _$_WatchBtDevicesFailureUnexpected();
+
+  @override
+  String toString() {
+    return 'WatchBtDevicesFailure.unexpected()';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is _WatchBtDevicesFailureUnexpected);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  Result when<Result extends Object>({
+    @required Result unexpected(),
+  }) {
+    assert(unexpected != null);
+    return unexpected();
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeWhen<Result extends Object>({
+    Result unexpected(),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (unexpected != null) {
+      return unexpected();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  Result map<Result extends Object>({
+    @required Result unexpected(_WatchBtDevicesFailureUnexpected value),
+  }) {
+    assert(unexpected != null);
+    return unexpected(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeMap<Result extends Object>({
+    Result unexpected(_WatchBtDevicesFailureUnexpected value),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (unexpected != null) {
+      return unexpected(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _WatchBtDevicesFailureUnexpected
+    implements WatchBtDevicesFailure {
+  const factory _WatchBtDevicesFailureUnexpected() =
+      _$_WatchBtDevicesFailureUnexpected;
+}

@@ -26,6 +26,9 @@ dependencies:
   # Linting
   lint: ^1.2.0
 
+  # Logging
+  logger: ^0.9.1
+
   # State management
   flutter_bloc: ^6.0.1
 

@@ -1,3 +1,4 @@
+import 'package:classical_bluetooth_app/presentation/ui_logic_holders/discovered_bt_devices_cubit/discovered_bt_devices_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -19,6 +20,9 @@ class MyApp extends StatelessWidget {
             create: (_) =>
                 getIt<BluetoothStateCubit>()..subscribeToBluetoothState(),
           ),
+          BlocProvider<DiscoveredBtDevicesCubit>(
+            create: (context) => getIt<DiscoveredBtDevicesCubit>(),
+          )
         ],
         child: const BluetoothStatusScreen(),
       ),

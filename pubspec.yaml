@@ -12,6 +12,11 @@ dependencies:
   flutter:
     sdk: flutter
 
+  # Dependency injection
+  get_it: ^4.0.4
+  injectable: ^1.0.4
+  provider: ^4.3.2
+
   # Linting
   lint: ^1.2.0
 

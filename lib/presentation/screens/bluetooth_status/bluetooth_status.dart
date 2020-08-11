@@ -1,3 +1,5 @@
+import 'package:classical_bluetooth_app/core/other_helpers/no_action_functions.dart';
+import 'package:classical_bluetooth_app/domain/entities/bluetooth_state/bluetooth_state_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -12,52 +14,103 @@ class BluetoothStatusScreen extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
         child: Column(
-          children: [
-            BlocBuilder<BluetoothStateCubit, BluetoothStateState>(
-              builder: (context, bluetoothState) => bluetoothState.when(
-                failure: (message) => Center(
-                  child: Text(message),
-                ),
-                obtained: (bluetoothState) => Center(
-                    child: Text(
-                  bluetoothState.toString(),
-                )),
-                obtaining: () => const Center(
-                  child: Text('Cargando...'),
-                ),
-              ),
-            ),
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: const [
+            _BtStateIndicator(),
             Expanded(
-              child: BlocBuilder<DiscoveredBtDevicesCubit,
-                  DiscoveredBtDevicesState>(
-                builder: (context, discoveredBtDevicesState) =>
-                    discoveredBtDevicesState.when(
-                  failure: (message) => Center(
-                    child: Text(message),
-                  ),
-                  loaded: (discoveredBtDevices) => ListView(
-                    children: discoveredBtDevices
-                        .map(
-                          (discoveredBtDevice) => ListTile(
-                            title: Text(discoveredBtDevice.name ?? 'N/A'),
-                            subtitle: Text(discoveredBtDevice.macAddress ??
-                                '00:00:00:00:00:00'),
-                            onTap: () {},
-                          ),
-                        )
-                        .toList(),
-                  ),
-                ),
-              ),
+              child: _DiscoveredBtDevicesListView(),
             ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () =>
-            context.bloc<DiscoveredBtDevicesCubit>().subscribeToBtDevices(),
-        child: const Icon(Icons.sync),
+      floatingActionButton:
+          BlocConsumer<BluetoothStateCubit, BluetoothStateEntity>(
+        listener: (context, bluetoothState) => bluetoothState.maybeWhen(
+          on: () =>
+              context.bloc<DiscoveredBtDevicesCubit>().discoverBtDevices(),
+          orElse: NoActionWithNoArguments,
+        ),
+        builder: (context, bluetoothState) => bluetoothState.maybeWhen(
+          on: () => FloatingActionButton(
+            onPressed: () {
+              context.bloc<DiscoveredBtDevicesCubit>().discoverBtDevices();
+            },
+            backgroundColor: Colors.blue.shade700,
+            child: const Icon(Icons.sync),
+          ),
+          orElse: () => const SizedBox.shrink(),
+        ),
       ),
     );
   }
+}
+
+class _DiscoveredBtDevicesListView extends StatelessWidget {
+  const _DiscoveredBtDevicesListView();
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<BluetoothStateCubit, BluetoothStateEntity>(
+      builder: (context, bluetoothStateState) => bluetoothStateState.maybeWhen(
+        orElse: () => const SizedBox.shrink(),
+        on: () =>
+            BlocBuilder<DiscoveredBtDevicesCubit, DiscoveredBtDevicesState>(
+          builder: (context, discoveredBtDevicesState) =>
+              discoveredBtDevicesState.when(
+            failure: (message) => Center(
+              child: Text(message),
+            ),
+            loaded: (discoveredBtDevices) => ListView(
+              children: discoveredBtDevices
+                  .map(
+                    (discoveredBtDevice) => ListTile(
+                      title: Text(discoveredBtDevice.name ?? 'N/A'),
+                      subtitle: Text(
+                          discoveredBtDevice.macAddress ?? '00:00:00:00:00:00'),
+                      onTap: () {},
+                    ),
+                  )
+                  .toList(),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _BtStateIndicator extends StatelessWidget {
+  const _BtStateIndicator();
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<BluetoothStateCubit, BluetoothStateEntity>(
+      builder: (context, bluetoothStateState) => Container(
+        color: bluetoothStateState.when(
+          changing: () => Colors.yellow.shade700,
+          error: () => Colors.red,
+          off: () => Colors.grey.shade600,
+          on: () => Colors.blue.shade700,
+          unknown: () => Colors.grey.shade600,
+        ),
+        padding: const EdgeInsets.all(20.0),
+        child: Text(
+          bluetoothStateState.when(
+            changing: () => 'Cargando...',
+            error: () => 'Error inesperado',
+            off: () => 'BT apagado',
+            on: () => 'BT encendido',
+            unknown: () => 'Estado desconocido',
+          ),
+          style: _style,
+          textAlign: TextAlign.center,
+        ),
+      ),
+    );
+  }
+
+  static const _style = TextStyle(
+    fontSize: 25.0,
+    color: Colors.white,
+  );
 }

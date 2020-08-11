@@ -29,6 +29,9 @@ dependencies:
   # Logging
   logger: ^0.9.1
 
+  # Routing
+  auto_route: ^0.6.7
+
   # State management
   flutter_bloc: ^6.0.1
 
@@ -42,6 +45,9 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+  # Routing
+  auto_route_generator: any
 
   # Code generator
   build_runner: any

@@ -1,4 +1,6 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:classical_bluetooth_app/core/other_helpers/no_action_functions.dart';
+import 'package:classical_bluetooth_app/core/presentation/routing/router.gr.dart';
 import 'package:classical_bluetooth_app/domain/entities/bluetooth_state/bluetooth_state_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -6,8 +8,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../ui_logic_holders/bluetooth_state_cubit/bluetooth_state_cubit.dart';
 import '../../ui_logic_holders/discovered_bt_devices_cubit/discovered_bt_devices_cubit.dart';
 
-class BluetoothStatusScreen extends StatelessWidget {
-  const BluetoothStatusScreen();
+class BtDiscoveredDevicesScreen extends StatelessWidget {
+  const BtDiscoveredDevicesScreen();
 
   @override
   Widget build(BuildContext context) {
@@ -72,10 +74,16 @@ class _DiscoveredBtDevicesListView extends StatelessWidget {
               children: discoveredBtDevices
                   .map(
                     (discoveredBtDevice) => ListTile(
-                      title: Text(discoveredBtDevice.name ?? 'N/A'),
-                      subtitle: Text(
-                          discoveredBtDevice.macAddress ?? '00:00:00:00:00:00'),
-                      onTap: () {},
+                      title: Text(discoveredBtDevice.name),
+                      subtitle: Text(discoveredBtDevice.macAddress),
+                      onTap: () {
+                        ExtendedNavigator.of(context).push(
+                          Routes.btSerialCommunicationScreen,
+                          arguments: BtSerialCommunicationScreenArguments(
+                            btDevice: discoveredBtDevice,
+                          ),
+                        );
+                      },
                     ),
                   )
                   .toList(),

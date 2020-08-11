@@ -10,11 +10,8 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
 
-part 'bluetooth_state_cubit.freezed.dart';
-part 'bluetooth_state_state.dart';
-
 @Injectable()
-class BluetoothStateCubit extends Cubit<BluetoothStateState> {
+class BluetoothStateCubit extends Cubit<BluetoothStateEntity> {
   final WatchBluetoothStateUseCase watchBluetoothStateUseCase;
 
   StreamSubscription<Either<WatchStatusFailure, BluetoothStateEntity>>
@@ -23,12 +20,12 @@ class BluetoothStateCubit extends Cubit<BluetoothStateState> {
   BluetoothStateCubit({
     @required this.watchBluetoothStateUseCase,
   }) : super(
-          const BluetoothStateState.obtaining(),
+          const BluetoothStateEntity.changing(),
         );
 
   Future<void> subscribeToBluetoothState() async {
     emit(
-      const BluetoothStateState.obtaining(),
+      const BluetoothStateEntity.changing(),
     );
     await _failureOrBluetoothStateStreamSubscription?.cancel();
 
@@ -49,13 +46,9 @@ class BluetoothStateCubit extends Cubit<BluetoothStateState> {
       emit(
         failureOrBluetoothState.fold(
           (failure) => failure.when(
-            unexpected: () => const BluetoothStateState.failure(
-              message: 'Hubo un problema inesperado',
-            ),
+            unexpected: () => const BluetoothStateEntity.error(),
           ),
-          (bluetoothState) => BluetoothStateState.obtained(
-            bluetoothState: bluetoothState,
-          ),
+          (bluetoothState) => bluetoothState,
         ),
       );
 

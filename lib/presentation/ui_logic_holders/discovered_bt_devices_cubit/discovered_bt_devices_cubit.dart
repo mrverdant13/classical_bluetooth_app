@@ -32,7 +32,7 @@ class DiscoveredBtDevicesCubit extends Cubit<DiscoveredBtDevicesState> {
           ),
         );
 
-  Future<void> subscribeToBtDevices() async {
+  Future<void> discoverBtDevices() async {
     _discoveredBtDevices.clear();
 
     emit(

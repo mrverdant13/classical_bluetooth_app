@@ -51,8 +51,16 @@ class _DiscoveredBtDevicesListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<BluetoothStateCubit, BluetoothStateEntity>(
-      builder: (context, bluetoothStateState) => bluetoothStateState.maybeWhen(
-        orElse: () => const SizedBox.shrink(),
+      builder: (context, bluetoothState) => bluetoothState.maybeWhen(
+        orElse: () => const Center(
+          child: Text('Hubo un problema inesperado'),
+        ),
+        off: () => const Center(
+          child: Text('Es necesario que active su Bluetooth'),
+        ),
+        changing: () => const Center(
+          child: CircularProgressIndicator(),
+        ),
         on: () =>
             BlocBuilder<DiscoveredBtDevicesCubit, DiscoveredBtDevicesState>(
           builder: (context, discoveredBtDevicesState) =>

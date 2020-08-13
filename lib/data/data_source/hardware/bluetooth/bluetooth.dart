@@ -30,9 +30,18 @@ abstract class StopDiscoveryException with _$StopDiscoveryException {
       _StopDiscoveryExceptionUnexpected;
 }
 
+@freezed
+abstract class BondBtDeviceException with _$BondBtDeviceException {
+  const factory BondBtDeviceException.unexpected() =
+      _BondBtDeviceExceptionUnexpected;
+}
+
 abstract class BluetoothHardwareDataSourceDec {
   const BluetoothHardwareDataSourceDec();
 
+  Future<void> bondBtDevice({
+    @required BtDeviceEntity btDevice,
+  });
   Stream<BluetoothStateEntity> stateStream();
   Stream<BtDeviceEntity> discoveredDeviceStream();
   Future<void> stopDiscovery();
@@ -75,14 +84,13 @@ class BluetoothHardwareDataSourceImp extends BluetoothHardwareDataSourceDec {
 
   @override
   Stream<BtDeviceEntity> discoveredDeviceStream() {
-    return bluetoothSerial
-        .startDiscovery()
-        .map(
-          (bluetoothDiscoveryResult) => BtDeviceModel.fromBluetoothDevice(
-            bluetoothDiscoveryResult.device,
-          ),
-        )
-        .handleError(
+    return bluetoothSerial.startDiscovery().map(
+      (bluetoothDiscoveryResult) {
+        return BtDeviceModel.fromBluetoothDevice(
+          bluetoothDiscoveryResult.device,
+        );
+      },
+    ).handleError(
       // HACK: Error mapping.
       (e) {
         kHardwareDataSourceLogger.e(e.runtimeType);
@@ -98,6 +106,25 @@ class BluetoothHardwareDataSourceImp extends BluetoothHardwareDataSourceDec {
     } catch (e) {
       kHardwareDataSourceLogger.e(e.runtimeType);
       throw const StopDiscoveryException.unexpected();
+    }
+  }
+
+  @override
+  Future<void> bondBtDevice({
+    @required BtDeviceEntity btDevice,
+  }) async {
+    try {
+      if ((await bluetoothSerial.getBondStateForAddress(
+            btDevice.macAddress,
+          )) !=
+          BluetoothBondState.bonded) {
+        await bluetoothSerial.bondDeviceAtAddress(
+          btDevice.macAddress,
+        );
+      }
+    } catch (e) {
+      kHardwareDataSourceLogger.e(e.runtimeType);
+      throw const BondBtDeviceException.unexpected();
     }
   }
 }

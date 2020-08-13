@@ -418,3 +418,244 @@ abstract class _StopBtDevicesWatchingFailureUnexpected
   const factory _StopBtDevicesWatchingFailureUnexpected() =
       _$_StopBtDevicesWatchingFailureUnexpected;
 }
+
+class _$BondBtDeviceFailureTearOff {
+  const _$BondBtDeviceFailureTearOff();
+
+// ignore: unused_element
+  _BondBtDeviceFailureNotFound notFound() {
+    return const _BondBtDeviceFailureNotFound();
+  }
+
+// ignore: unused_element
+  _BondBtDeviceFailureUnexpected unexpected() {
+    return const _BondBtDeviceFailureUnexpected();
+  }
+}
+
+// ignore: unused_element
+const $BondBtDeviceFailure = _$BondBtDeviceFailureTearOff();
+
+mixin _$BondBtDeviceFailure {
+  @optionalTypeArgs
+  Result when<Result extends Object>({
+    @required Result notFound(),
+    @required Result unexpected(),
+  });
+  @optionalTypeArgs
+  Result maybeWhen<Result extends Object>({
+    Result notFound(),
+    Result unexpected(),
+    @required Result orElse(),
+  });
+  @optionalTypeArgs
+  Result map<Result extends Object>({
+    @required Result notFound(_BondBtDeviceFailureNotFound value),
+    @required Result unexpected(_BondBtDeviceFailureUnexpected value),
+  });
+  @optionalTypeArgs
+  Result maybeMap<Result extends Object>({
+    Result notFound(_BondBtDeviceFailureNotFound value),
+    Result unexpected(_BondBtDeviceFailureUnexpected value),
+    @required Result orElse(),
+  });
+}
+
+abstract class $BondBtDeviceFailureCopyWith<$Res> {
+  factory $BondBtDeviceFailureCopyWith(
+          BondBtDeviceFailure value, $Res Function(BondBtDeviceFailure) then) =
+      _$BondBtDeviceFailureCopyWithImpl<$Res>;
+}
+
+class _$BondBtDeviceFailureCopyWithImpl<$Res>
+    implements $BondBtDeviceFailureCopyWith<$Res> {
+  _$BondBtDeviceFailureCopyWithImpl(this._value, this._then);
+
+  final BondBtDeviceFailure _value;
+  // ignore: unused_field
+  final $Res Function(BondBtDeviceFailure) _then;
+}
+
+abstract class _$BondBtDeviceFailureNotFoundCopyWith<$Res> {
+  factory _$BondBtDeviceFailureNotFoundCopyWith(
+          _BondBtDeviceFailureNotFound value,
+          $Res Function(_BondBtDeviceFailureNotFound) then) =
+      __$BondBtDeviceFailureNotFoundCopyWithImpl<$Res>;
+}
+
+class __$BondBtDeviceFailureNotFoundCopyWithImpl<$Res>
+    extends _$BondBtDeviceFailureCopyWithImpl<$Res>
+    implements _$BondBtDeviceFailureNotFoundCopyWith<$Res> {
+  __$BondBtDeviceFailureNotFoundCopyWithImpl(
+      _BondBtDeviceFailureNotFound _value,
+      $Res Function(_BondBtDeviceFailureNotFound) _then)
+      : super(_value, (v) => _then(v as _BondBtDeviceFailureNotFound));
+
+  @override
+  _BondBtDeviceFailureNotFound get _value =>
+      super._value as _BondBtDeviceFailureNotFound;
+}
+
+class _$_BondBtDeviceFailureNotFound implements _BondBtDeviceFailureNotFound {
+  const _$_BondBtDeviceFailureNotFound();
+
+  @override
+  String toString() {
+    return 'BondBtDeviceFailure.notFound()';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) || (other is _BondBtDeviceFailureNotFound);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  Result when<Result extends Object>({
+    @required Result notFound(),
+    @required Result unexpected(),
+  }) {
+    assert(notFound != null);
+    assert(unexpected != null);
+    return notFound();
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeWhen<Result extends Object>({
+    Result notFound(),
+    Result unexpected(),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (notFound != null) {
+      return notFound();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  Result map<Result extends Object>({
+    @required Result notFound(_BondBtDeviceFailureNotFound value),
+    @required Result unexpected(_BondBtDeviceFailureUnexpected value),
+  }) {
+    assert(notFound != null);
+    assert(unexpected != null);
+    return notFound(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeMap<Result extends Object>({
+    Result notFound(_BondBtDeviceFailureNotFound value),
+    Result unexpected(_BondBtDeviceFailureUnexpected value),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (notFound != null) {
+      return notFound(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _BondBtDeviceFailureNotFound implements BondBtDeviceFailure {
+  const factory _BondBtDeviceFailureNotFound() = _$_BondBtDeviceFailureNotFound;
+}
+
+abstract class _$BondBtDeviceFailureUnexpectedCopyWith<$Res> {
+  factory _$BondBtDeviceFailureUnexpectedCopyWith(
+          _BondBtDeviceFailureUnexpected value,
+          $Res Function(_BondBtDeviceFailureUnexpected) then) =
+      __$BondBtDeviceFailureUnexpectedCopyWithImpl<$Res>;
+}
+
+class __$BondBtDeviceFailureUnexpectedCopyWithImpl<$Res>
+    extends _$BondBtDeviceFailureCopyWithImpl<$Res>
+    implements _$BondBtDeviceFailureUnexpectedCopyWith<$Res> {
+  __$BondBtDeviceFailureUnexpectedCopyWithImpl(
+      _BondBtDeviceFailureUnexpected _value,
+      $Res Function(_BondBtDeviceFailureUnexpected) _then)
+      : super(_value, (v) => _then(v as _BondBtDeviceFailureUnexpected));
+
+  @override
+  _BondBtDeviceFailureUnexpected get _value =>
+      super._value as _BondBtDeviceFailureUnexpected;
+}
+
+class _$_BondBtDeviceFailureUnexpected
+    implements _BondBtDeviceFailureUnexpected {
+  const _$_BondBtDeviceFailureUnexpected();
+
+  @override
+  String toString() {
+    return 'BondBtDeviceFailure.unexpected()';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) || (other is _BondBtDeviceFailureUnexpected);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  Result when<Result extends Object>({
+    @required Result notFound(),
+    @required Result unexpected(),
+  }) {
+    assert(notFound != null);
+    assert(unexpected != null);
+    return unexpected();
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeWhen<Result extends Object>({
+    Result notFound(),
+    Result unexpected(),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (unexpected != null) {
+      return unexpected();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  Result map<Result extends Object>({
+    @required Result notFound(_BondBtDeviceFailureNotFound value),
+    @required Result unexpected(_BondBtDeviceFailureUnexpected value),
+  }) {
+    assert(notFound != null);
+    assert(unexpected != null);
+    return unexpected(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeMap<Result extends Object>({
+    Result notFound(_BondBtDeviceFailureNotFound value),
+    Result unexpected(_BondBtDeviceFailureUnexpected value),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (unexpected != null) {
+      return unexpected(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _BondBtDeviceFailureUnexpected implements BondBtDeviceFailure {
+  const factory _BondBtDeviceFailureUnexpected() =
+      _$_BondBtDeviceFailureUnexpected;
+}

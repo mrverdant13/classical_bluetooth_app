@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:meta/meta.dart';
 
 import '../../entities/bluetooth_state/bluetooth_state_entity.dart';
 import '../../entities/bt_device/bt_device_entity.dart';
@@ -24,9 +25,19 @@ abstract class StopBtDevicesWatchingFailure
       _StopBtDevicesWatchingFailureUnexpected;
 }
 
+@freezed
+abstract class BondBtDeviceFailure with _$BondBtDeviceFailure {
+  const factory BondBtDeviceFailure.notFound() = _BondBtDeviceFailureNotFound;
+  const factory BondBtDeviceFailure.unexpected() =
+      _BondBtDeviceFailureUnexpected;
+}
+
 abstract class BluetoothServiceDec {
   const BluetoothServiceDec();
 
+  Future<Either<BondBtDeviceFailure, void>> bondBtDevice({
+    @required BtDeviceEntity btDevice,
+  });
   Stream<Either<WatchStatusFailure, BluetoothStateEntity>> watchStatus();
   Stream<Either<WatchBtDevicesFailure, BtDeviceEntity>> watchBtDevices();
   Future<Either<StopBtDevicesWatchingFailure, void>> stopBtDevicesWatching();

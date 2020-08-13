@@ -71,10 +71,41 @@ class BluetoothServiceImp extends BluetoothServiceDec {
     try {
       await bluetoothHardwareDataSource.stopDiscovery();
       return const Right(null);
+    } on StopDiscoveryException catch (e) {
+      kFacadeLogger.e(e.runtimeType);
+      return e.when(
+        unexpected: () => const Left(
+          StopBtDevicesWatchingFailure.unexpected(),
+        ),
+      );
     } catch (e) {
       kFacadeLogger.e(e.runtimeType);
       return const Left(
         StopBtDevicesWatchingFailure.unexpected(),
+      );
+    }
+  }
+
+  @override
+  Future<Either<BondBtDeviceFailure, void>> bondBtDevice({
+    @required BtDeviceEntity btDevice,
+  }) async {
+    try {
+      await bluetoothHardwareDataSource.bondBtDevice(
+        btDevice: btDevice,
+      );
+      return const Right(null);
+    } on BondBtDeviceException catch (e) {
+      kFacadeLogger.e(e.runtimeType);
+      return e.when(
+        unexpected: () => const Left(
+          BondBtDeviceFailure.unexpected(),
+        ),
+      );
+    } catch (e) {
+      kFacadeLogger.e(e.runtimeType);
+      return const Left(
+        BondBtDeviceFailure.unexpected(),
       );
     }
   }

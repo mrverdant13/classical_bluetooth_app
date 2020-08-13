@@ -422,3 +422,140 @@ abstract class _StopDiscoveryExceptionUnexpected
   const factory _StopDiscoveryExceptionUnexpected() =
       _$_StopDiscoveryExceptionUnexpected;
 }
+
+class _$BondBtDeviceExceptionTearOff {
+  const _$BondBtDeviceExceptionTearOff();
+
+// ignore: unused_element
+  _BondBtDeviceExceptionUnexpected unexpected() {
+    return const _BondBtDeviceExceptionUnexpected();
+  }
+}
+
+// ignore: unused_element
+const $BondBtDeviceException = _$BondBtDeviceExceptionTearOff();
+
+mixin _$BondBtDeviceException {
+  @optionalTypeArgs
+  Result when<Result extends Object>({
+    @required Result unexpected(),
+  });
+  @optionalTypeArgs
+  Result maybeWhen<Result extends Object>({
+    Result unexpected(),
+    @required Result orElse(),
+  });
+  @optionalTypeArgs
+  Result map<Result extends Object>({
+    @required Result unexpected(_BondBtDeviceExceptionUnexpected value),
+  });
+  @optionalTypeArgs
+  Result maybeMap<Result extends Object>({
+    Result unexpected(_BondBtDeviceExceptionUnexpected value),
+    @required Result orElse(),
+  });
+}
+
+abstract class $BondBtDeviceExceptionCopyWith<$Res> {
+  factory $BondBtDeviceExceptionCopyWith(BondBtDeviceException value,
+          $Res Function(BondBtDeviceException) then) =
+      _$BondBtDeviceExceptionCopyWithImpl<$Res>;
+}
+
+class _$BondBtDeviceExceptionCopyWithImpl<$Res>
+    implements $BondBtDeviceExceptionCopyWith<$Res> {
+  _$BondBtDeviceExceptionCopyWithImpl(this._value, this._then);
+
+  final BondBtDeviceException _value;
+  // ignore: unused_field
+  final $Res Function(BondBtDeviceException) _then;
+}
+
+abstract class _$BondBtDeviceExceptionUnexpectedCopyWith<$Res> {
+  factory _$BondBtDeviceExceptionUnexpectedCopyWith(
+          _BondBtDeviceExceptionUnexpected value,
+          $Res Function(_BondBtDeviceExceptionUnexpected) then) =
+      __$BondBtDeviceExceptionUnexpectedCopyWithImpl<$Res>;
+}
+
+class __$BondBtDeviceExceptionUnexpectedCopyWithImpl<$Res>
+    extends _$BondBtDeviceExceptionCopyWithImpl<$Res>
+    implements _$BondBtDeviceExceptionUnexpectedCopyWith<$Res> {
+  __$BondBtDeviceExceptionUnexpectedCopyWithImpl(
+      _BondBtDeviceExceptionUnexpected _value,
+      $Res Function(_BondBtDeviceExceptionUnexpected) _then)
+      : super(_value, (v) => _then(v as _BondBtDeviceExceptionUnexpected));
+
+  @override
+  _BondBtDeviceExceptionUnexpected get _value =>
+      super._value as _BondBtDeviceExceptionUnexpected;
+}
+
+class _$_BondBtDeviceExceptionUnexpected
+    implements _BondBtDeviceExceptionUnexpected {
+  const _$_BondBtDeviceExceptionUnexpected();
+
+  @override
+  String toString() {
+    return 'BondBtDeviceException.unexpected()';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is _BondBtDeviceExceptionUnexpected);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  Result when<Result extends Object>({
+    @required Result unexpected(),
+  }) {
+    assert(unexpected != null);
+    return unexpected();
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeWhen<Result extends Object>({
+    Result unexpected(),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (unexpected != null) {
+      return unexpected();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  Result map<Result extends Object>({
+    @required Result unexpected(_BondBtDeviceExceptionUnexpected value),
+  }) {
+    assert(unexpected != null);
+    return unexpected(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeMap<Result extends Object>({
+    Result unexpected(_BondBtDeviceExceptionUnexpected value),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (unexpected != null) {
+      return unexpected(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _BondBtDeviceExceptionUnexpected
+    implements BondBtDeviceException {
+  const factory _BondBtDeviceExceptionUnexpected() =
+      _$_BondBtDeviceExceptionUnexpected;
+}

@@ -19,7 +19,7 @@ class BtBondingCubit extends Cubit<BtBondingState> {
           const BtBondingState.unbonded(),
         );
 
-  Future<void> connect({
+  Future<void> bond({
     @required BtDeviceEntity btDevice,
   }) async {
     emit(

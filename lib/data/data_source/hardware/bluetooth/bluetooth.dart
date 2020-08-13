@@ -61,8 +61,9 @@ abstract class BluetoothHardwareDataSourceDec {
 @LazySingleton(as: BluetoothHardwareDataSourceDec)
 class BluetoothHardwareDataSourceImp extends BluetoothHardwareDataSourceDec {
   final FlutterBluetoothSerial bluetoothSerial;
+  final Map<String, BluetoothConnection> _bluetoothConnections = {};
 
-  const BluetoothHardwareDataSourceImp({
+  BluetoothHardwareDataSourceImp({
     @required this.bluetoothSerial,
   });
 
@@ -143,19 +144,20 @@ class BluetoothHardwareDataSourceImp extends BluetoothHardwareDataSourceDec {
   Future<void> connectToBtDevice({
     @required BtDeviceEntity btDevice,
   }) async {
-    BluetoothDevice _bluetoothDevice;
     try {
-      final bondedDevices = await bluetoothSerial.getBondedDevices();
-      _bluetoothDevice = bondedDevices.firstWhere(
-        (bondedDevice) => bondedDevice.address == btDevice.macAddress,
-      );
+      if (!await _isPaired(macAddress: btDevice.macAddress)) {
+        throw const ConnectToBtDeviceException.notPaired();
+      }
     } catch (e) {
       kHardwareDataSourceLogger.e(e.runtimeType);
       throw const ConnectToBtDeviceException.notPaired();
     }
+
     try {
-      if (!_bluetoothDevice.isConnected) {
-        await BluetoothConnection.toAddress(
+      if (!_bluetoothConnections.containsKey(btDevice.macAddress) ||
+          !_bluetoothConnections[btDevice.macAddress].isConnected) {
+        _bluetoothConnections[btDevice.macAddress] =
+            await BluetoothConnection.toAddress(
           btDevice.macAddress,
         );
       }
@@ -163,5 +165,14 @@ class BluetoothHardwareDataSourceImp extends BluetoothHardwareDataSourceDec {
       kHardwareDataSourceLogger.e(e.runtimeType);
       throw const ConnectToBtDeviceException.unexpected();
     }
+  }
+
+  Future<bool> _isPaired({
+    @required String macAddress,
+  }) async {
+    return (await bluetoothSerial.getBondStateForAddress(
+          macAddress,
+        )) !=
+        BluetoothBondState.bonded;
   }
 }

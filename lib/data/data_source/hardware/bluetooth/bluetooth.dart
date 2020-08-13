@@ -36,10 +36,21 @@ abstract class BondBtDeviceException with _$BondBtDeviceException {
       _BondBtDeviceExceptionUnexpected;
 }
 
+@freezed
+abstract class ConnectToBtDeviceException with _$ConnectToBtDeviceException {
+  const factory ConnectToBtDeviceException.notPaired() =
+      _ConnectToBtDeviceExceptionNotPaired;
+  const factory ConnectToBtDeviceException.unexpected() =
+      _ConnectToBtDeviceExceptionUnexpected;
+}
+
 abstract class BluetoothHardwareDataSourceDec {
   const BluetoothHardwareDataSourceDec();
 
   Future<void> bondBtDevice({
+    @required BtDeviceEntity btDevice,
+  });
+  Future<void> connectToBtDevice({
     @required BtDeviceEntity btDevice,
   });
   Stream<BluetoothStateEntity> stateStream();
@@ -125,6 +136,32 @@ class BluetoothHardwareDataSourceImp extends BluetoothHardwareDataSourceDec {
     } catch (e) {
       kHardwareDataSourceLogger.e(e.runtimeType);
       throw const BondBtDeviceException.unexpected();
+    }
+  }
+
+  @override
+  Future<void> connectToBtDevice({
+    @required BtDeviceEntity btDevice,
+  }) async {
+    BluetoothDevice _bluetoothDevice;
+    try {
+      final bondedDevices = await bluetoothSerial.getBondedDevices();
+      _bluetoothDevice = bondedDevices.firstWhere(
+        (bondedDevice) => bondedDevice.address == btDevice.macAddress,
+      );
+    } catch (e) {
+      kHardwareDataSourceLogger.e(e.runtimeType);
+      throw const ConnectToBtDeviceException.notPaired();
+    }
+    try {
+      if (!_bluetoothDevice.isConnected) {
+        await BluetoothConnection.toAddress(
+          btDevice.macAddress,
+        );
+      }
+    } catch (e) {
+      kHardwareDataSourceLogger.e(e.runtimeType);
+      throw const ConnectToBtDeviceException.unexpected();
     }
   }
 }

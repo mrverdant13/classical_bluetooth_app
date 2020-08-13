@@ -659,3 +659,250 @@ abstract class _BondBtDeviceFailureUnexpected implements BondBtDeviceFailure {
   const factory _BondBtDeviceFailureUnexpected() =
       _$_BondBtDeviceFailureUnexpected;
 }
+
+class _$ConnectToBtDeviceFailureTearOff {
+  const _$ConnectToBtDeviceFailureTearOff();
+
+// ignore: unused_element
+  _ConnectToBtDeviceFailureNotPaired notPaired() {
+    return const _ConnectToBtDeviceFailureNotPaired();
+  }
+
+// ignore: unused_element
+  _ConnectToBtDeviceFailureUnexpected unexpected() {
+    return const _ConnectToBtDeviceFailureUnexpected();
+  }
+}
+
+// ignore: unused_element
+const $ConnectToBtDeviceFailure = _$ConnectToBtDeviceFailureTearOff();
+
+mixin _$ConnectToBtDeviceFailure {
+  @optionalTypeArgs
+  Result when<Result extends Object>({
+    @required Result notPaired(),
+    @required Result unexpected(),
+  });
+  @optionalTypeArgs
+  Result maybeWhen<Result extends Object>({
+    Result notPaired(),
+    Result unexpected(),
+    @required Result orElse(),
+  });
+  @optionalTypeArgs
+  Result map<Result extends Object>({
+    @required Result notPaired(_ConnectToBtDeviceFailureNotPaired value),
+    @required Result unexpected(_ConnectToBtDeviceFailureUnexpected value),
+  });
+  @optionalTypeArgs
+  Result maybeMap<Result extends Object>({
+    Result notPaired(_ConnectToBtDeviceFailureNotPaired value),
+    Result unexpected(_ConnectToBtDeviceFailureUnexpected value),
+    @required Result orElse(),
+  });
+}
+
+abstract class $ConnectToBtDeviceFailureCopyWith<$Res> {
+  factory $ConnectToBtDeviceFailureCopyWith(ConnectToBtDeviceFailure value,
+          $Res Function(ConnectToBtDeviceFailure) then) =
+      _$ConnectToBtDeviceFailureCopyWithImpl<$Res>;
+}
+
+class _$ConnectToBtDeviceFailureCopyWithImpl<$Res>
+    implements $ConnectToBtDeviceFailureCopyWith<$Res> {
+  _$ConnectToBtDeviceFailureCopyWithImpl(this._value, this._then);
+
+  final ConnectToBtDeviceFailure _value;
+  // ignore: unused_field
+  final $Res Function(ConnectToBtDeviceFailure) _then;
+}
+
+abstract class _$ConnectToBtDeviceFailureNotPairedCopyWith<$Res> {
+  factory _$ConnectToBtDeviceFailureNotPairedCopyWith(
+          _ConnectToBtDeviceFailureNotPaired value,
+          $Res Function(_ConnectToBtDeviceFailureNotPaired) then) =
+      __$ConnectToBtDeviceFailureNotPairedCopyWithImpl<$Res>;
+}
+
+class __$ConnectToBtDeviceFailureNotPairedCopyWithImpl<$Res>
+    extends _$ConnectToBtDeviceFailureCopyWithImpl<$Res>
+    implements _$ConnectToBtDeviceFailureNotPairedCopyWith<$Res> {
+  __$ConnectToBtDeviceFailureNotPairedCopyWithImpl(
+      _ConnectToBtDeviceFailureNotPaired _value,
+      $Res Function(_ConnectToBtDeviceFailureNotPaired) _then)
+      : super(_value, (v) => _then(v as _ConnectToBtDeviceFailureNotPaired));
+
+  @override
+  _ConnectToBtDeviceFailureNotPaired get _value =>
+      super._value as _ConnectToBtDeviceFailureNotPaired;
+}
+
+class _$_ConnectToBtDeviceFailureNotPaired
+    implements _ConnectToBtDeviceFailureNotPaired {
+  const _$_ConnectToBtDeviceFailureNotPaired();
+
+  @override
+  String toString() {
+    return 'ConnectToBtDeviceFailure.notPaired()';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is _ConnectToBtDeviceFailureNotPaired);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  Result when<Result extends Object>({
+    @required Result notPaired(),
+    @required Result unexpected(),
+  }) {
+    assert(notPaired != null);
+    assert(unexpected != null);
+    return notPaired();
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeWhen<Result extends Object>({
+    Result notPaired(),
+    Result unexpected(),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (notPaired != null) {
+      return notPaired();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  Result map<Result extends Object>({
+    @required Result notPaired(_ConnectToBtDeviceFailureNotPaired value),
+    @required Result unexpected(_ConnectToBtDeviceFailureUnexpected value),
+  }) {
+    assert(notPaired != null);
+    assert(unexpected != null);
+    return notPaired(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeMap<Result extends Object>({
+    Result notPaired(_ConnectToBtDeviceFailureNotPaired value),
+    Result unexpected(_ConnectToBtDeviceFailureUnexpected value),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (notPaired != null) {
+      return notPaired(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _ConnectToBtDeviceFailureNotPaired
+    implements ConnectToBtDeviceFailure {
+  const factory _ConnectToBtDeviceFailureNotPaired() =
+      _$_ConnectToBtDeviceFailureNotPaired;
+}
+
+abstract class _$ConnectToBtDeviceFailureUnexpectedCopyWith<$Res> {
+  factory _$ConnectToBtDeviceFailureUnexpectedCopyWith(
+          _ConnectToBtDeviceFailureUnexpected value,
+          $Res Function(_ConnectToBtDeviceFailureUnexpected) then) =
+      __$ConnectToBtDeviceFailureUnexpectedCopyWithImpl<$Res>;
+}
+
+class __$ConnectToBtDeviceFailureUnexpectedCopyWithImpl<$Res>
+    extends _$ConnectToBtDeviceFailureCopyWithImpl<$Res>
+    implements _$ConnectToBtDeviceFailureUnexpectedCopyWith<$Res> {
+  __$ConnectToBtDeviceFailureUnexpectedCopyWithImpl(
+      _ConnectToBtDeviceFailureUnexpected _value,
+      $Res Function(_ConnectToBtDeviceFailureUnexpected) _then)
+      : super(_value, (v) => _then(v as _ConnectToBtDeviceFailureUnexpected));
+
+  @override
+  _ConnectToBtDeviceFailureUnexpected get _value =>
+      super._value as _ConnectToBtDeviceFailureUnexpected;
+}
+
+class _$_ConnectToBtDeviceFailureUnexpected
+    implements _ConnectToBtDeviceFailureUnexpected {
+  const _$_ConnectToBtDeviceFailureUnexpected();
+
+  @override
+  String toString() {
+    return 'ConnectToBtDeviceFailure.unexpected()';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is _ConnectToBtDeviceFailureUnexpected);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  Result when<Result extends Object>({
+    @required Result notPaired(),
+    @required Result unexpected(),
+  }) {
+    assert(notPaired != null);
+    assert(unexpected != null);
+    return unexpected();
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeWhen<Result extends Object>({
+    Result notPaired(),
+    Result unexpected(),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (unexpected != null) {
+      return unexpected();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  Result map<Result extends Object>({
+    @required Result notPaired(_ConnectToBtDeviceFailureNotPaired value),
+    @required Result unexpected(_ConnectToBtDeviceFailureUnexpected value),
+  }) {
+    assert(notPaired != null);
+    assert(unexpected != null);
+    return unexpected(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeMap<Result extends Object>({
+    Result notPaired(_ConnectToBtDeviceFailureNotPaired value),
+    Result unexpected(_ConnectToBtDeviceFailureUnexpected value),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (unexpected != null) {
+      return unexpected(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _ConnectToBtDeviceFailureUnexpected
+    implements ConnectToBtDeviceFailure {
+  const factory _ConnectToBtDeviceFailureUnexpected() =
+      _$_ConnectToBtDeviceFailureUnexpected;
+}

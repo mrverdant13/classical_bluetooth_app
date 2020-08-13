@@ -32,10 +32,21 @@ abstract class BondBtDeviceFailure with _$BondBtDeviceFailure {
       _BondBtDeviceFailureUnexpected;
 }
 
+@freezed
+abstract class ConnectToBtDeviceFailure with _$ConnectToBtDeviceFailure {
+  const factory ConnectToBtDeviceFailure.notPaired() =
+      _ConnectToBtDeviceFailureNotPaired;
+  const factory ConnectToBtDeviceFailure.unexpected() =
+      _ConnectToBtDeviceFailureUnexpected;
+}
+
 abstract class BluetoothServiceDec {
   const BluetoothServiceDec();
 
   Future<Either<BondBtDeviceFailure, void>> bondBtDevice({
+    @required BtDeviceEntity btDevice,
+  });
+  Future<Either<ConnectToBtDeviceFailure, void>> connectToBtDevice({
     @required BtDeviceEntity btDevice,
   });
   Stream<Either<WatchStatusFailure, BluetoothStateEntity>> watchStatus();

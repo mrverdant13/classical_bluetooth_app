@@ -559,3 +559,250 @@ abstract class _BondBtDeviceExceptionUnexpected
   const factory _BondBtDeviceExceptionUnexpected() =
       _$_BondBtDeviceExceptionUnexpected;
 }
+
+class _$ConnectToBtDeviceExceptionTearOff {
+  const _$ConnectToBtDeviceExceptionTearOff();
+
+// ignore: unused_element
+  _ConnectToBtDeviceExceptionNotPaired notPaired() {
+    return const _ConnectToBtDeviceExceptionNotPaired();
+  }
+
+// ignore: unused_element
+  _ConnectToBtDeviceExceptionUnexpected unexpected() {
+    return const _ConnectToBtDeviceExceptionUnexpected();
+  }
+}
+
+// ignore: unused_element
+const $ConnectToBtDeviceException = _$ConnectToBtDeviceExceptionTearOff();
+
+mixin _$ConnectToBtDeviceException {
+  @optionalTypeArgs
+  Result when<Result extends Object>({
+    @required Result notPaired(),
+    @required Result unexpected(),
+  });
+  @optionalTypeArgs
+  Result maybeWhen<Result extends Object>({
+    Result notPaired(),
+    Result unexpected(),
+    @required Result orElse(),
+  });
+  @optionalTypeArgs
+  Result map<Result extends Object>({
+    @required Result notPaired(_ConnectToBtDeviceExceptionNotPaired value),
+    @required Result unexpected(_ConnectToBtDeviceExceptionUnexpected value),
+  });
+  @optionalTypeArgs
+  Result maybeMap<Result extends Object>({
+    Result notPaired(_ConnectToBtDeviceExceptionNotPaired value),
+    Result unexpected(_ConnectToBtDeviceExceptionUnexpected value),
+    @required Result orElse(),
+  });
+}
+
+abstract class $ConnectToBtDeviceExceptionCopyWith<$Res> {
+  factory $ConnectToBtDeviceExceptionCopyWith(ConnectToBtDeviceException value,
+          $Res Function(ConnectToBtDeviceException) then) =
+      _$ConnectToBtDeviceExceptionCopyWithImpl<$Res>;
+}
+
+class _$ConnectToBtDeviceExceptionCopyWithImpl<$Res>
+    implements $ConnectToBtDeviceExceptionCopyWith<$Res> {
+  _$ConnectToBtDeviceExceptionCopyWithImpl(this._value, this._then);
+
+  final ConnectToBtDeviceException _value;
+  // ignore: unused_field
+  final $Res Function(ConnectToBtDeviceException) _then;
+}
+
+abstract class _$ConnectToBtDeviceExceptionNotPairedCopyWith<$Res> {
+  factory _$ConnectToBtDeviceExceptionNotPairedCopyWith(
+          _ConnectToBtDeviceExceptionNotPaired value,
+          $Res Function(_ConnectToBtDeviceExceptionNotPaired) then) =
+      __$ConnectToBtDeviceExceptionNotPairedCopyWithImpl<$Res>;
+}
+
+class __$ConnectToBtDeviceExceptionNotPairedCopyWithImpl<$Res>
+    extends _$ConnectToBtDeviceExceptionCopyWithImpl<$Res>
+    implements _$ConnectToBtDeviceExceptionNotPairedCopyWith<$Res> {
+  __$ConnectToBtDeviceExceptionNotPairedCopyWithImpl(
+      _ConnectToBtDeviceExceptionNotPaired _value,
+      $Res Function(_ConnectToBtDeviceExceptionNotPaired) _then)
+      : super(_value, (v) => _then(v as _ConnectToBtDeviceExceptionNotPaired));
+
+  @override
+  _ConnectToBtDeviceExceptionNotPaired get _value =>
+      super._value as _ConnectToBtDeviceExceptionNotPaired;
+}
+
+class _$_ConnectToBtDeviceExceptionNotPaired
+    implements _ConnectToBtDeviceExceptionNotPaired {
+  const _$_ConnectToBtDeviceExceptionNotPaired();
+
+  @override
+  String toString() {
+    return 'ConnectToBtDeviceException.notPaired()';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is _ConnectToBtDeviceExceptionNotPaired);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  Result when<Result extends Object>({
+    @required Result notPaired(),
+    @required Result unexpected(),
+  }) {
+    assert(notPaired != null);
+    assert(unexpected != null);
+    return notPaired();
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeWhen<Result extends Object>({
+    Result notPaired(),
+    Result unexpected(),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (notPaired != null) {
+      return notPaired();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  Result map<Result extends Object>({
+    @required Result notPaired(_ConnectToBtDeviceExceptionNotPaired value),
+    @required Result unexpected(_ConnectToBtDeviceExceptionUnexpected value),
+  }) {
+    assert(notPaired != null);
+    assert(unexpected != null);
+    return notPaired(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeMap<Result extends Object>({
+    Result notPaired(_ConnectToBtDeviceExceptionNotPaired value),
+    Result unexpected(_ConnectToBtDeviceExceptionUnexpected value),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (notPaired != null) {
+      return notPaired(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _ConnectToBtDeviceExceptionNotPaired
+    implements ConnectToBtDeviceException {
+  const factory _ConnectToBtDeviceExceptionNotPaired() =
+      _$_ConnectToBtDeviceExceptionNotPaired;
+}
+
+abstract class _$ConnectToBtDeviceExceptionUnexpectedCopyWith<$Res> {
+  factory _$ConnectToBtDeviceExceptionUnexpectedCopyWith(
+          _ConnectToBtDeviceExceptionUnexpected value,
+          $Res Function(_ConnectToBtDeviceExceptionUnexpected) then) =
+      __$ConnectToBtDeviceExceptionUnexpectedCopyWithImpl<$Res>;
+}
+
+class __$ConnectToBtDeviceExceptionUnexpectedCopyWithImpl<$Res>
+    extends _$ConnectToBtDeviceExceptionCopyWithImpl<$Res>
+    implements _$ConnectToBtDeviceExceptionUnexpectedCopyWith<$Res> {
+  __$ConnectToBtDeviceExceptionUnexpectedCopyWithImpl(
+      _ConnectToBtDeviceExceptionUnexpected _value,
+      $Res Function(_ConnectToBtDeviceExceptionUnexpected) _then)
+      : super(_value, (v) => _then(v as _ConnectToBtDeviceExceptionUnexpected));
+
+  @override
+  _ConnectToBtDeviceExceptionUnexpected get _value =>
+      super._value as _ConnectToBtDeviceExceptionUnexpected;
+}
+
+class _$_ConnectToBtDeviceExceptionUnexpected
+    implements _ConnectToBtDeviceExceptionUnexpected {
+  const _$_ConnectToBtDeviceExceptionUnexpected();
+
+  @override
+  String toString() {
+    return 'ConnectToBtDeviceException.unexpected()';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is _ConnectToBtDeviceExceptionUnexpected);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  Result when<Result extends Object>({
+    @required Result notPaired(),
+    @required Result unexpected(),
+  }) {
+    assert(notPaired != null);
+    assert(unexpected != null);
+    return unexpected();
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeWhen<Result extends Object>({
+    Result notPaired(),
+    Result unexpected(),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (unexpected != null) {
+      return unexpected();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  Result map<Result extends Object>({
+    @required Result notPaired(_ConnectToBtDeviceExceptionNotPaired value),
+    @required Result unexpected(_ConnectToBtDeviceExceptionUnexpected value),
+  }) {
+    assert(notPaired != null);
+    assert(unexpected != null);
+    return unexpected(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeMap<Result extends Object>({
+    Result notPaired(_ConnectToBtDeviceExceptionNotPaired value),
+    Result unexpected(_ConnectToBtDeviceExceptionUnexpected value),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (unexpected != null) {
+      return unexpected(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _ConnectToBtDeviceExceptionUnexpected
+    implements ConnectToBtDeviceException {
+  const factory _ConnectToBtDeviceExceptionUnexpected() =
+      _$_ConnectToBtDeviceExceptionUnexpected;
+}

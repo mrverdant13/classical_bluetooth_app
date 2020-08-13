@@ -109,4 +109,31 @@ class BluetoothServiceImp extends BluetoothServiceDec {
       );
     }
   }
+
+  @override
+  Future<Either<ConnectToBtDeviceFailure, void>> connectToBtDevice({
+    @required BtDeviceEntity btDevice,
+  }) async {
+    try {
+      await bluetoothHardwareDataSource.connectToBtDevice(
+        btDevice: btDevice,
+      );
+      return const Right(null);
+    } on ConnectToBtDeviceException catch (e) {
+      kFacadeLogger.e(e.runtimeType);
+      return e.when(
+        notPaired: () => const Left(
+          ConnectToBtDeviceFailure.notPaired(),
+        ),
+        unexpected: () => const Left(
+          ConnectToBtDeviceFailure.unexpected(),
+        ),
+      );
+    } catch (e) {
+      kFacadeLogger.e(e.runtimeType);
+      return const Left(
+        ConnectToBtDeviceFailure.unexpected(),
+      );
+    }
+  }
 }

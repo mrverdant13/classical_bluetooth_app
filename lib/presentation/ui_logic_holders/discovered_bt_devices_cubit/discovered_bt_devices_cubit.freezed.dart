@@ -21,9 +21,11 @@ class _$DiscoveredBtDevicesStateTearOff {
 
 // ignore: unused_element
   DiscoveredBtDevicesStateLoaded loaded(
-      {@required Set<BtDeviceEntity> discoveredBtDevices}) {
+      {@required Set<BtDeviceEntity> discoveredBtDevices,
+      @required bool discovering}) {
     return DiscoveredBtDevicesStateLoaded(
       discoveredBtDevices: discoveredBtDevices,
+      discovering: discovering,
     );
   }
 }
@@ -35,12 +37,14 @@ mixin _$DiscoveredBtDevicesState {
   @optionalTypeArgs
   Result when<Result extends Object>({
     @required Result failure(String message),
-    @required Result loaded(Set<BtDeviceEntity> discoveredBtDevices),
+    @required
+        Result loaded(
+            Set<BtDeviceEntity> discoveredBtDevices, bool discovering),
   });
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
     Result failure(String message),
-    Result loaded(Set<BtDeviceEntity> discoveredBtDevices),
+    Result loaded(Set<BtDeviceEntity> discoveredBtDevices, bool discovering),
     @required Result orElse(),
   });
   @optionalTypeArgs
@@ -135,7 +139,9 @@ class _$DiscoveredBtDevicesStateFailure
   @optionalTypeArgs
   Result when<Result extends Object>({
     @required Result failure(String message),
-    @required Result loaded(Set<BtDeviceEntity> discoveredBtDevices),
+    @required
+        Result loaded(
+            Set<BtDeviceEntity> discoveredBtDevices, bool discovering),
   }) {
     assert(failure != null);
     assert(loaded != null);
@@ -146,7 +152,7 @@ class _$DiscoveredBtDevicesStateFailure
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
     Result failure(String message),
-    Result loaded(Set<BtDeviceEntity> discoveredBtDevices),
+    Result loaded(Set<BtDeviceEntity> discoveredBtDevices, bool discovering),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -197,7 +203,7 @@ abstract class $DiscoveredBtDevicesStateLoadedCopyWith<$Res> {
           DiscoveredBtDevicesStateLoaded value,
           $Res Function(DiscoveredBtDevicesStateLoaded) then) =
       _$DiscoveredBtDevicesStateLoadedCopyWithImpl<$Res>;
-  $Res call({Set<BtDeviceEntity> discoveredBtDevices});
+  $Res call({Set<BtDeviceEntity> discoveredBtDevices, bool discovering});
 }
 
 class _$DiscoveredBtDevicesStateLoadedCopyWithImpl<$Res>
@@ -215,26 +221,33 @@ class _$DiscoveredBtDevicesStateLoadedCopyWithImpl<$Res>
   @override
   $Res call({
     Object discoveredBtDevices = freezed,
+    Object discovering = freezed,
   }) {
     return _then(DiscoveredBtDevicesStateLoaded(
       discoveredBtDevices: discoveredBtDevices == freezed
           ? _value.discoveredBtDevices
           : discoveredBtDevices as Set<BtDeviceEntity>,
+      discovering:
+          discovering == freezed ? _value.discovering : discovering as bool,
     ));
   }
 }
 
 class _$DiscoveredBtDevicesStateLoaded
     implements DiscoveredBtDevicesStateLoaded {
-  const _$DiscoveredBtDevicesStateLoaded({@required this.discoveredBtDevices})
-      : assert(discoveredBtDevices != null);
+  const _$DiscoveredBtDevicesStateLoaded(
+      {@required this.discoveredBtDevices, @required this.discovering})
+      : assert(discoveredBtDevices != null),
+        assert(discovering != null);
 
   @override
   final Set<BtDeviceEntity> discoveredBtDevices;
+  @override
+  final bool discovering;
 
   @override
   String toString() {
-    return 'DiscoveredBtDevicesState.loaded(discoveredBtDevices: $discoveredBtDevices)';
+    return 'DiscoveredBtDevicesState.loaded(discoveredBtDevices: $discoveredBtDevices, discovering: $discovering)';
   }
 
   @override
@@ -243,13 +256,17 @@ class _$DiscoveredBtDevicesStateLoaded
         (other is DiscoveredBtDevicesStateLoaded &&
             (identical(other.discoveredBtDevices, discoveredBtDevices) ||
                 const DeepCollectionEquality()
-                    .equals(other.discoveredBtDevices, discoveredBtDevices)));
+                    .equals(other.discoveredBtDevices, discoveredBtDevices)) &&
+            (identical(other.discovering, discovering) ||
+                const DeepCollectionEquality()
+                    .equals(other.discovering, discovering)));
   }
 
   @override
   int get hashCode =>
       runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(discoveredBtDevices);
+      const DeepCollectionEquality().hash(discoveredBtDevices) ^
+      const DeepCollectionEquality().hash(discovering);
 
   @override
   $DiscoveredBtDevicesStateLoadedCopyWith<DiscoveredBtDevicesStateLoaded>
@@ -260,23 +277,25 @@ class _$DiscoveredBtDevicesStateLoaded
   @optionalTypeArgs
   Result when<Result extends Object>({
     @required Result failure(String message),
-    @required Result loaded(Set<BtDeviceEntity> discoveredBtDevices),
+    @required
+        Result loaded(
+            Set<BtDeviceEntity> discoveredBtDevices, bool discovering),
   }) {
     assert(failure != null);
     assert(loaded != null);
-    return loaded(discoveredBtDevices);
+    return loaded(discoveredBtDevices, discovering);
   }
 
   @override
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
     Result failure(String message),
-    Result loaded(Set<BtDeviceEntity> discoveredBtDevices),
+    Result loaded(Set<BtDeviceEntity> discoveredBtDevices, bool discovering),
     @required Result orElse(),
   }) {
     assert(orElse != null);
     if (loaded != null) {
-      return loaded(discoveredBtDevices);
+      return loaded(discoveredBtDevices, discovering);
     }
     return orElse();
   }
@@ -310,10 +329,11 @@ class _$DiscoveredBtDevicesStateLoaded
 abstract class DiscoveredBtDevicesStateLoaded
     implements DiscoveredBtDevicesState {
   const factory DiscoveredBtDevicesStateLoaded(
-          {@required Set<BtDeviceEntity> discoveredBtDevices}) =
-      _$DiscoveredBtDevicesStateLoaded;
+      {@required Set<BtDeviceEntity> discoveredBtDevices,
+      @required bool discovering}) = _$DiscoveredBtDevicesStateLoaded;
 
   Set<BtDeviceEntity> get discoveredBtDevices;
+  bool get discovering;
   $DiscoveredBtDevicesStateLoadedCopyWith<DiscoveredBtDevicesStateLoaded>
       get copyWith;
 }

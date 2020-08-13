@@ -279,3 +279,142 @@ abstract class _WatchBtDevicesFailureUnexpected
   const factory _WatchBtDevicesFailureUnexpected() =
       _$_WatchBtDevicesFailureUnexpected;
 }
+
+class _$StopBtDevicesWatchingFailureTearOff {
+  const _$StopBtDevicesWatchingFailureTearOff();
+
+// ignore: unused_element
+  _StopBtDevicesWatchingFailureUnexpected unexpected() {
+    return const _StopBtDevicesWatchingFailureUnexpected();
+  }
+}
+
+// ignore: unused_element
+const $StopBtDevicesWatchingFailure = _$StopBtDevicesWatchingFailureTearOff();
+
+mixin _$StopBtDevicesWatchingFailure {
+  @optionalTypeArgs
+  Result when<Result extends Object>({
+    @required Result unexpected(),
+  });
+  @optionalTypeArgs
+  Result maybeWhen<Result extends Object>({
+    Result unexpected(),
+    @required Result orElse(),
+  });
+  @optionalTypeArgs
+  Result map<Result extends Object>({
+    @required Result unexpected(_StopBtDevicesWatchingFailureUnexpected value),
+  });
+  @optionalTypeArgs
+  Result maybeMap<Result extends Object>({
+    Result unexpected(_StopBtDevicesWatchingFailureUnexpected value),
+    @required Result orElse(),
+  });
+}
+
+abstract class $StopBtDevicesWatchingFailureCopyWith<$Res> {
+  factory $StopBtDevicesWatchingFailureCopyWith(
+          StopBtDevicesWatchingFailure value,
+          $Res Function(StopBtDevicesWatchingFailure) then) =
+      _$StopBtDevicesWatchingFailureCopyWithImpl<$Res>;
+}
+
+class _$StopBtDevicesWatchingFailureCopyWithImpl<$Res>
+    implements $StopBtDevicesWatchingFailureCopyWith<$Res> {
+  _$StopBtDevicesWatchingFailureCopyWithImpl(this._value, this._then);
+
+  final StopBtDevicesWatchingFailure _value;
+  // ignore: unused_field
+  final $Res Function(StopBtDevicesWatchingFailure) _then;
+}
+
+abstract class _$StopBtDevicesWatchingFailureUnexpectedCopyWith<$Res> {
+  factory _$StopBtDevicesWatchingFailureUnexpectedCopyWith(
+          _StopBtDevicesWatchingFailureUnexpected value,
+          $Res Function(_StopBtDevicesWatchingFailureUnexpected) then) =
+      __$StopBtDevicesWatchingFailureUnexpectedCopyWithImpl<$Res>;
+}
+
+class __$StopBtDevicesWatchingFailureUnexpectedCopyWithImpl<$Res>
+    extends _$StopBtDevicesWatchingFailureCopyWithImpl<$Res>
+    implements _$StopBtDevicesWatchingFailureUnexpectedCopyWith<$Res> {
+  __$StopBtDevicesWatchingFailureUnexpectedCopyWithImpl(
+      _StopBtDevicesWatchingFailureUnexpected _value,
+      $Res Function(_StopBtDevicesWatchingFailureUnexpected) _then)
+      : super(
+            _value, (v) => _then(v as _StopBtDevicesWatchingFailureUnexpected));
+
+  @override
+  _StopBtDevicesWatchingFailureUnexpected get _value =>
+      super._value as _StopBtDevicesWatchingFailureUnexpected;
+}
+
+class _$_StopBtDevicesWatchingFailureUnexpected
+    implements _StopBtDevicesWatchingFailureUnexpected {
+  const _$_StopBtDevicesWatchingFailureUnexpected();
+
+  @override
+  String toString() {
+    return 'StopBtDevicesWatchingFailure.unexpected()';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is _StopBtDevicesWatchingFailureUnexpected);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  Result when<Result extends Object>({
+    @required Result unexpected(),
+  }) {
+    assert(unexpected != null);
+    return unexpected();
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeWhen<Result extends Object>({
+    Result unexpected(),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (unexpected != null) {
+      return unexpected();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  Result map<Result extends Object>({
+    @required Result unexpected(_StopBtDevicesWatchingFailureUnexpected value),
+  }) {
+    assert(unexpected != null);
+    return unexpected(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeMap<Result extends Object>({
+    Result unexpected(_StopBtDevicesWatchingFailureUnexpected value),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (unexpected != null) {
+      return unexpected(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _StopBtDevicesWatchingFailureUnexpected
+    implements StopBtDevicesWatchingFailure {
+  const factory _StopBtDevicesWatchingFailureUnexpected() =
+      _$_StopBtDevicesWatchingFailureUnexpected;
+}

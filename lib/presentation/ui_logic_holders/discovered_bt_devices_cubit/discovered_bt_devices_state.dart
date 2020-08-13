@@ -7,5 +7,6 @@ abstract class DiscoveredBtDevicesState with _$DiscoveredBtDevicesState {
   }) = DiscoveredBtDevicesStateFailure;
   const factory DiscoveredBtDevicesState.loaded({
     @required Set<BtDeviceEntity> discoveredBtDevices,
+    @required bool discovering,
   }) = DiscoveredBtDevicesStateLoaded;
 }

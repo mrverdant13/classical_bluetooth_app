@@ -33,12 +33,27 @@ class BtDiscoveredDevicesScreen extends StatelessWidget {
           orElse: NoActionWithNoArguments,
         ),
         builder: (context, bluetoothState) => bluetoothState.maybeWhen(
-          on: () => FloatingActionButton(
-            onPressed: () {
-              context.bloc<DiscoveredBtDevicesCubit>().discoverBtDevices();
-            },
-            backgroundColor: Colors.blue.shade700,
-            child: const Icon(Icons.sync),
+          on: () =>
+              BlocBuilder<DiscoveredBtDevicesCubit, DiscoveredBtDevicesState>(
+            builder: (context, discoveredBtDevicesState) =>
+                discoveredBtDevicesState.maybeWhen(
+              orElse: () => const SizedBox.shrink(),
+              loaded: (discoveredBtDevices, discovering) =>
+                  FloatingActionButton(
+                onPressed: () {
+                  discovering
+                      ? context.bloc<DiscoveredBtDevicesCubit>().stopDiscovery()
+                      : context
+                          .bloc<DiscoveredBtDevicesCubit>()
+                          .discoverBtDevices();
+                },
+                backgroundColor: Colors.blue.shade700,
+                tooltip: discovering ? 'Cancelar' : 'Escanear',
+                child: Icon(
+                  discovering ? Icons.close : Icons.sync,
+                ),
+              ),
+            ),
           ),
           orElse: () => const SizedBox.shrink(),
         ),
@@ -70,23 +85,36 @@ class _DiscoveredBtDevicesListView extends StatelessWidget {
             failure: (message) => Center(
               child: Text(message),
             ),
-            loaded: (discoveredBtDevices) => ListView(
-              children: discoveredBtDevices
-                  .map(
-                    (discoveredBtDevice) => ListTile(
-                      title: Text(discoveredBtDevice.name),
-                      subtitle: Text(discoveredBtDevice.macAddress),
-                      onTap: () {
-                        ExtendedNavigator.of(context).push(
-                          Routes.btSerialCommunicationScreen,
-                          arguments: BtSerialCommunicationScreenArguments(
-                            btDevice: discoveredBtDevice,
-                          ),
-                        );
-                      },
+            loaded: (discoveredBtDevices, discovering) => Column(
+              children: [
+                if (discovering) const LinearProgressIndicator(),
+                Expanded(
+                  child: ListView(
+                    physics: const AlwaysScrollableScrollPhysics(
+                      parent: BouncingScrollPhysics(),
                     ),
-                  )
-                  .toList(),
+                    children: discoveredBtDevices
+                        .map(
+                          (discoveredBtDevice) => ListTile(
+                            title: Text(discoveredBtDevice.name),
+                            subtitle: Text(discoveredBtDevice.macAddress),
+                            onTap: () {
+                              context
+                                  .bloc<DiscoveredBtDevicesCubit>()
+                                  .stopDiscovery();
+                              ExtendedNavigator.of(context).push(
+                                Routes.btSerialCommunicationScreen,
+                                arguments: BtSerialCommunicationScreenArguments(
+                                  btDevice: discoveredBtDevice,
+                                ),
+                              );
+                            },
+                          ),
+                        )
+                        .toList(),
+                  ),
+                ),
+              ],
             ),
           ),
         ),

@@ -285,3 +285,140 @@ abstract class _DiscoveredDeviceStreamExceptionUnexpected
   const factory _DiscoveredDeviceStreamExceptionUnexpected() =
       _$_DiscoveredDeviceStreamExceptionUnexpected;
 }
+
+class _$StopDiscoveryExceptionTearOff {
+  const _$StopDiscoveryExceptionTearOff();
+
+// ignore: unused_element
+  _StopDiscoveryExceptionUnexpected unexpected() {
+    return const _StopDiscoveryExceptionUnexpected();
+  }
+}
+
+// ignore: unused_element
+const $StopDiscoveryException = _$StopDiscoveryExceptionTearOff();
+
+mixin _$StopDiscoveryException {
+  @optionalTypeArgs
+  Result when<Result extends Object>({
+    @required Result unexpected(),
+  });
+  @optionalTypeArgs
+  Result maybeWhen<Result extends Object>({
+    Result unexpected(),
+    @required Result orElse(),
+  });
+  @optionalTypeArgs
+  Result map<Result extends Object>({
+    @required Result unexpected(_StopDiscoveryExceptionUnexpected value),
+  });
+  @optionalTypeArgs
+  Result maybeMap<Result extends Object>({
+    Result unexpected(_StopDiscoveryExceptionUnexpected value),
+    @required Result orElse(),
+  });
+}
+
+abstract class $StopDiscoveryExceptionCopyWith<$Res> {
+  factory $StopDiscoveryExceptionCopyWith(StopDiscoveryException value,
+          $Res Function(StopDiscoveryException) then) =
+      _$StopDiscoveryExceptionCopyWithImpl<$Res>;
+}
+
+class _$StopDiscoveryExceptionCopyWithImpl<$Res>
+    implements $StopDiscoveryExceptionCopyWith<$Res> {
+  _$StopDiscoveryExceptionCopyWithImpl(this._value, this._then);
+
+  final StopDiscoveryException _value;
+  // ignore: unused_field
+  final $Res Function(StopDiscoveryException) _then;
+}
+
+abstract class _$StopDiscoveryExceptionUnexpectedCopyWith<$Res> {
+  factory _$StopDiscoveryExceptionUnexpectedCopyWith(
+          _StopDiscoveryExceptionUnexpected value,
+          $Res Function(_StopDiscoveryExceptionUnexpected) then) =
+      __$StopDiscoveryExceptionUnexpectedCopyWithImpl<$Res>;
+}
+
+class __$StopDiscoveryExceptionUnexpectedCopyWithImpl<$Res>
+    extends _$StopDiscoveryExceptionCopyWithImpl<$Res>
+    implements _$StopDiscoveryExceptionUnexpectedCopyWith<$Res> {
+  __$StopDiscoveryExceptionUnexpectedCopyWithImpl(
+      _StopDiscoveryExceptionUnexpected _value,
+      $Res Function(_StopDiscoveryExceptionUnexpected) _then)
+      : super(_value, (v) => _then(v as _StopDiscoveryExceptionUnexpected));
+
+  @override
+  _StopDiscoveryExceptionUnexpected get _value =>
+      super._value as _StopDiscoveryExceptionUnexpected;
+}
+
+class _$_StopDiscoveryExceptionUnexpected
+    implements _StopDiscoveryExceptionUnexpected {
+  const _$_StopDiscoveryExceptionUnexpected();
+
+  @override
+  String toString() {
+    return 'StopDiscoveryException.unexpected()';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is _StopDiscoveryExceptionUnexpected);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  Result when<Result extends Object>({
+    @required Result unexpected(),
+  }) {
+    assert(unexpected != null);
+    return unexpected();
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeWhen<Result extends Object>({
+    Result unexpected(),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (unexpected != null) {
+      return unexpected();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  Result map<Result extends Object>({
+    @required Result unexpected(_StopDiscoveryExceptionUnexpected value),
+  }) {
+    assert(unexpected != null);
+    return unexpected(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeMap<Result extends Object>({
+    Result unexpected(_StopDiscoveryExceptionUnexpected value),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (unexpected != null) {
+      return unexpected(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _StopDiscoveryExceptionUnexpected
+    implements StopDiscoveryException {
+  const factory _StopDiscoveryExceptionUnexpected() =
+      _$_StopDiscoveryExceptionUnexpected;
+}

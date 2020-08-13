@@ -64,4 +64,18 @@ class BluetoothServiceImp extends BluetoothServiceDec {
                 );
         },
       );
+
+  @override
+  Future<Either<StopBtDevicesWatchingFailure, void>>
+      stopBtDevicesWatching() async {
+    try {
+      await bluetoothHardwareDataSource.stopDiscovery();
+      return const Right(null);
+    } catch (e) {
+      kFacadeLogger.e(e.runtimeType);
+      return const Left(
+        StopBtDevicesWatchingFailure.unexpected(),
+      );
+    }
+  }
 }

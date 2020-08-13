@@ -24,11 +24,18 @@ abstract class DiscoveredDeviceStreamException
       _DiscoveredDeviceStreamExceptionUnexpected;
 }
 
+@freezed
+abstract class StopDiscoveryException with _$StopDiscoveryException {
+  const factory StopDiscoveryException.unexpected() =
+      _StopDiscoveryExceptionUnexpected;
+}
+
 abstract class BluetoothHardwareDataSourceDec {
   const BluetoothHardwareDataSourceDec();
 
   Stream<BluetoothStateEntity> stateStream();
   Stream<BtDeviceEntity> discoveredDeviceStream();
+  Future<void> stopDiscovery();
 }
 
 @LazySingleton(as: BluetoothHardwareDataSourceDec)
@@ -71,10 +78,6 @@ class BluetoothHardwareDataSourceImp extends BluetoothHardwareDataSourceDec {
     return bluetoothSerial
         .startDiscovery()
         .map(
-          // (bluetoothDiscoveryResult) => const BtDeviceEntity(
-          //   macAddress: 'mac',
-          //   name: 'name',
-          // ),
           (bluetoothDiscoveryResult) => BtDeviceModel.fromBluetoothDevice(
             bluetoothDiscoveryResult.device,
           ),
@@ -86,5 +89,15 @@ class BluetoothHardwareDataSourceImp extends BluetoothHardwareDataSourceDec {
         throw const DiscoveredDeviceStreamException.unexpected();
       },
     );
+  }
+
+  @override
+  Future<void> stopDiscovery() async {
+    try {
+      await bluetoothSerial.cancelDiscovery();
+    } catch (e) {
+      kHardwareDataSourceLogger.e(e.runtimeType);
+      throw const StopDiscoveryException.unexpected();
+    }
   }
 }

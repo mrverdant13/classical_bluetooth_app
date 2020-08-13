@@ -17,9 +17,17 @@ abstract class WatchBtDevicesFailure with _$WatchBtDevicesFailure {
       _WatchBtDevicesFailureUnexpected;
 }
 
+@freezed
+abstract class StopBtDevicesWatchingFailure
+    with _$StopBtDevicesWatchingFailure {
+  const factory StopBtDevicesWatchingFailure.unexpected() =
+      _StopBtDevicesWatchingFailureUnexpected;
+}
+
 abstract class BluetoothServiceDec {
   const BluetoothServiceDec();
 
   Stream<Either<WatchStatusFailure, BluetoothStateEntity>> watchStatus();
   Stream<Either<WatchBtDevicesFailure, BtDeviceEntity>> watchBtDevices();
+  Future<Either<StopBtDevicesWatchingFailure, void>> stopBtDevicesWatching();
 }

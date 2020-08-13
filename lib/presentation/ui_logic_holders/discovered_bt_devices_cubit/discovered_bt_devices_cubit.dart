@@ -1,16 +1,17 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:classical_bluetooth_app/core/loggers/presentation/ui_logic_holder.dart';
+import 'package:classical_bluetooth_app/domain/use_cases/stop_bt_devices_watching/stop_bt_devices_watching.dart';
 import 'package:dartz/dartz.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
 
-import 'package:classical_bluetooth_app/core/use_cases/parameter_types/no_parameters.dart';
-import 'package:classical_bluetooth_app/domain/entities/bt_device/bt_device_entity.dart';
-import 'package:classical_bluetooth_app/domain/facades_declaration/bluetooth_service/bluetooth_service.dart';
-import 'package:classical_bluetooth_app/domain/use_cases/watch_available_bt_devices/watch_available_bt_devices.dart';
+import '../../../core/loggers/presentation/ui_logic_holder.dart';
+import '../../../core/use_cases/parameter_types/no_parameters.dart';
+import '../../../domain/entities/bt_device/bt_device_entity.dart';
+import '../../../domain/facades_declaration/bluetooth_service/bluetooth_service.dart';
+import '../../../domain/use_cases/watch_available_bt_devices/watch_available_bt_devices.dart';
 
 part 'discovered_bt_devices_cubit.freezed.dart';
 part 'discovered_bt_devices_state.dart';
@@ -18,6 +19,7 @@ part 'discovered_bt_devices_state.dart';
 @Injectable()
 class DiscoveredBtDevicesCubit extends Cubit<DiscoveredBtDevicesState> {
   final WatchAvailableBtDevicesUseCase watchAvailableBtDevicesUseCase;
+  final StopBtDevicesWatchingUseCase stopBtDevicesWatchingUseCase;
 
   final Set<BtDeviceEntity> _discoveredBtDevices = {};
 
@@ -26,9 +28,11 @@ class DiscoveredBtDevicesCubit extends Cubit<DiscoveredBtDevicesState> {
 
   DiscoveredBtDevicesCubit({
     @required this.watchAvailableBtDevicesUseCase,
+    @required this.stopBtDevicesWatchingUseCase,
   }) : super(
           const DiscoveredBtDevicesState.loaded(
             discoveredBtDevices: {},
+            discovering: false,
           ),
         );
 
@@ -38,6 +42,7 @@ class DiscoveredBtDevicesCubit extends Cubit<DiscoveredBtDevicesState> {
     emit(
       DiscoveredBtDevicesState.loaded(
         discoveredBtDevices: _discoveredBtDevices.toSet(),
+        discovering: true,
       ),
     );
 
@@ -49,6 +54,20 @@ class DiscoveredBtDevicesCubit extends Cubit<DiscoveredBtDevicesState> {
       (failureOrBtDevice) => _updateDiscoveredBtDevices(
         failureOrBtDevice: failureOrBtDevice,
       ),
+      onDone: () {
+        emit(
+          DiscoveredBtDevicesState.loaded(
+            discoveredBtDevices: _discoveredBtDevices.toSet(),
+            discovering: false,
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> stopDiscovery() async {
+    await stopBtDevicesWatchingUseCase.call(
+      const NoUseCaseParameters(),
     );
   }
 
@@ -73,6 +92,7 @@ class DiscoveredBtDevicesCubit extends Cubit<DiscoveredBtDevicesState> {
             }
             return DiscoveredBtDevicesState.loaded(
               discoveredBtDevices: _discoveredBtDevices.toSet(),
+              discovering: true,
             );
           },
         ),

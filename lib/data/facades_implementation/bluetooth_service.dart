@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
@@ -18,7 +20,7 @@ class BluetoothServiceImp extends BluetoothServiceDec {
   });
 
   @override
-  Stream<Either<WatchStatusFailure, BluetoothStateEntity>> watchStatus() =>
+  Stream<Either<WatchStatusFailure, BluetoothStateEntity>> watchBtStatus() =>
       bluetoothHardwareDataSource
           .stateStream()
           .map<Either<WatchStatusFailure, BluetoothStateEntity>>(
@@ -133,6 +135,35 @@ class BluetoothServiceImp extends BluetoothServiceDec {
       kFacadeLogger.e(e.runtimeType);
       return const Left(
         ConnectToBtDeviceFailure.unexpected(),
+      );
+    }
+  }
+
+  @override
+  Future<Either<SendDataToBtDeviceFailure, void>> sendDataToBtDevice({
+    @required BtDeviceEntity btDevice,
+    @required String dataString,
+  }) async {
+    try {
+      await bluetoothHardwareDataSource.sendDataToBtDevice(
+        btDevice: btDevice,
+        data: ascii.encode(dataString),
+      );
+      return const Right(null);
+    } on SendDataToBtDeviceException catch (e) {
+      kFacadeLogger.e(e.runtimeType);
+      return e.when(
+        notConnected: () => const Left(
+          SendDataToBtDeviceFailure.notConnected(),
+        ),
+        unexpected: () => const Left(
+          SendDataToBtDeviceFailure.unexpected(),
+        ),
+      );
+    } catch (e) {
+      kFacadeLogger.e(e.runtimeType);
+      return const Left(
+        SendDataToBtDeviceFailure.unexpected(),
       );
     }
   }

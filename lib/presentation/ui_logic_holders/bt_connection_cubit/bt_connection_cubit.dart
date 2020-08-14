@@ -1,12 +1,11 @@
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
-
 import 'package:meta/meta.dart';
 
-import 'package:classical_bluetooth_app/domain/entities/bt_connection_state/bt_connection_state.dart';
-import 'package:classical_bluetooth_app/domain/entities/bt_device/bt_device_entity.dart';
-import 'package:classical_bluetooth_app/domain/use_cases/connect_to_bt_device/connect_to_bt_device.dart';
+import '../../../domain/entities/bt_connection_state/bt_connection_state.dart';
+import '../../../domain/entities/bt_device/bt_device_entity.dart';
+import '../../../domain/use_cases/connect_to_bt_device/connect_to_bt_device.dart';
 
 @Injectable()
 class BtConnectionCubit extends Cubit<BtConnectionState> {
@@ -35,7 +34,9 @@ class BtConnectionCubit extends Cubit<BtConnectionState> {
           notPaired: () => const BtConnectionState.failure(
             message: 'El dispositivo no está emparejado.',
           ),
-          unexpected: () => const BtConnectionState.failure(),
+          unexpected: () => const BtConnectionState.failure(
+            message: 'Hubo un problema inesperado',
+          ),
         ),
       ),
       (_) => emit(

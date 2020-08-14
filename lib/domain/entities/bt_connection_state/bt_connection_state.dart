@@ -9,6 +9,6 @@ abstract class BtConnectionState with _$BtConnectionState {
   const factory BtConnectionState.disconnected() =
       _BtConnectionStateDisconnected;
   const factory BtConnectionState.failure({
-    String message,
+    @required String message,
   }) = _BtConnectionStateFailure;
 }

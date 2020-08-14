@@ -20,5 +20,5 @@ class WatchBluetoothStateUseCase extends StreamUseCase<WatchStatusFailure,
   Stream<Either<WatchStatusFailure, BluetoothStateEntity>> call(
     NoUseCaseParameters parameters,
   ) =>
-      bluetoothService.watchStatus();
+      bluetoothService.watchBtStatus();
 }

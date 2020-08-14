@@ -28,7 +28,7 @@ class _$BtConnectionStateTearOff {
   }
 
 // ignore: unused_element
-  _BtConnectionStateFailure failure({String message}) {
+  _BtConnectionStateFailure failure({@required String message}) {
     return _BtConnectionStateFailure(
       message: message,
     );
@@ -425,7 +425,8 @@ class __$BtConnectionStateFailureCopyWithImpl<$Res>
 }
 
 class _$_BtConnectionStateFailure implements _BtConnectionStateFailure {
-  const _$_BtConnectionStateFailure({this.message});
+  const _$_BtConnectionStateFailure({@required this.message})
+      : assert(message != null);
 
   @override
   final String message;
@@ -516,7 +517,7 @@ class _$_BtConnectionStateFailure implements _BtConnectionStateFailure {
 }
 
 abstract class _BtConnectionStateFailure implements BtConnectionState {
-  const factory _BtConnectionStateFailure({String message}) =
+  const factory _BtConnectionStateFailure({@required String message}) =
       _$_BtConnectionStateFailure;
 
   String get message;

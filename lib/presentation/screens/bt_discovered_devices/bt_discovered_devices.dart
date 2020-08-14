@@ -1,10 +1,11 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:classical_bluetooth_app/core/other_helpers/no_action_functions.dart';
-import 'package:classical_bluetooth_app/core/presentation/routing/router.gr.dart';
-import 'package:classical_bluetooth_app/domain/entities/bluetooth_state/bluetooth_state_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../core/injection/injection.dart';
+import '../../../core/other_helpers/no_action_functions.dart';
+import '../../../core/presentation/routing/router.gr.dart';
+import '../../../domain/entities/bluetooth_state/bluetooth_state_entity.dart';
 import '../../ui_logic_holders/bluetooth_state_cubit/bluetooth_state_cubit.dart';
 import '../../ui_logic_holders/discovered_bt_devices_cubit/discovered_bt_devices_cubit.dart';
 
@@ -13,49 +14,62 @@ class BtDiscoveredDevicesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: const [
-            _BtStateIndicator(),
-            Expanded(
-              child: _DiscoveredBtDevicesListView(),
-            ),
-          ],
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<BluetoothStateCubit>(
+          create: (_) =>
+              getIt<BluetoothStateCubit>()..subscribeToBluetoothState(),
         ),
-      ),
-      floatingActionButton:
-          BlocConsumer<BluetoothStateCubit, BluetoothStateEntity>(
-        listener: (context, bluetoothState) => bluetoothState.maybeWhen(
-          on: () =>
-              context.bloc<DiscoveredBtDevicesCubit>().discoverBtDevices(),
-          orElse: NoActionWithNoArguments,
+        BlocProvider<DiscoveredBtDevicesCubit>(
+          create: (context) => getIt<DiscoveredBtDevicesCubit>(),
+        )
+      ],
+      child: Scaffold(
+        body: SafeArea(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: const [
+              _BtStateIndicator(),
+              Expanded(
+                child: _DiscoveredBtDevicesListView(),
+              ),
+            ],
+          ),
         ),
-        builder: (context, bluetoothState) => bluetoothState.maybeWhen(
-          on: () =>
-              BlocBuilder<DiscoveredBtDevicesCubit, DiscoveredBtDevicesState>(
-            builder: (context, discoveredBtDevicesState) =>
-                discoveredBtDevicesState.maybeWhen(
-              orElse: () => const SizedBox.shrink(),
-              loaded: (discoveredBtDevices, discovering) =>
-                  FloatingActionButton(
-                onPressed: () {
-                  discovering
-                      ? context.bloc<DiscoveredBtDevicesCubit>().stopDiscovery()
-                      : context
-                          .bloc<DiscoveredBtDevicesCubit>()
-                          .discoverBtDevices();
-                },
-                backgroundColor: Colors.blue.shade700,
-                tooltip: discovering ? 'Cancelar' : 'Escanear',
-                child: Icon(
-                  discovering ? Icons.close : Icons.sync,
+        floatingActionButton:
+            BlocConsumer<BluetoothStateCubit, BluetoothStateEntity>(
+          listener: (context, bluetoothState) => bluetoothState.maybeWhen(
+            on: () =>
+                context.bloc<DiscoveredBtDevicesCubit>().discoverBtDevices(),
+            orElse: NoActionWithNoArguments,
+          ),
+          builder: (context, bluetoothState) => bluetoothState.maybeWhen(
+            on: () =>
+                BlocBuilder<DiscoveredBtDevicesCubit, DiscoveredBtDevicesState>(
+              builder: (context, discoveredBtDevicesState) =>
+                  discoveredBtDevicesState.maybeWhen(
+                orElse: () => const SizedBox.shrink(),
+                loaded: (discoveredBtDevices, discovering) =>
+                    FloatingActionButton(
+                  onPressed: () {
+                    discovering
+                        ? context
+                            .bloc<DiscoveredBtDevicesCubit>()
+                            .stopDiscovery()
+                        : context
+                            .bloc<DiscoveredBtDevicesCubit>()
+                            .discoverBtDevices();
+                  },
+                  backgroundColor: Colors.blue.shade700,
+                  tooltip: discovering ? 'Cancelar' : 'Escanear',
+                  child: Icon(
+                    discovering ? Icons.close : Icons.sync,
+                  ),
                 ),
               ),
             ),
+            orElse: () => const SizedBox.shrink(),
           ),
-          orElse: () => const SizedBox.shrink(),
         ),
       ),
     );

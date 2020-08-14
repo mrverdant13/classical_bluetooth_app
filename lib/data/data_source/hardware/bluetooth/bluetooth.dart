@@ -13,47 +13,6 @@ import '../../../models/bt_device/bt_device_model.dart';
 
 part 'bluetooth.freezed.dart';
 
-@freezed
-abstract class BondBtDeviceException with _$BondBtDeviceException {
-  const factory BondBtDeviceException.unexpected() =
-      _BondBtDeviceExceptionUnexpected;
-}
-
-@freezed
-abstract class ConnectToBtDeviceException with _$ConnectToBtDeviceException {
-  const factory ConnectToBtDeviceException.notPaired() =
-      _ConnectToBtDeviceExceptionNotPaired;
-  const factory ConnectToBtDeviceException.unexpected() =
-      _ConnectToBtDeviceExceptionUnexpected;
-}
-
-@freezed
-abstract class DiscoveredDeviceStreamException
-    with _$DiscoveredDeviceStreamException {
-  const factory DiscoveredDeviceStreamException.unexpected() =
-      _DiscoveredDeviceStreamExceptionUnexpected;
-}
-
-@freezed
-abstract class SendDataToBtDeviceException with _$SendDataToBtDeviceException {
-  const factory SendDataToBtDeviceException.unexpected() =
-      _SendDataToBtDeviceExceptionUnexpected;
-  const factory SendDataToBtDeviceException.notConnected() =
-      _SendDataToBtDeviceExceptionNotConnected;
-}
-
-@freezed
-abstract class StateStreamException with _$StateStreamException {
-  const factory StateStreamException.unexpected() =
-      _StateStreamExceptionUnexpected;
-}
-
-@freezed
-abstract class StopDiscoveryException with _$StopDiscoveryException {
-  const factory StopDiscoveryException.unexpected() =
-      _StopDiscoveryExceptionUnexpected;
-}
-
 abstract class BluetoothHardwareDataSourceDec {
   const BluetoothHardwareDataSourceDec();
 
@@ -61,6 +20,9 @@ abstract class BluetoothHardwareDataSourceDec {
     @required BtDeviceEntity btDevice,
   });
   Future<void> connectToBtDevice({
+    @required BtDeviceEntity btDevice,
+  });
+  Future<void> disconnectFromBtDevice({
     @required BtDeviceEntity btDevice,
   });
   Stream<BtDeviceEntity> discoveredDeviceStream();
@@ -80,60 +42,6 @@ class BluetoothHardwareDataSourceImp extends BluetoothHardwareDataSourceDec {
   BluetoothHardwareDataSourceImp({
     @required this.bluetoothSerial,
   });
-
-  @override
-  Stream<BluetoothStateEntity> stateStream() async* {
-    try {
-      yield BluetoothStateModel.fromBluetoothState(
-        await bluetoothSerial.state,
-      );
-    } catch (e) {
-      kHardwareDataSourceLogger.e(e.runtimeType);
-      throw const StateStreamException.unexpected();
-    }
-
-    yield* bluetoothSerial
-        .onStateChanged()
-        .map(
-          (bluetoothState) => BluetoothStateModel.fromBluetoothState(
-            bluetoothState,
-          ),
-        )
-        .handleError(
-      // HACK: Error mapping.
-      (e) {
-        kHardwareDataSourceLogger.e(e.runtimeType);
-        throw const StateStreamException.unexpected();
-      },
-    );
-  }
-
-  @override
-  Stream<BtDeviceEntity> discoveredDeviceStream() {
-    return bluetoothSerial.startDiscovery().map(
-      (bluetoothDiscoveryResult) {
-        return BtDeviceModel.fromBluetoothDevice(
-          bluetoothDiscoveryResult.device,
-        );
-      },
-    ).handleError(
-      // HACK: Error mapping.
-      (e) {
-        kHardwareDataSourceLogger.e(e.runtimeType);
-        throw const DiscoveredDeviceStreamException.unexpected();
-      },
-    );
-  }
-
-  @override
-  Future<void> stopDiscovery() async {
-    try {
-      await bluetoothSerial.cancelDiscovery();
-    } catch (e) {
-      kHardwareDataSourceLogger.e(e.runtimeType);
-      throw const StopDiscoveryException.unexpected();
-    }
-  }
 
   @override
   Future<void> bondBtDevice({
@@ -181,13 +89,33 @@ class BluetoothHardwareDataSourceImp extends BluetoothHardwareDataSourceDec {
     }
   }
 
-  Future<bool> _isPaired({
-    @required String macAddress,
+  @override
+  Future<void> disconnectFromBtDevice({
+    @required BtDeviceEntity btDevice,
   }) async {
-    return (await bluetoothSerial.getBondStateForAddress(
-          macAddress,
-        )) ==
-        BluetoothBondState.bonded;
+    try {
+      await _bluetoothConnections.remove(btDevice.macAddress)?.finish();
+    } catch (e) {
+      kHardwareDataSourceLogger.e(e.runtimeType);
+      throw const DisconnectFromBtDeviceException.unexpected();
+    }
+  }
+
+  @override
+  Stream<BtDeviceEntity> discoveredDeviceStream() {
+    return bluetoothSerial.startDiscovery().map(
+      (bluetoothDiscoveryResult) {
+        return BtDeviceModel.fromBluetoothDevice(
+          bluetoothDiscoveryResult.device,
+        );
+      },
+    ).handleError(
+      // HACK: Error mapping.
+      (e) {
+        kHardwareDataSourceLogger.e(e.runtimeType);
+        throw const DiscoveredDeviceStreamException.unexpected();
+      },
+    );
   }
 
   @override
@@ -195,22 +123,12 @@ class BluetoothHardwareDataSourceImp extends BluetoothHardwareDataSourceDec {
     @required BtDeviceEntity btDevice,
     @required Uint8List data,
   }) async {
-    // HACK: `bluetoothConnection.output.add` throws StateError("Not connected!") if there is no available connection
-    // try {
-    //   if (!_bluetoothConnections.containsKey(btDevice.macAddress) ||
-    //       !_bluetoothConnections[btDevice.macAddress].isConnected) {
-    //     throw const SendDataException.notConnected();
-    //   }
-    // } catch (e) {
-    //   kHardwareDataSourceLogger.e(e.runtimeType);
-    //   throw const SendDataException.notConnected();
-    // }
     try {
       _bluetoothConnections[btDevice.macAddress].output.add(
             data,
           );
     }
-    // HACK
+    // HACK: `bluetoothConnection.output.add` throws StateError("Not connected!") if there is no available connection
     // ignore: avoid_catching_errors
     on StateError catch (e) {
       kHardwareDataSourceLogger.e(e.runtimeType);
@@ -220,4 +138,98 @@ class BluetoothHardwareDataSourceImp extends BluetoothHardwareDataSourceDec {
       throw const SendDataToBtDeviceException.unexpected();
     }
   }
+
+  @override
+  Stream<BluetoothStateEntity> stateStream() async* {
+    try {
+      yield BluetoothStateModel.fromBluetoothState(
+        await bluetoothSerial.state,
+      );
+    } catch (e) {
+      kHardwareDataSourceLogger.e(e.runtimeType);
+      throw const StateStreamException.unexpected();
+    }
+
+    yield* bluetoothSerial
+        .onStateChanged()
+        .map(
+          (bluetoothState) => BluetoothStateModel.fromBluetoothState(
+            bluetoothState,
+          ),
+        )
+        .handleError(
+      // HACK: Error mapping.
+      (e) {
+        kHardwareDataSourceLogger.e(e.runtimeType);
+        throw const StateStreamException.unexpected();
+      },
+    );
+  }
+
+  @override
+  Future<void> stopDiscovery() async {
+    try {
+      await bluetoothSerial.cancelDiscovery();
+    } catch (e) {
+      kHardwareDataSourceLogger.e(e.runtimeType);
+      throw const StopDiscoveryException.unexpected();
+    }
+  }
+
+  Future<bool> _isPaired({
+    @required String macAddress,
+  }) async {
+    return (await bluetoothSerial.getBondStateForAddress(
+          macAddress,
+        )) ==
+        BluetoothBondState.bonded;
+  }
+}
+
+@freezed
+abstract class BondBtDeviceException with _$BondBtDeviceException {
+  const factory BondBtDeviceException.unexpected() =
+      _BondBtDeviceExceptionUnexpected;
+}
+
+@freezed
+abstract class ConnectToBtDeviceException with _$ConnectToBtDeviceException {
+  const factory ConnectToBtDeviceException.notPaired() =
+      _ConnectToBtDeviceExceptionNotPaired;
+  const factory ConnectToBtDeviceException.unexpected() =
+      _ConnectToBtDeviceExceptionUnexpected;
+}
+
+@freezed
+abstract class DisconnectFromBtDeviceException
+    with _$DisconnectFromBtDeviceException {
+  const factory DisconnectFromBtDeviceException.unexpected() =
+      _DisconnectFromBtDeviceExceptionUnexpected;
+}
+
+@freezed
+abstract class DiscoveredDeviceStreamException
+    with _$DiscoveredDeviceStreamException {
+  const factory DiscoveredDeviceStreamException.unexpected() =
+      _DiscoveredDeviceStreamExceptionUnexpected;
+}
+
+@freezed
+abstract class SendDataToBtDeviceException with _$SendDataToBtDeviceException {
+  const factory SendDataToBtDeviceException.notConnected() =
+      _SendDataToBtDeviceExceptionNotConnected;
+  const factory SendDataToBtDeviceException.unexpected() =
+      _SendDataToBtDeviceExceptionUnexpected;
+}
+
+@freezed
+abstract class StateStreamException with _$StateStreamException {
+  const factory StateStreamException.unexpected() =
+      _StateStreamExceptionUnexpected;
+}
+
+@freezed
+abstract class StopDiscoveryException with _$StopDiscoveryException {
+  const factory StopDiscoveryException.unexpected() =
+      _StopDiscoveryExceptionUnexpected;
 }

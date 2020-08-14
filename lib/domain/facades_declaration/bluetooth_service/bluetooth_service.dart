@@ -7,6 +7,27 @@ import '../../entities/bt_device/bt_device_entity.dart';
 
 part 'bluetooth_service.freezed.dart';
 
+abstract class BluetoothServiceDec {
+  const BluetoothServiceDec();
+
+  Future<Either<BondBtDeviceFailure, void>> bondBtDevice({
+    @required BtDeviceEntity btDevice,
+  });
+  Future<Either<ConnectToBtDeviceFailure, void>> connectToBtDevice({
+    @required BtDeviceEntity btDevice,
+  });
+  Future<Either<DisconnectFromBtDeviceFailure, void>> disconnectFromBtDevice({
+    @required BtDeviceEntity btDevice,
+  });
+  Future<Either<SendDataToBtDeviceFailure, void>> sendDataToBtDevice({
+    @required BtDeviceEntity btDevice,
+    @required String dataString,
+  });
+  Future<Either<StopBtDevicesWatchingFailure, void>> stopBtDevicesWatching();
+  Stream<Either<WatchBtDevicesFailure, BtDeviceEntity>> watchBtDevices();
+  Stream<Either<WatchStatusFailure, BluetoothStateEntity>> watchBtStatus();
+}
+
 @freezed
 abstract class BondBtDeviceFailure with _$BondBtDeviceFailure {
   const factory BondBtDeviceFailure.notFound() = _BondBtDeviceFailureNotFound;
@@ -23,10 +44,10 @@ abstract class ConnectToBtDeviceFailure with _$ConnectToBtDeviceFailure {
 }
 
 @freezed
-abstract class StopBtDevicesWatchingFailure
-    with _$StopBtDevicesWatchingFailure {
-  const factory StopBtDevicesWatchingFailure.unexpected() =
-      _StopBtDevicesWatchingFailureUnexpected;
+abstract class DisconnectFromBtDeviceFailure
+    with _$DisconnectFromBtDeviceFailure {
+  const factory DisconnectFromBtDeviceFailure.unexpected() =
+      _DisconnectFromBtDeviceFailureUnexpected;
 }
 
 @freezed
@@ -38,6 +59,13 @@ abstract class SendDataToBtDeviceFailure with _$SendDataToBtDeviceFailure {
 }
 
 @freezed
+abstract class StopBtDevicesWatchingFailure
+    with _$StopBtDevicesWatchingFailure {
+  const factory StopBtDevicesWatchingFailure.unexpected() =
+      _StopBtDevicesWatchingFailureUnexpected;
+}
+
+@freezed
 abstract class WatchBtDevicesFailure with _$WatchBtDevicesFailure {
   const factory WatchBtDevicesFailure.unexpected() =
       _WatchBtDevicesFailureUnexpected;
@@ -46,22 +74,4 @@ abstract class WatchBtDevicesFailure with _$WatchBtDevicesFailure {
 @freezed
 abstract class WatchStatusFailure with _$WatchStatusFailure {
   const factory WatchStatusFailure.unexpected() = _WatchStatusFailureUnexpected;
-}
-
-abstract class BluetoothServiceDec {
-  const BluetoothServiceDec();
-
-  Future<Either<BondBtDeviceFailure, void>> bondBtDevice({
-    @required BtDeviceEntity btDevice,
-  });
-  Future<Either<ConnectToBtDeviceFailure, void>> connectToBtDevice({
-    @required BtDeviceEntity btDevice,
-  });
-  Future<Either<SendDataToBtDeviceFailure, void>> sendDataToBtDevice({
-    @required BtDeviceEntity btDevice,
-    @required String dataString,
-  });
-  Future<Either<StopBtDevicesWatchingFailure, void>> stopBtDevicesWatching();
-  Stream<Either<WatchStatusFailure, BluetoothStateEntity>> watchBtStatus();
-  Stream<Either<WatchBtDevicesFailure, BtDeviceEntity>> watchBtDevices();
 }

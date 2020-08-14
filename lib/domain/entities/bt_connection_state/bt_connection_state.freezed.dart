@@ -18,8 +18,8 @@ class _$BtConnectionStateTearOff {
   }
 
 // ignore: unused_element
-  _BtConnectionStateConnecting connecting() {
-    return const _BtConnectionStateConnecting();
+  _BtConnectionStateChanging changing() {
+    return const _BtConnectionStateChanging();
   }
 
 // ignore: unused_element
@@ -42,14 +42,14 @@ mixin _$BtConnectionState {
   @optionalTypeArgs
   Result when<Result extends Object>({
     @required Result connected(),
-    @required Result connecting(),
+    @required Result changing(),
     @required Result disconnected(),
     @required Result failure(String message),
   });
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
     Result connected(),
-    Result connecting(),
+    Result changing(),
     Result disconnected(),
     Result failure(String message),
     @required Result orElse(),
@@ -57,14 +57,14 @@ mixin _$BtConnectionState {
   @optionalTypeArgs
   Result map<Result extends Object>({
     @required Result connected(_BtConnectionStateConnected value),
-    @required Result connecting(_BtConnectionStateConnecting value),
+    @required Result changing(_BtConnectionStateChanging value),
     @required Result disconnected(_BtConnectionStateDisconnected value),
     @required Result failure(_BtConnectionStateFailure value),
   });
   @optionalTypeArgs
   Result maybeMap<Result extends Object>({
     Result connected(_BtConnectionStateConnected value),
-    Result connecting(_BtConnectionStateConnecting value),
+    Result changing(_BtConnectionStateChanging value),
     Result disconnected(_BtConnectionStateDisconnected value),
     Result failure(_BtConnectionStateFailure value),
     @required Result orElse(),
@@ -125,12 +125,12 @@ class _$_BtConnectionStateConnected implements _BtConnectionStateConnected {
   @optionalTypeArgs
   Result when<Result extends Object>({
     @required Result connected(),
-    @required Result connecting(),
+    @required Result changing(),
     @required Result disconnected(),
     @required Result failure(String message),
   }) {
     assert(connected != null);
-    assert(connecting != null);
+    assert(changing != null);
     assert(disconnected != null);
     assert(failure != null);
     return connected();
@@ -140,7 +140,7 @@ class _$_BtConnectionStateConnected implements _BtConnectionStateConnected {
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
     Result connected(),
-    Result connecting(),
+    Result changing(),
     Result disconnected(),
     Result failure(String message),
     @required Result orElse(),
@@ -156,12 +156,12 @@ class _$_BtConnectionStateConnected implements _BtConnectionStateConnected {
   @optionalTypeArgs
   Result map<Result extends Object>({
     @required Result connected(_BtConnectionStateConnected value),
-    @required Result connecting(_BtConnectionStateConnecting value),
+    @required Result changing(_BtConnectionStateChanging value),
     @required Result disconnected(_BtConnectionStateDisconnected value),
     @required Result failure(_BtConnectionStateFailure value),
   }) {
     assert(connected != null);
-    assert(connecting != null);
+    assert(changing != null);
     assert(disconnected != null);
     assert(failure != null);
     return connected(this);
@@ -171,7 +171,7 @@ class _$_BtConnectionStateConnected implements _BtConnectionStateConnected {
   @optionalTypeArgs
   Result maybeMap<Result extends Object>({
     Result connected(_BtConnectionStateConnected value),
-    Result connecting(_BtConnectionStateConnecting value),
+    Result changing(_BtConnectionStateChanging value),
     Result disconnected(_BtConnectionStateDisconnected value),
     Result failure(_BtConnectionStateFailure value),
     @required Result orElse(),
@@ -188,37 +188,35 @@ abstract class _BtConnectionStateConnected implements BtConnectionState {
   const factory _BtConnectionStateConnected() = _$_BtConnectionStateConnected;
 }
 
-abstract class _$BtConnectionStateConnectingCopyWith<$Res> {
-  factory _$BtConnectionStateConnectingCopyWith(
-          _BtConnectionStateConnecting value,
-          $Res Function(_BtConnectionStateConnecting) then) =
-      __$BtConnectionStateConnectingCopyWithImpl<$Res>;
+abstract class _$BtConnectionStateChangingCopyWith<$Res> {
+  factory _$BtConnectionStateChangingCopyWith(_BtConnectionStateChanging value,
+          $Res Function(_BtConnectionStateChanging) then) =
+      __$BtConnectionStateChangingCopyWithImpl<$Res>;
 }
 
-class __$BtConnectionStateConnectingCopyWithImpl<$Res>
+class __$BtConnectionStateChangingCopyWithImpl<$Res>
     extends _$BtConnectionStateCopyWithImpl<$Res>
-    implements _$BtConnectionStateConnectingCopyWith<$Res> {
-  __$BtConnectionStateConnectingCopyWithImpl(
-      _BtConnectionStateConnecting _value,
-      $Res Function(_BtConnectionStateConnecting) _then)
-      : super(_value, (v) => _then(v as _BtConnectionStateConnecting));
+    implements _$BtConnectionStateChangingCopyWith<$Res> {
+  __$BtConnectionStateChangingCopyWithImpl(_BtConnectionStateChanging _value,
+      $Res Function(_BtConnectionStateChanging) _then)
+      : super(_value, (v) => _then(v as _BtConnectionStateChanging));
 
   @override
-  _BtConnectionStateConnecting get _value =>
-      super._value as _BtConnectionStateConnecting;
+  _BtConnectionStateChanging get _value =>
+      super._value as _BtConnectionStateChanging;
 }
 
-class _$_BtConnectionStateConnecting implements _BtConnectionStateConnecting {
-  const _$_BtConnectionStateConnecting();
+class _$_BtConnectionStateChanging implements _BtConnectionStateChanging {
+  const _$_BtConnectionStateChanging();
 
   @override
   String toString() {
-    return 'BtConnectionState.connecting()';
+    return 'BtConnectionState.changing()';
   }
 
   @override
   bool operator ==(dynamic other) {
-    return identical(this, other) || (other is _BtConnectionStateConnecting);
+    return identical(this, other) || (other is _BtConnectionStateChanging);
   }
 
   @override
@@ -228,29 +226,29 @@ class _$_BtConnectionStateConnecting implements _BtConnectionStateConnecting {
   @optionalTypeArgs
   Result when<Result extends Object>({
     @required Result connected(),
-    @required Result connecting(),
+    @required Result changing(),
     @required Result disconnected(),
     @required Result failure(String message),
   }) {
     assert(connected != null);
-    assert(connecting != null);
+    assert(changing != null);
     assert(disconnected != null);
     assert(failure != null);
-    return connecting();
+    return changing();
   }
 
   @override
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
     Result connected(),
-    Result connecting(),
+    Result changing(),
     Result disconnected(),
     Result failure(String message),
     @required Result orElse(),
   }) {
     assert(orElse != null);
-    if (connecting != null) {
-      return connecting();
+    if (changing != null) {
+      return changing();
     }
     return orElse();
   }
@@ -259,36 +257,36 @@ class _$_BtConnectionStateConnecting implements _BtConnectionStateConnecting {
   @optionalTypeArgs
   Result map<Result extends Object>({
     @required Result connected(_BtConnectionStateConnected value),
-    @required Result connecting(_BtConnectionStateConnecting value),
+    @required Result changing(_BtConnectionStateChanging value),
     @required Result disconnected(_BtConnectionStateDisconnected value),
     @required Result failure(_BtConnectionStateFailure value),
   }) {
     assert(connected != null);
-    assert(connecting != null);
+    assert(changing != null);
     assert(disconnected != null);
     assert(failure != null);
-    return connecting(this);
+    return changing(this);
   }
 
   @override
   @optionalTypeArgs
   Result maybeMap<Result extends Object>({
     Result connected(_BtConnectionStateConnected value),
-    Result connecting(_BtConnectionStateConnecting value),
+    Result changing(_BtConnectionStateChanging value),
     Result disconnected(_BtConnectionStateDisconnected value),
     Result failure(_BtConnectionStateFailure value),
     @required Result orElse(),
   }) {
     assert(orElse != null);
-    if (connecting != null) {
-      return connecting(this);
+    if (changing != null) {
+      return changing(this);
     }
     return orElse();
   }
 }
 
-abstract class _BtConnectionStateConnecting implements BtConnectionState {
-  const factory _BtConnectionStateConnecting() = _$_BtConnectionStateConnecting;
+abstract class _BtConnectionStateChanging implements BtConnectionState {
+  const factory _BtConnectionStateChanging() = _$_BtConnectionStateChanging;
 }
 
 abstract class _$BtConnectionStateDisconnectedCopyWith<$Res> {
@@ -332,12 +330,12 @@ class _$_BtConnectionStateDisconnected
   @optionalTypeArgs
   Result when<Result extends Object>({
     @required Result connected(),
-    @required Result connecting(),
+    @required Result changing(),
     @required Result disconnected(),
     @required Result failure(String message),
   }) {
     assert(connected != null);
-    assert(connecting != null);
+    assert(changing != null);
     assert(disconnected != null);
     assert(failure != null);
     return disconnected();
@@ -347,7 +345,7 @@ class _$_BtConnectionStateDisconnected
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
     Result connected(),
-    Result connecting(),
+    Result changing(),
     Result disconnected(),
     Result failure(String message),
     @required Result orElse(),
@@ -363,12 +361,12 @@ class _$_BtConnectionStateDisconnected
   @optionalTypeArgs
   Result map<Result extends Object>({
     @required Result connected(_BtConnectionStateConnected value),
-    @required Result connecting(_BtConnectionStateConnecting value),
+    @required Result changing(_BtConnectionStateChanging value),
     @required Result disconnected(_BtConnectionStateDisconnected value),
     @required Result failure(_BtConnectionStateFailure value),
   }) {
     assert(connected != null);
-    assert(connecting != null);
+    assert(changing != null);
     assert(disconnected != null);
     assert(failure != null);
     return disconnected(this);
@@ -378,7 +376,7 @@ class _$_BtConnectionStateDisconnected
   @optionalTypeArgs
   Result maybeMap<Result extends Object>({
     Result connected(_BtConnectionStateConnected value),
-    Result connecting(_BtConnectionStateConnecting value),
+    Result changing(_BtConnectionStateChanging value),
     Result disconnected(_BtConnectionStateDisconnected value),
     Result failure(_BtConnectionStateFailure value),
     @required Result orElse(),
@@ -457,12 +455,12 @@ class _$_BtConnectionStateFailure implements _BtConnectionStateFailure {
   @optionalTypeArgs
   Result when<Result extends Object>({
     @required Result connected(),
-    @required Result connecting(),
+    @required Result changing(),
     @required Result disconnected(),
     @required Result failure(String message),
   }) {
     assert(connected != null);
-    assert(connecting != null);
+    assert(changing != null);
     assert(disconnected != null);
     assert(failure != null);
     return failure(message);
@@ -472,7 +470,7 @@ class _$_BtConnectionStateFailure implements _BtConnectionStateFailure {
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
     Result connected(),
-    Result connecting(),
+    Result changing(),
     Result disconnected(),
     Result failure(String message),
     @required Result orElse(),
@@ -488,12 +486,12 @@ class _$_BtConnectionStateFailure implements _BtConnectionStateFailure {
   @optionalTypeArgs
   Result map<Result extends Object>({
     @required Result connected(_BtConnectionStateConnected value),
-    @required Result connecting(_BtConnectionStateConnecting value),
+    @required Result changing(_BtConnectionStateChanging value),
     @required Result disconnected(_BtConnectionStateDisconnected value),
     @required Result failure(_BtConnectionStateFailure value),
   }) {
     assert(connected != null);
-    assert(connecting != null);
+    assert(changing != null);
     assert(disconnected != null);
     assert(failure != null);
     return failure(this);
@@ -503,7 +501,7 @@ class _$_BtConnectionStateFailure implements _BtConnectionStateFailure {
   @optionalTypeArgs
   Result maybeMap<Result extends Object>({
     Result connected(_BtConnectionStateConnected value),
-    Result connecting(_BtConnectionStateConnecting value),
+    Result changing(_BtConnectionStateChanging value),
     Result disconnected(_BtConnectionStateDisconnected value),
     Result failure(_BtConnectionStateFailure value),
     @required Result orElse(),

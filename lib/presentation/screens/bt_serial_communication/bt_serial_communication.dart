@@ -1,18 +1,20 @@
-import 'package:classical_bluetooth_app/domain/entities/bt_connection_state/bt_connection_state.dart';
-import 'package:classical_bluetooth_app/presentation/ui_logic_holders/bt_bonding_cubit/bt_bonding_cubit.dart';
-import 'package:classical_bluetooth_app/presentation/ui_logic_holders/bt_connection_cubit/bt_connection_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'package:classical_bluetooth_app/presentation/ui_logic_holders/send_data_to_bt_device_cubit/send_data_to_bt_device_cubit.dart';
+
 import '../../../core/injection/injection.dart';
 import '../../../domain/entities/bt_bonding_state/bt_bonding_state.dart';
+import '../../../domain/entities/bt_connection_state/bt_connection_state.dart';
 import '../../../domain/entities/bt_device/bt_device_entity.dart';
 import '../../ui_logic_holders/bt_bonding_cubit/bt_bonding_cubit.dart';
+import '../../ui_logic_holders/bt_connection_cubit/bt_connection_cubit.dart';
 
 class BtSerialCommunicationScreen extends StatelessWidget {
   final BtDeviceEntity btDevice;
+  final _kTextFormFieldKey = GlobalKey<FormFieldState<String>>();
 
-  const BtSerialCommunicationScreen({
+  BtSerialCommunicationScreen({
     @required this.btDevice,
   });
 
@@ -26,47 +28,14 @@ class BtSerialCommunicationScreen extends StatelessWidget {
         BlocProvider<BtConnectionCubit>(
           create: (context) => getIt<BtConnectionCubit>(),
         ),
+        BlocProvider<SendDataToBtDeviceCubit>(
+          create: (context) => getIt<SendDataToBtDeviceCubit>(),
+        ),
       ],
       child: Builder(
         builder: (context) => Scaffold(
-          body: MultiBlocListener(
-            listeners: [
-              BlocListener<BtBondingCubit, BtBondingState>(
-                listener: (context, btBondingState) {
-                  Scaffold.of(context).hideCurrentSnackBar();
-                  Scaffold.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(
-                        btBondingState.when(
-                          bonded: () => 'Emparejado con el dispositivo!',
-                          bonding: () => 'Emparejando...',
-                          unbonded: () => 'Desemparejado',
-                          failure: () => 'Hubo un error al emparejar',
-                        ),
-                      ),
-                    ),
-                  );
-                },
-              ),
-              BlocListener<BtConnectionCubit, BtConnectionState>(
-                listener: (context, btConnectionState) {
-                  Scaffold.of(context).hideCurrentSnackBar();
-                  Scaffold.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(
-                        btConnectionState.when(
-                          connected: () => 'Conectado al dispositivo!',
-                          connecting: () => 'Conectando...',
-                          disconnected: () => 'Desconectado',
-                          failure: (message) =>
-                              message ?? 'Hubo un problema al conectar',
-                        ),
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ],
+          body: _CustomMultiBlocListener(
+            btDevice: btDevice,
             child: SafeArea(
               child: Padding(
                 padding: const EdgeInsets.all(15.0),
@@ -81,38 +50,115 @@ class BtSerialCommunicationScreen extends StatelessWidget {
                       btDevice.macAddress,
                       style: Theme.of(context).textTheme.subtitle1,
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        RaisedButton(
-                          color: Colors.blue.shade700,
-                          onPressed: () {
-                            context.bloc<BtBondingCubit>().bond(
-                                  btDevice: btDevice,
-                                );
-                          },
-                          child: const Text(
-                            'EMPAREJAR',
-                            style: TextStyle(
-                              color: Colors.white,
+                    const SizedBox(height: 10.0),
+                    BlocBuilder<BtBondingCubit, BtBondingState>(
+                      builder: (context, btBondingState) {
+                        return btBondingState.maybeWhen(
+                          bonded: () =>
+                              BlocBuilder<BtConnectionCubit, BtConnectionState>(
+                            builder: (context, btConnectionState) {
+                              return btConnectionState.maybeWhen(
+                                connected: () => Column(
+                                  children: [
+                                    TextFormField(
+                                      decoration: const InputDecoration(
+                                        hintText: 'Texto a ser enviado',
+                                        border: OutlineInputBorder(),
+                                      ),
+                                      key: _kTextFormFieldKey,
+                                      minLines: 5,
+                                      maxLines: 5,
+                                    ),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          child: RaisedButton(
+                                            color: Colors.red.shade700,
+                                            onPressed: () {
+                                              context
+                                                  .bloc<BtConnectionCubit>()
+                                                  .disconnect(
+                                                    btDevice: btDevice,
+                                                  );
+                                            },
+                                            child: const Text(
+                                              'DESCONECTAR',
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        const SizedBox(width: 10.0),
+                                        Expanded(
+                                          child: RaisedButton(
+                                            color: Colors.blue.shade700,
+                                            onPressed: () {
+                                              final _valueToBeSent =
+                                                  _kTextFormFieldKey
+                                                          .currentState.value ??
+                                                      '';
+                                              _kTextFormFieldKey.currentState
+                                                  .reset();
+                                              context
+                                                  .bloc<
+                                                      SendDataToBtDeviceCubit>()
+                                                  .sendDataToBtDevice(
+                                                    btDevice: btDevice,
+                                                    dataString: _valueToBeSent,
+                                                  );
+                                            },
+                                            child: const Text(
+                                              'ENVIAR',
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                                changing: () => const Center(
+                                  child: CircularProgressIndicator(),
+                                ),
+                                orElse: () => RaisedButton(
+                                  color: Colors.blue.shade700,
+                                  onPressed: () {
+                                    context.bloc<BtConnectionCubit>().connect(
+                                          btDevice: btDevice,
+                                        );
+                                  },
+                                  child: const Text(
+                                    'CONECTAR',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                          bonding: () => const Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                          orElse: () => RaisedButton(
+                            color: Colors.blue.shade700,
+                            onPressed: () {
+                              context.bloc<BtBondingCubit>().bond(
+                                    btDevice: btDevice,
+                                  );
+                            },
+                            child: const Text(
+                              'EMPAREJAR',
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
                             ),
                           ),
-                        ),
-                        RaisedButton(
-                          color: Colors.blue.shade700,
-                          onPressed: () {
-                            context.bloc<BtConnectionCubit>().connect(
-                                  btDevice: btDevice,
-                                );
-                          },
-                          child: const Text(
-                            'CONECTAR',
-                            style: TextStyle(
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                      ],
+                        );
+                      },
                     ),
                   ],
                 ),
@@ -121,6 +167,84 @@ class BtSerialCommunicationScreen extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class _CustomMultiBlocListener extends StatelessWidget {
+  final Widget child;
+  final BtDeviceEntity btDevice;
+
+  const _CustomMultiBlocListener({
+    @required this.btDevice,
+    @required this.child,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<BtBondingCubit, BtBondingState>(
+          listener: (context, btBondingState) {
+            Scaffold.of(context).removeCurrentSnackBar();
+            Scaffold.of(context).showSnackBar(
+              SnackBar(
+                content: Text(
+                  btBondingState.when(
+                    bonded: () => 'Emparejado con el dispositivo!',
+                    bonding: () => 'Emparejando...',
+                    unbonded: () => 'Desemparejado',
+                    failure: () => 'Hubo un error al emparejar',
+                  ),
+                ),
+              ),
+            );
+          },
+        ),
+        BlocListener<BtConnectionCubit, BtConnectionState>(
+          listener: (context, btConnectionState) {
+            Scaffold.of(context).removeCurrentSnackBar();
+            Scaffold.of(context).showSnackBar(
+              SnackBar(
+                content: Text(
+                  btConnectionState.when(
+                    connected: () => 'Conectado al dispositivo!',
+                    changing: () => 'Espere un momento...',
+                    disconnected: () => 'Desconectado',
+                    failure: (message) =>
+                        message ?? 'Hubo un problema al conectar',
+                  ),
+                ),
+              ),
+            );
+          },
+        ),
+        BlocListener<SendDataToBtDeviceCubit, SendDataToBtDeviceState>(
+          listener: (context, sendDataToBtDeviceState) {
+            Scaffold.of(context).removeCurrentSnackBar();
+            Scaffold.of(context).showSnackBar(
+              SnackBar(
+                content: Text(
+                  sendDataToBtDeviceState.when(
+                    idle: () => '',
+                    sending: () => 'Enviando...',
+                    sent: () => 'Enviado!',
+                    failure: (message, isConnectionError) {
+                      if (isConnectionError) {
+                        context.bloc<BtConnectionCubit>().disconnect(
+                              btDevice: btDevice,
+                            );
+                      }
+                      return message ?? 'Hubo un problema al conectar';
+                    },
+                  ),
+                ),
+              ),
+            );
+          },
+        ),
+      ],
+      child: child,
     );
   }
 }

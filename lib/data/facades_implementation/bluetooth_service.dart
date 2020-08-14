@@ -20,75 +20,6 @@ class BluetoothServiceImp extends BluetoothServiceDec {
   });
 
   @override
-  Stream<Either<WatchStatusFailure, BluetoothStateEntity>> watchBtStatus() =>
-      bluetoothHardwareDataSource
-          .stateStream()
-          .map<Either<WatchStatusFailure, BluetoothStateEntity>>(
-            (bluetoothState) => Right(
-              bluetoothState,
-            ),
-          )
-          .onErrorReturnWith(
-        (e) {
-          kFacadeLogger.e(e.runtimeType);
-          return (e is StateStreamException)
-              ? e.when(
-                  unexpected: () => const Left(
-                    WatchStatusFailure.unexpected(),
-                  ),
-                )
-              : const Left(
-                  WatchStatusFailure.unexpected(),
-                );
-        },
-      );
-
-  @override
-  Stream<Either<WatchBtDevicesFailure, BtDeviceEntity>> watchBtDevices() =>
-      bluetoothHardwareDataSource
-          .discoveredDeviceStream()
-          .map<Either<WatchBtDevicesFailure, BtDeviceEntity>>(
-            (bluetoothDevice) => Right(
-              bluetoothDevice,
-            ),
-          )
-          .onErrorReturnWith(
-        (e) {
-          kFacadeLogger.e(e.runtimeType);
-          return (e is DiscoveredDeviceStreamException)
-              ? e.when(
-                  unexpected: () => const Left(
-                    WatchBtDevicesFailure.unexpected(),
-                  ),
-                )
-              : const Left(
-                  WatchBtDevicesFailure.unexpected(),
-                );
-        },
-      );
-
-  @override
-  Future<Either<StopBtDevicesWatchingFailure, void>>
-      stopBtDevicesWatching() async {
-    try {
-      await bluetoothHardwareDataSource.stopDiscovery();
-      return const Right(null);
-    } on StopDiscoveryException catch (e) {
-      kFacadeLogger.e(e.runtimeType);
-      return e.when(
-        unexpected: () => const Left(
-          StopBtDevicesWatchingFailure.unexpected(),
-        ),
-      );
-    } catch (e) {
-      kFacadeLogger.e(e.runtimeType);
-      return const Left(
-        StopBtDevicesWatchingFailure.unexpected(),
-      );
-    }
-  }
-
-  @override
   Future<Either<BondBtDeviceFailure, void>> bondBtDevice({
     @required BtDeviceEntity btDevice,
   }) async {
@@ -140,6 +71,30 @@ class BluetoothServiceImp extends BluetoothServiceDec {
   }
 
   @override
+  Future<Either<DisconnectFromBtDeviceFailure, void>> disconnectFromBtDevice({
+    @required BtDeviceEntity btDevice,
+  }) async {
+    try {
+      await bluetoothHardwareDataSource.disconnectFromBtDevice(
+        btDevice: btDevice,
+      );
+      return const Right(null);
+    } on DisconnectFromBtDeviceException catch (e) {
+      kFacadeLogger.e(e.runtimeType);
+      return e.when(
+        unexpected: () => const Left(
+          DisconnectFromBtDeviceFailure.unexpected(),
+        ),
+      );
+    } catch (e) {
+      kFacadeLogger.e(e.runtimeType);
+      return const Left(
+        DisconnectFromBtDeviceFailure.unexpected(),
+      );
+    }
+  }
+
+  @override
   Future<Either<SendDataToBtDeviceFailure, void>> sendDataToBtDevice({
     @required BtDeviceEntity btDevice,
     @required String dataString,
@@ -167,4 +122,73 @@ class BluetoothServiceImp extends BluetoothServiceDec {
       );
     }
   }
+
+  @override
+  Future<Either<StopBtDevicesWatchingFailure, void>>
+      stopBtDevicesWatching() async {
+    try {
+      await bluetoothHardwareDataSource.stopDiscovery();
+      return const Right(null);
+    } on StopDiscoveryException catch (e) {
+      kFacadeLogger.e(e.runtimeType);
+      return e.when(
+        unexpected: () => const Left(
+          StopBtDevicesWatchingFailure.unexpected(),
+        ),
+      );
+    } catch (e) {
+      kFacadeLogger.e(e.runtimeType);
+      return const Left(
+        StopBtDevicesWatchingFailure.unexpected(),
+      );
+    }
+  }
+
+  @override
+  Stream<Either<WatchBtDevicesFailure, BtDeviceEntity>> watchBtDevices() =>
+      bluetoothHardwareDataSource
+          .discoveredDeviceStream()
+          .map<Either<WatchBtDevicesFailure, BtDeviceEntity>>(
+            (bluetoothDevice) => Right(
+              bluetoothDevice,
+            ),
+          )
+          .onErrorReturnWith(
+        (e) {
+          kFacadeLogger.e(e.runtimeType);
+          return (e is DiscoveredDeviceStreamException)
+              ? e.when(
+                  unexpected: () => const Left(
+                    WatchBtDevicesFailure.unexpected(),
+                  ),
+                )
+              : const Left(
+                  WatchBtDevicesFailure.unexpected(),
+                );
+        },
+      );
+
+  @override
+  Stream<Either<WatchStatusFailure, BluetoothStateEntity>> watchBtStatus() =>
+      bluetoothHardwareDataSource
+          .stateStream()
+          .map<Either<WatchStatusFailure, BluetoothStateEntity>>(
+            (bluetoothState) => Right(
+              bluetoothState,
+            ),
+          )
+          .onErrorReturnWith(
+        (e) {
+          kFacadeLogger.e(e.runtimeType);
+          return (e is StateStreamException)
+              ? e.when(
+                  unexpected: () => const Left(
+                    WatchStatusFailure.unexpected(),
+                  ),
+                )
+              : const Left(
+                  WatchStatusFailure.unexpected(),
+                );
+        },
+      );
 }

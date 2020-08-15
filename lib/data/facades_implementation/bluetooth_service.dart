@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
@@ -191,4 +192,31 @@ class BluetoothServiceImp extends BluetoothServiceDec {
                 );
         },
       );
+
+  @override
+  Stream<Either<WatchReceivedDataFromBtDeviceFailure, Uint8List>>
+      watchReceivedDataFromBtDevice({
+    @required BtDeviceEntity btDevice,
+  }) =>
+          bluetoothHardwareDataSource
+              .watchReceivedDataFromBtDevice(
+                btDevice: btDevice,
+              )
+              .map<Either<WatchReceivedDataFromBtDeviceFailure, Uint8List>>(
+                (data) => Right(data),
+              )
+              .onErrorReturnWith(
+            (e) {
+              kFacadeLogger.e(e.runtimeType);
+              return (e is WatchReceivedDataFromBtDeviceException)
+                  ? e.when(
+                      unexpected: () => const Left(
+                        WatchReceivedDataFromBtDeviceFailure.unexpected(),
+                      ),
+                    )
+                  : const Left(
+                      WatchReceivedDataFromBtDeviceFailure.unexpected(),
+                    );
+            },
+          );
 }

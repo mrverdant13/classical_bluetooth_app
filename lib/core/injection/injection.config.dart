@@ -19,11 +19,13 @@ import '../../presentation/ui_logic_holders/bt_connection_cubit/bt_connection_cu
 import '../../domain/use_cases/connect_to_bt_device/connect_to_bt_device.dart';
 import '../../domain/use_cases/disconnect_from_bt_device/disconnect_from_bt_device.dart';
 import '../../presentation/ui_logic_holders/discovered_bt_devices_cubit/discovered_bt_devices_cubit.dart';
+import '../../presentation/ui_logic_holders/received_data_from_bt_device_cubit/received_data_from_bt_device_cubit.dart';
 import '../../presentation/ui_logic_holders/send_data_to_bt_device_cubit/send_data_to_bt_device_cubit.dart';
 import '../../domain/use_cases/send_data_to_bt_device/send_data_to_bt_device.dart';
 import '../../domain/use_cases/stop_bt_devices_watching/stop_bt_devices_watching.dart';
 import '../../domain/use_cases/watch_available_bt_devices/watch_available_bt_devices.dart';
 import '../../domain/use_cases/watch_bluetooth_state/watch_bluetooth_state.dart';
+import '../../domain/use_cases/watch_received_data_from_bt_device/watch_received_data_from_bt_device.dart';
 
 /// adds generated dependencies
 /// to the provided [GetIt] instance
@@ -61,6 +63,9 @@ GetIt $initGetIt(
           bluetoothService: get<BluetoothServiceDec>()));
   gh.lazySingleton<WatchBluetoothStateUseCase>(() =>
       WatchBluetoothStateUseCase(bluetoothService: get<BluetoothServiceDec>()));
+  gh.lazySingleton<WatchReceivedDataFromBtDeviceUseCase>(() =>
+      WatchReceivedDataFromBtDeviceUseCase(
+          bluetoothService: get<BluetoothServiceDec>()));
   gh.factory<BluetoothStateCubit>(() => BluetoothStateCubit(
       watchBluetoothStateUseCase: get<WatchBluetoothStateUseCase>()));
   gh.factory<BtConnectionCubit>(() => BtConnectionCubit(
@@ -69,6 +74,9 @@ GetIt $initGetIt(
   gh.factory<DiscoveredBtDevicesCubit>(() => DiscoveredBtDevicesCubit(
       watchAvailableBtDevicesUseCase: get<WatchAvailableBtDevicesUseCase>(),
       stopBtDevicesWatchingUseCase: get<StopBtDevicesWatchingUseCase>()));
+  gh.factory<ReceivedDataFromBtDeviceCubit>(() => ReceivedDataFromBtDeviceCubit(
+      watchReceivedDataFromBtDeviceUseCase:
+          get<WatchReceivedDataFromBtDeviceUseCase>()));
   gh.factory<SendDataToBtDeviceCubit>(() => SendDataToBtDeviceCubit(
       sendDataToBtDeviceUseCase: get<SendDataToBtDeviceUseCase>()));
   return get;

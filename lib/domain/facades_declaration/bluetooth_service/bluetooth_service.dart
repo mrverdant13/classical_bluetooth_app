@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:dartz/dartz.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:meta/meta.dart';
@@ -26,6 +28,10 @@ abstract class BluetoothServiceDec {
   Future<Either<StopBtDevicesWatchingFailure, void>> stopBtDevicesWatching();
   Stream<Either<WatchBtDevicesFailure, BtDeviceEntity>> watchBtDevices();
   Stream<Either<WatchStatusFailure, BluetoothStateEntity>> watchBtStatus();
+  Stream<Either<WatchReceivedDataFromBtDeviceFailure, Uint8List>>
+      watchReceivedDataFromBtDevice({
+    @required BtDeviceEntity btDevice,
+  });
 }
 
 @freezed
@@ -69,6 +75,13 @@ abstract class StopBtDevicesWatchingFailure
 abstract class WatchBtDevicesFailure with _$WatchBtDevicesFailure {
   const factory WatchBtDevicesFailure.unexpected() =
       _WatchBtDevicesFailureUnexpected;
+}
+
+@freezed
+abstract class WatchReceivedDataFromBtDeviceFailure
+    with _$WatchReceivedDataFromBtDeviceFailure {
+  const factory WatchReceivedDataFromBtDeviceFailure.unexpected() =
+      _WatchReceivedDataFromBtDeviceFailureUnexpected;
 }
 
 @freezed

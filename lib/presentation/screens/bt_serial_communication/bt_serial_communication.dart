@@ -1,3 +1,4 @@
+import 'package:classical_bluetooth_app/presentation/ui_logic_holders/received_data_from_bt_device_cubit/received_data_from_bt_device_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -31,6 +32,9 @@ class BtSerialCommunicationScreen extends StatelessWidget {
         BlocProvider<SendDataToBtDeviceCubit>(
           create: (context) => getIt<SendDataToBtDeviceCubit>(),
         ),
+        BlocProvider<ReceivedDataFromBtDeviceCubit>(
+          create: (context) => getIt<ReceivedDataFromBtDeviceCubit>(),
+        ),
       ],
       child: Builder(
         builder: (context) => Scaffold(
@@ -51,114 +55,168 @@ class BtSerialCommunicationScreen extends StatelessWidget {
                       style: Theme.of(context).textTheme.subtitle1,
                     ),
                     const SizedBox(height: 10.0),
-                    BlocBuilder<BtBondingCubit, BtBondingState>(
-                      builder: (context, btBondingState) {
-                        return btBondingState.maybeWhen(
-                          bonded: () =>
-                              BlocBuilder<BtConnectionCubit, BtConnectionState>(
-                            builder: (context, btConnectionState) {
-                              return btConnectionState.maybeWhen(
-                                connected: () => Column(
-                                  children: [
-                                    TextFormField(
-                                      decoration: const InputDecoration(
-                                        hintText: 'Texto a ser enviado',
-                                        border: OutlineInputBorder(),
+                    Expanded(
+                      child: BlocBuilder<BtBondingCubit, BtBondingState>(
+                        builder: (context, btBondingState) {
+                          return btBondingState.maybeWhen(
+                            bonded: () => BlocBuilder<BtConnectionCubit,
+                                BtConnectionState>(
+                              builder: (context, btConnectionState) {
+                                return btConnectionState.maybeWhen(
+                                  connected: () => Column(
+                                    children: [
+                                      Expanded(
+                                        child: BlocBuilder<
+                                            ReceivedDataFromBtDeviceCubit,
+                                            ReceivedDataFromBtDeviceState>(
+                                          builder: (context,
+                                              receivedDataFromBtDeviceState) {
+                                            return receivedDataFromBtDeviceState
+                                                .when(
+                                              failure: () => const Center(
+                                                child: Text(
+                                                  'Hubo un error al recibir datos',
+                                                ),
+                                              ),
+                                              idle: () => const Center(
+                                                child: Text(
+                                                  'A la espera de datos',
+                                                ),
+                                              ),
+                                              received: (dataString) =>
+                                                  TextFormField(
+                                                scrollPhysics:
+                                                    const BouncingScrollPhysics(),
+                                                textAlignVertical:
+                                                    TextAlignVertical.top,
+                                                decoration: InputDecoration(
+                                                  hintText: dataString,
+                                                  border:
+                                                      const OutlineInputBorder(),
+                                                ),
+                                                enabled: false,
+                                                expands: true,
+                                                maxLines: null,
+                                              ),
+                                            );
+                                          },
+                                        ),
                                       ),
-                                      key: _kTextFormFieldKey,
-                                      minLines: 5,
-                                      maxLines: 5,
-                                    ),
-                                    Row(
-                                      children: [
-                                        Expanded(
-                                          child: RaisedButton(
-                                            color: Colors.red.shade700,
-                                            onPressed: () {
-                                              context
-                                                  .bloc<BtConnectionCubit>()
-                                                  .disconnect(
-                                                    btDevice: btDevice,
-                                                  );
-                                            },
-                                            child: const Text(
-                                              'DESCONECTAR',
-                                              style: TextStyle(
-                                                color: Colors.white,
+                                      const SizedBox(height: 10.0),
+                                      Expanded(
+                                        child: TextFormField(
+                                          scrollPhysics:
+                                              const BouncingScrollPhysics(),
+                                          textAlignVertical:
+                                              TextAlignVertical.top,
+                                          decoration: const InputDecoration(
+                                            hintText: 'Texto a ser enviado',
+                                            border: OutlineInputBorder(),
+                                          ),
+                                          key: _kTextFormFieldKey,
+                                          expands: true,
+                                          maxLines: null,
+                                        ),
+                                      ),
+                                      Row(
+                                        children: [
+                                          Expanded(
+                                            child: RaisedButton(
+                                              color: Colors.red.shade700,
+                                              onPressed: () {
+                                                context
+                                                    .bloc<BtConnectionCubit>()
+                                                    .disconnect(
+                                                      btDevice: btDevice,
+                                                    );
+                                              },
+                                              child: const Text(
+                                                'DESCONECTAR',
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                ),
                                               ),
                                             ),
                                           ),
-                                        ),
-                                        const SizedBox(width: 10.0),
-                                        Expanded(
-                                          child: RaisedButton(
-                                            color: Colors.blue.shade700,
-                                            onPressed: () {
-                                              final _valueToBeSent =
-                                                  _kTextFormFieldKey
-                                                          .currentState.value ??
-                                                      '';
-                                              _kTextFormFieldKey.currentState
-                                                  .reset();
-                                              context
-                                                  .bloc<
-                                                      SendDataToBtDeviceCubit>()
-                                                  .sendDataToBtDevice(
-                                                    btDevice: btDevice,
-                                                    dataString: _valueToBeSent,
-                                                  );
-                                            },
-                                            child: const Text(
-                                              'ENVIAR',
-                                              style: TextStyle(
-                                                color: Colors.white,
+                                          const SizedBox(width: 10.0),
+                                          Expanded(
+                                            child: RaisedButton(
+                                              color: Colors.blue.shade700,
+                                              onPressed: () {
+                                                final _valueToBeSent =
+                                                    _kTextFormFieldKey
+                                                            .currentState
+                                                            .value ??
+                                                        '';
+                                                _kTextFormFieldKey.currentState
+                                                    .reset();
+                                                context
+                                                    .bloc<
+                                                        SendDataToBtDeviceCubit>()
+                                                    .sendDataToBtDevice(
+                                                      btDevice: btDevice,
+                                                      dataString:
+                                                          _valueToBeSent,
+                                                    );
+                                              },
+                                              child: const Text(
+                                                'ENVIAR',
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                ),
                                               ),
                                             ),
                                           ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                  changing: () => const Center(
+                                    child: CircularProgressIndicator(),
+                                  ),
+                                  orElse: () => Center(
+                                    child: RaisedButton(
+                                      color: Colors.blue.shade700,
+                                      onPressed: () {
+                                        context
+                                            .bloc<BtConnectionCubit>()
+                                            .connect(
+                                              btDevice: btDevice,
+                                            );
+                                      },
+                                      child: const Text(
+                                        'CONECTAR',
+                                        style: TextStyle(
+                                          color: Colors.white,
                                         ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                                changing: () => const Center(
-                                  child: CircularProgressIndicator(),
-                                ),
-                                orElse: () => RaisedButton(
-                                  color: Colors.blue.shade700,
-                                  onPressed: () {
-                                    context.bloc<BtConnectionCubit>().connect(
-                                          btDevice: btDevice,
-                                        );
-                                  },
-                                  child: const Text(
-                                    'CONECTAR',
-                                    style: TextStyle(
-                                      color: Colors.white,
+                                      ),
                                     ),
                                   ),
+                                );
+                              },
+                            ),
+                            bonding: () => const Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                            orElse: () => Center(
+                              child: RaisedButton(
+                                color: Colors.blue.shade700,
+                                onPressed: () {
+                                  context.bloc<BtBondingCubit>().bond(
+                                        btDevice: btDevice,
+                                      );
+                                },
+                                child: const Text(
+                                  'EMPAREJAR',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                  ),
                                 ),
-                              );
-                            },
-                          ),
-                          bonding: () => const Center(
-                            child: CircularProgressIndicator(),
-                          ),
-                          orElse: () => RaisedButton(
-                            color: Colors.blue.shade700,
-                            onPressed: () {
-                              context.bloc<BtBondingCubit>().bond(
-                                    btDevice: btDevice,
-                                  );
-                            },
-                            child: const Text(
-                              'EMPAREJAR',
-                              style: TextStyle(
-                                color: Colors.white,
                               ),
                             ),
-                          ),
-                        );
-                      },
+                          );
+                        },
+                      ),
                     ),
                   ],
                 ),
@@ -208,7 +266,14 @@ class _CustomMultiBlocListener extends StatelessWidget {
               SnackBar(
                 content: Text(
                   btConnectionState.when(
-                    connected: () => 'Conectado al dispositivo!',
+                    connected: () {
+                      context
+                          .bloc<ReceivedDataFromBtDeviceCubit>()
+                          .subscribeToReceivedDataFromBtDevice(
+                            btDevice: btDevice,
+                          );
+                      return 'Conectado al dispositivo!';
+                    },
                     changing: () => 'Espere un momento...',
                     disconnected: () => 'Desconectado',
                     failure: (message) =>

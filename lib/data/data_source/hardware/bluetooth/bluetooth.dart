@@ -32,6 +32,9 @@ abstract class BluetoothHardwareDataSourceDec {
   });
   Stream<BluetoothStateEntity> stateStream();
   Future<void> stopDiscovery();
+  Stream<Uint8List> watchReceivedDataFromBtDevice({
+    @required BtDeviceEntity btDevice,
+  });
 }
 
 @LazySingleton(as: BluetoothHardwareDataSourceDec)
@@ -176,6 +179,20 @@ class BluetoothHardwareDataSourceImp extends BluetoothHardwareDataSourceDec {
     }
   }
 
+  @override
+  Stream<Uint8List> watchReceivedDataFromBtDevice({
+    @required BtDeviceEntity btDevice,
+  }) {
+    print('subs');
+    return _bluetoothConnections[btDevice.macAddress].input.handleError(
+        // HACK: Error mmapping.
+        (e) {
+          kHardwareDataSourceLogger.e(e.runtimeType);
+          throw const WatchReceivedDataFromBtDeviceException.unexpected();
+        },
+      );
+  }
+
   Future<bool> _isPaired({
     @required String macAddress,
   }) async {
@@ -220,6 +237,13 @@ abstract class SendDataToBtDeviceException with _$SendDataToBtDeviceException {
       _SendDataToBtDeviceExceptionNotConnected;
   const factory SendDataToBtDeviceException.unexpected() =
       _SendDataToBtDeviceExceptionUnexpected;
+}
+
+@freezed
+abstract class WatchReceivedDataFromBtDeviceException
+    with _$WatchReceivedDataFromBtDeviceException {
+  const factory WatchReceivedDataFromBtDeviceException.unexpected() =
+      _WatchReceivedDataFromBtDeviceExceptionUnexpected;
 }
 
 @freezed

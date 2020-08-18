@@ -10,16 +10,18 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
 import '../../../domain/entities/bt_device/bt_device_entity.dart';
+import '../../../presentation/screens/attendance/attendance.dart';
 import '../../../presentation/screens/bt_discovered_devices/bt_discovered_devices.dart';
-import '../../../presentation/screens/bt_serial_communication/bt_serial_communication.dart';
+import '../../../presentation/screens/capacity_setup/capacity_setup.dart';
 
 class Routes {
   static const String btDiscoveredDevicesScreen = '/';
-  static const String btSerialCommunicationScreen =
-      '/bt-serial-communication-screen';
+  static const String capacitySetupScreen = '/capacity-setup-screen';
+  static const String attendanceScreen = '/attendance-screen';
   static const all = <String>{
     btDiscoveredDevicesScreen,
-    btSerialCommunicationScreen,
+    capacitySetupScreen,
+    attendanceScreen,
   };
 }
 
@@ -28,8 +30,8 @@ class Router extends RouterBase {
   List<RouteDef> get routes => _routes;
   final _routes = <RouteDef>[
     RouteDef(Routes.btDiscoveredDevicesScreen, page: BtDiscoveredDevicesScreen),
-    RouteDef(Routes.btSerialCommunicationScreen,
-        page: BtSerialCommunicationScreen),
+    RouteDef(Routes.capacitySetupScreen, page: CapacitySetupScreen),
+    RouteDef(Routes.attendanceScreen, page: AttendanceScreen),
   ];
   @override
   Map<Type, AutoRouteFactory> get pagesMap => _pagesMap;
@@ -41,12 +43,24 @@ class Router extends RouterBase {
         settings: data,
       );
     },
-    BtSerialCommunicationScreen: (data) {
-      final args =
-          data.getArgs<BtSerialCommunicationScreenArguments>(nullOk: false);
+    CapacitySetupScreen: (data) {
+      final args = data.getArgs<CapacitySetupScreenArguments>(
+        orElse: () => CapacitySetupScreenArguments(),
+      );
       return PageRouteBuilder<dynamic>(
         pageBuilder: (context, animation, secondaryAnimation) =>
-            BtSerialCommunicationScreen(btDevice: args.btDevice),
+            CapacitySetupScreen(btDevice: args.btDevice),
+        settings: data,
+      );
+    },
+    AttendanceScreen: (data) {
+      final args = data.getArgs<AttendanceScreenArguments>(nullOk: false);
+      return PageRouteBuilder<dynamic>(
+        pageBuilder: (context, animation, secondaryAnimation) =>
+            AttendanceScreen(
+          btDevice: args.btDevice,
+          maxCapacity: args.maxCapacity,
+        ),
         settings: data,
       );
     },
@@ -57,8 +71,16 @@ class Router extends RouterBase {
 /// Arguments holder classes
 /// *************************************************************************
 
-/// BtSerialCommunicationScreen arguments holder class
-class BtSerialCommunicationScreenArguments {
+/// CapacitySetupScreen arguments holder class
+class CapacitySetupScreenArguments {
   final BtDeviceEntity btDevice;
-  BtSerialCommunicationScreenArguments({@required this.btDevice});
+  CapacitySetupScreenArguments({this.btDevice});
+}
+
+/// AttendanceScreen arguments holder class
+class AttendanceScreenArguments {
+  final BtDeviceEntity btDevice;
+  final int maxCapacity;
+  AttendanceScreenArguments(
+      {@required this.btDevice, @required this.maxCapacity});
 }

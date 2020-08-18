@@ -2,7 +2,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../core/injection/injection.dart';
 import '../../../core/other_helpers/no_action_functions.dart';
 import '../../../core/presentation/routing/router.gr.dart';
 import '../../../domain/entities/bluetooth_state/bluetooth_state_entity.dart';
@@ -14,62 +13,49 @@ class BtDiscoveredDevicesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider<BluetoothStateCubit>(
-          create: (_) =>
-              getIt<BluetoothStateCubit>()..subscribeToBluetoothState(),
+    return Scaffold(
+      body: SafeArea(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: const [
+            _BtStateIndicator(),
+            Expanded(
+              child: _DiscoveredBtDevicesListView(),
+            ),
+          ],
         ),
-        BlocProvider<DiscoveredBtDevicesCubit>(
-          create: (context) => getIt<DiscoveredBtDevicesCubit>(),
-        )
-      ],
-      child: Scaffold(
-        body: SafeArea(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: const [
-              _BtStateIndicator(),
-              Expanded(
-                child: _DiscoveredBtDevicesListView(),
-              ),
-            ],
-          ),
+      ),
+      floatingActionButton:
+          BlocConsumer<BluetoothStateCubit, BluetoothStateEntity>(
+        listener: (context, bluetoothState) => bluetoothState.maybeWhen(
+          on: () =>
+              context.bloc<DiscoveredBtDevicesCubit>().discoverBtDevices(),
+          orElse: NoActionWithNoArguments,
         ),
-        floatingActionButton:
-            BlocConsumer<BluetoothStateCubit, BluetoothStateEntity>(
-          listener: (context, bluetoothState) => bluetoothState.maybeWhen(
-            on: () =>
-                context.bloc<DiscoveredBtDevicesCubit>().discoverBtDevices(),
-            orElse: NoActionWithNoArguments,
-          ),
-          builder: (context, bluetoothState) => bluetoothState.maybeWhen(
-            on: () =>
-                BlocBuilder<DiscoveredBtDevicesCubit, DiscoveredBtDevicesState>(
-              builder: (context, discoveredBtDevicesState) =>
-                  discoveredBtDevicesState.maybeWhen(
-                orElse: () => const SizedBox.shrink(),
-                loaded: (discoveredBtDevices, discovering) =>
-                    FloatingActionButton(
-                  onPressed: () {
-                    discovering
-                        ? context
-                            .bloc<DiscoveredBtDevicesCubit>()
-                            .stopDiscovery()
-                        : context
-                            .bloc<DiscoveredBtDevicesCubit>()
-                            .discoverBtDevices();
-                  },
-                  backgroundColor: Colors.blue.shade700,
-                  tooltip: discovering ? 'Cancelar' : 'Escanear',
-                  child: Icon(
-                    discovering ? Icons.close : Icons.sync,
-                  ),
+        builder: (context, bluetoothState) => bluetoothState.maybeWhen(
+          on: () =>
+              BlocBuilder<DiscoveredBtDevicesCubit, DiscoveredBtDevicesState>(
+            builder: (context, discoveredBtDevicesState) =>
+                discoveredBtDevicesState.maybeWhen(
+              orElse: () => const SizedBox.shrink(),
+              loaded: (discoveredBtDevices, discovering) =>
+                  FloatingActionButton(
+                onPressed: () {
+                  discovering
+                      ? context.bloc<DiscoveredBtDevicesCubit>().stopDiscovery()
+                      : context
+                          .bloc<DiscoveredBtDevicesCubit>()
+                          .discoverBtDevices();
+                },
+                backgroundColor: Colors.blue.shade700,
+                tooltip: discovering ? 'Cancelar' : 'Escanear',
+                child: Icon(
+                  discovering ? Icons.close : Icons.sync,
                 ),
               ),
             ),
-            orElse: () => const SizedBox.shrink(),
           ),
+          orElse: () => const SizedBox.shrink(),
         ),
       ),
     );
@@ -117,8 +103,8 @@ class _DiscoveredBtDevicesListView extends StatelessWidget {
                                   .bloc<DiscoveredBtDevicesCubit>()
                                   .stopDiscovery();
                               ExtendedNavigator.of(context).push(
-                                Routes.btSerialCommunicationScreen,
-                                arguments: BtSerialCommunicationScreenArguments(
+                                Routes.capacitySetupScreen,
+                                arguments: CapacitySetupScreenArguments(
                                   btDevice: discoveredBtDevice,
                                 ),
                               );

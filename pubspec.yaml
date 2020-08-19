@@ -65,3 +65,7 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+
+  assets:
+    # Images
+    - assets/images/number_of_people/

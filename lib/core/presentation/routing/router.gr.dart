@@ -9,19 +9,18 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
-import '../../../domain/entities/bt_device/bt_device_entity.dart';
-import '../../../presentation/screens/attendance/attendance.dart';
 import '../../../presentation/screens/bt_discovered_devices/bt_discovered_devices.dart';
-import '../../../presentation/screens/capacity_setup/capacity_setup.dart';
+import '../../../presentation/screens/jay_counter_setup/jay_counter_setup.dart';
+import '../../../presentation/screens/number_of_people/number_of_people.dart';
 
 class Routes {
   static const String btDiscoveredDevicesScreen = '/';
-  static const String capacitySetupScreen = '/capacity-setup-screen';
-  static const String attendanceScreen = '/attendance-screen';
+  static const String jayCounterSetupScreen = '/jay-counter-setup-screen';
+  static const String numberOfPeopleScreen = '/number-of-people-screen';
   static const all = <String>{
     btDiscoveredDevicesScreen,
-    capacitySetupScreen,
-    attendanceScreen,
+    jayCounterSetupScreen,
+    numberOfPeopleScreen,
   };
 }
 
@@ -30,8 +29,8 @@ class Router extends RouterBase {
   List<RouteDef> get routes => _routes;
   final _routes = <RouteDef>[
     RouteDef(Routes.btDiscoveredDevicesScreen, page: BtDiscoveredDevicesScreen),
-    RouteDef(Routes.capacitySetupScreen, page: CapacitySetupScreen),
-    RouteDef(Routes.attendanceScreen, page: AttendanceScreen),
+    RouteDef(Routes.jayCounterSetupScreen, page: JayCounterSetupScreen),
+    RouteDef(Routes.numberOfPeopleScreen, page: NumberOfPeopleScreen),
   ];
   @override
   Map<Type, AutoRouteFactory> get pagesMap => _pagesMap;
@@ -43,44 +42,19 @@ class Router extends RouterBase {
         settings: data,
       );
     },
-    CapacitySetupScreen: (data) {
-      final args = data.getArgs<CapacitySetupScreenArguments>(
-        orElse: () => CapacitySetupScreenArguments(),
-      );
+    JayCounterSetupScreen: (data) {
       return PageRouteBuilder<dynamic>(
         pageBuilder: (context, animation, secondaryAnimation) =>
-            CapacitySetupScreen(btDevice: args.btDevice),
+            JayCounterSetupScreen(),
         settings: data,
       );
     },
-    AttendanceScreen: (data) {
-      final args = data.getArgs<AttendanceScreenArguments>(nullOk: false);
+    NumberOfPeopleScreen: (data) {
       return PageRouteBuilder<dynamic>(
         pageBuilder: (context, animation, secondaryAnimation) =>
-            AttendanceScreen(
-          btDevice: args.btDevice,
-          maxCapacity: args.maxCapacity,
-        ),
+            NumberOfPeopleScreen(),
         settings: data,
       );
     },
   };
-}
-
-/// ************************************************************************
-/// Arguments holder classes
-/// *************************************************************************
-
-/// CapacitySetupScreen arguments holder class
-class CapacitySetupScreenArguments {
-  final BtDeviceEntity btDevice;
-  CapacitySetupScreenArguments({this.btDevice});
-}
-
-/// AttendanceScreen arguments holder class
-class AttendanceScreenArguments {
-  final BtDeviceEntity btDevice;
-  final int maxCapacity;
-  AttendanceScreenArguments(
-      {@required this.btDevice, @required this.maxCapacity});
 }

@@ -1,16 +1,12 @@
-import 'package:classical_bluetooth_app/domain/entities/bt_device/bt_device_entity.dart';
-import 'package:classical_bluetooth_app/presentation/ui_logic_holders/received_data_from_bt_device_cubit/received_data_from_bt_device_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
 
-class AttendanceScreen extends StatelessWidget {
-  final BtDeviceEntity btDevice;
-  final int maxCapacity;
+import '../../ui_logic_holders/jay_counter_current_setup_change_notifier/jay_counter_current_setup_change_notifier.dart';
+import '../../ui_logic_holders/received_data_from_bt_device_cubit/received_data_from_bt_device_cubit.dart';
 
-  const AttendanceScreen({
-    @required this.btDevice,
-    @required this.maxCapacity,
-  });
+class NumberOfPeopleScreen extends StatelessWidget {
+  const NumberOfPeopleScreen();
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +28,10 @@ class AttendanceScreen extends StatelessWidget {
               ),
               received: (dataString) {
                 final currentAttendance = int.tryParse(dataString) ?? 0;
-                final isOk = currentAttendance < (maxCapacity / 2);
+                final isOk = currentAttendance <
+                    (context
+                        .watch<JayCounterCurrentSetupChangeNotifier>()
+                        .maxCapacity);
                 return Container(
                   color: isOk ? Colors.green : Colors.red,
                   padding: const EdgeInsets.all(30.0),
@@ -79,7 +78,8 @@ class AttendanceScreen extends StatelessWidget {
                               ),
                               children: [
                                 TextSpan(
-                                  text: '/$maxCapacity',
+                                  text:
+                                      '/${context.watch<JayCounterCurrentSetupChangeNotifier>().maxCapacity}',
                                   style: const TextStyle(
                                     color: Colors.white,
                                     fontSize: 25.0,
@@ -94,11 +94,6 @@ class AttendanceScreen extends StatelessWidget {
                   ),
                 );
               },
-              // Center(
-              //   child: Text(
-              //     'Cantidad actual de personas: $dataString',
-              //   ),
-              // ),
             );
           },
         ),

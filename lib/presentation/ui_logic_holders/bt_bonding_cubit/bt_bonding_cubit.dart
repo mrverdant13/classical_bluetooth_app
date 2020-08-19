@@ -11,8 +11,6 @@ import '../../../domain/entities/bt_device/bt_device_entity.dart';
 class BtBondingCubit extends Cubit<BtBondingState> {
   final BondBtDeviceUseCase bondBtDeviceUseCase;
 
-  BtDeviceEntity _btDevice;
-
   BtBondingCubit({
     @required this.bondBtDeviceUseCase,
   }) : super(
@@ -38,7 +36,6 @@ class BtBondingCubit extends Cubit<BtBondingState> {
         ),
       ),
       (_) {
-        _btDevice = btDevice;
         emit(
           const BtBondingState.bonded(),
         );

@@ -52,17 +52,16 @@ class ReceivedDataFromBtDeviceCubit
         Either<WatchReceivedDataFromBtDeviceFailure, Uint8List>
             failureOrReceivedData,
   }) {
-    print(failureOrReceivedData);
     emit(
-        failureOrReceivedData.fold(
-          (failure) => failure.when(
-            unexpected: () => const ReceivedDataFromBtDeviceState.failure(),
-          ),
-          (receivedData) => ReceivedDataFromBtDeviceState.received(
-            dataString: String.fromCharCodes(receivedData),
-          ),
+      failureOrReceivedData.fold(
+        (failure) => failure.when(
+          unexpected: () => const ReceivedDataFromBtDeviceState.failure(),
         ),
-      );
+        (receivedData) => ReceivedDataFromBtDeviceState.received(
+          dataString: String.fromCharCodes(receivedData),
+        ),
+      ),
+    );
   }
 
   @override

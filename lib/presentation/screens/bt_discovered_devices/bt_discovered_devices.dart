@@ -1,6 +1,8 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:classical_bluetooth_app/presentation/ui_logic_holders/jay_counter_current_setup_change_notifier/jay_counter_current_setup_change_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
 
 import '../../../core/other_helpers/no_action_functions.dart';
 import '../../../core/presentation/routing/router.gr.dart';
@@ -100,13 +102,13 @@ class _DiscoveredBtDevicesListView extends StatelessWidget {
                             subtitle: Text(discoveredBtDevice.macAddress),
                             onTap: () {
                               context
+                                  .read<JayCounterCurrentSetupChangeNotifier>()
+                                  .btDevice = discoveredBtDevice;
+                              context
                                   .bloc<DiscoveredBtDevicesCubit>()
                                   .stopDiscovery();
                               ExtendedNavigator.of(context).push(
-                                Routes.capacitySetupScreen,
-                                arguments: CapacitySetupScreenArguments(
-                                  btDevice: discoveredBtDevice,
-                                ),
+                                Routes.jayCounterSetupScreen,
                               );
                             },
                           ),

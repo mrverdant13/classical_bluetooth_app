@@ -183,14 +183,13 @@ class BluetoothHardwareDataSourceImp extends BluetoothHardwareDataSourceDec {
   Stream<Uint8List> watchReceivedDataFromBtDevice({
     @required BtDeviceEntity btDevice,
   }) {
-    print('subs');
     return _bluetoothConnections[btDevice.macAddress].input.handleError(
-        // HACK: Error mmapping.
-        (e) {
-          kHardwareDataSourceLogger.e(e.runtimeType);
-          throw const WatchReceivedDataFromBtDeviceException.unexpected();
-        },
-      );
+      // HACK: Error mmapping.
+      (e) {
+        kHardwareDataSourceLogger.e(e.runtimeType);
+        throw const WatchReceivedDataFromBtDeviceException.unexpected();
+      },
+    );
   }
 
   Future<bool> _isPaired({

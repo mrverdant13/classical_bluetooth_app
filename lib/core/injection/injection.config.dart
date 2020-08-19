@@ -19,8 +19,9 @@ import '../../presentation/ui_logic_holders/bt_connection_cubit/bt_connection_cu
 import '../../domain/use_cases/connect_to_bt_device/connect_to_bt_device.dart';
 import '../../domain/use_cases/disconnect_from_bt_device/disconnect_from_bt_device.dart';
 import '../../presentation/ui_logic_holders/discovered_bt_devices_cubit/discovered_bt_devices_cubit.dart';
+import '../../presentation/ui_logic_holders/jay_counter_current_setup_change_notifier/jay_counter_current_setup_change_notifier.dart';
+import '../../presentation/ui_logic_holders/jay_counter_setup_form_bloc/jay_counter_setup_form_bloc.dart';
 import '../../presentation/ui_logic_holders/received_data_from_bt_device_cubit/received_data_from_bt_device_cubit.dart';
-import '../../presentation/ui_logic_holders/send_data_to_bt_device_cubit/send_data_to_bt_device_cubit.dart';
 import '../../domain/use_cases/send_data_to_bt_device/send_data_to_bt_device.dart';
 import '../../domain/use_cases/stop_bt_devices_watching/stop_bt_devices_watching.dart';
 import '../../domain/use_cases/watch_available_bt_devices/watch_available_bt_devices.dart';
@@ -39,6 +40,8 @@ GetIt $initGetIt(
   final bluetoothSerialModule = _$BluetoothSerialModule();
   gh.lazySingleton<FlutterBluetoothSerial>(
       () => bluetoothSerialModule.bluetoothSerial);
+  gh.lazySingleton<JayCounterCurrentSetupChangeNotifier>(
+      () => JayCounterCurrentSetupChangeNotifier());
   gh.lazySingleton<BluetoothHardwareDataSourceDec>(() =>
       BluetoothHardwareDataSourceImp(
           bluetoothSerial: get<FlutterBluetoothSerial>()));
@@ -74,11 +77,11 @@ GetIt $initGetIt(
   gh.factory<DiscoveredBtDevicesCubit>(() => DiscoveredBtDevicesCubit(
       watchAvailableBtDevicesUseCase: get<WatchAvailableBtDevicesUseCase>(),
       stopBtDevicesWatchingUseCase: get<StopBtDevicesWatchingUseCase>()));
+  gh.factory<JayCounterSetupFormBloc>(() => JayCounterSetupFormBloc(
+      sendDataToBtDeviceUseCase: get<SendDataToBtDeviceUseCase>()));
   gh.factory<ReceivedDataFromBtDeviceCubit>(() => ReceivedDataFromBtDeviceCubit(
       watchReceivedDataFromBtDeviceUseCase:
           get<WatchReceivedDataFromBtDeviceUseCase>()));
-  gh.factory<SendDataToBtDeviceCubit>(() => SendDataToBtDeviceCubit(
-      sendDataToBtDeviceUseCase: get<SendDataToBtDeviceUseCase>()));
   return get;
 }
 

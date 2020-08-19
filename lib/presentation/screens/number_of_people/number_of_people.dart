@@ -45,13 +45,13 @@ class NumberOfPeopleScreen extends StatelessWidget {
                                   backgroundColor: Colors.white,
                                   child: Padding(
                                     padding: const EdgeInsets.all(5.0),
-                                    child: Image.network(
-                                      'https://www.pngmart.com/files/10/Thumbs-UP-PNG-Transparent-Image.png',
+                                    child: Image.asset(
+                                      'assets/images/number_of_people/go.png',
                                     ),
                                   ),
                                 )
-                              : Image.network(
-                                  'https://images.vexels.com/media/users/3/143473/isolated/preview/6a4a5a7dd733d452adfd328c32f50d3e-icono-de-se--al-de-stop-mano-by-vexels.png',
+                              : Image.asset(
+                                  'assets/images/number_of_people/stop.png',
                                 ),
                         ),
                       ),

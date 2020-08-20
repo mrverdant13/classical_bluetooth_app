@@ -7,8 +7,9 @@ import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../core/loggers/data/facade.dart';
-import '../../domain/entities/bluetooth_state/bluetooth_state_entity.dart';
+import '../../domain/entities/bt_connection_state/bt_connection_state_entity.dart';
 import '../../domain/entities/bt_device/bt_device_entity.dart';
+import '../../domain/entities/bt_hardware_state/bt_hardware_state_entity.dart';
 import '../../domain/facades_declaration/bluetooth_service/bluetooth_service.dart';
 import '../data_source/hardware/bluetooth/bluetooth.dart';
 
@@ -35,6 +36,9 @@ class BluetoothServiceImp extends BluetoothServiceDec {
         unexpected: () => const Left(
           BondBtDeviceFailure.unexpected(),
         ),
+        couldNotBond: () => const Left(
+          BondBtDeviceFailure.couldNotBond(),
+        ),
       );
     } catch (e) {
       kFacadeLogger.e(e.runtimeType);
@@ -57,7 +61,7 @@ class BluetoothServiceImp extends BluetoothServiceDec {
       kFacadeLogger.e(e.runtimeType);
       return e.when(
         notPaired: () => const Left(
-          ConnectToBtDeviceFailure.notPaired(),
+          ConnectToBtDeviceFailure.notBonded(),
         ),
         unexpected: () => const Left(
           ConnectToBtDeviceFailure.unexpected(),
@@ -170,28 +174,28 @@ class BluetoothServiceImp extends BluetoothServiceDec {
       );
 
   @override
-  Stream<Either<WatchStatusFailure, BluetoothStateEntity>> watchBtStatus() =>
-      bluetoothHardwareDataSource
-          .stateStream()
-          .map<Either<WatchStatusFailure, BluetoothStateEntity>>(
-            (bluetoothState) => Right(
-              bluetoothState,
-            ),
-          )
-          .onErrorReturnWith(
-        (e) {
-          kFacadeLogger.e(e.runtimeType);
-          return (e is StateStreamException)
-              ? e.when(
-                  unexpected: () => const Left(
-                    WatchStatusFailure.unexpected(),
-                  ),
-                )
-              : const Left(
-                  WatchStatusFailure.unexpected(),
-                );
-        },
-      );
+  Stream<Either<WatchBtHardwareStateFailure, BtHardwareStateEntity>>
+      watchBtHardwareState() => bluetoothHardwareDataSource
+              .stateStream()
+              .map<Either<WatchBtHardwareStateFailure, BtHardwareStateEntity>>(
+                (bluetoothState) => Right(
+                  bluetoothState,
+                ),
+              )
+              .onErrorReturnWith(
+            (e) {
+              kFacadeLogger.e(e.runtimeType);
+              return (e is StateStreamException)
+                  ? e.when(
+                      unexpected: () => const Left(
+                        WatchBtHardwareStateFailure.unexpected(),
+                      ),
+                    )
+                  : const Left(
+                      WatchBtHardwareStateFailure.unexpected(),
+                    );
+            },
+          );
 
   @override
   Stream<Either<WatchReceivedDataFromBtDeviceFailure, Uint8List>>
@@ -216,6 +220,36 @@ class BluetoothServiceImp extends BluetoothServiceDec {
                     )
                   : const Left(
                       WatchReceivedDataFromBtDeviceFailure.unexpected(),
+                    );
+            },
+          );
+
+  @override
+  Stream<Either<WatchBtConnectionFailure, BtConnectionStateEntity>>
+      watchBtConnectionState({
+    @required BtDeviceEntity btDevice,
+  }) =>
+          bluetoothHardwareDataSource
+              .connectionStream(
+                btDevice: btDevice,
+              )
+              .distinct()
+              .map<Either<WatchBtConnectionFailure, BtConnectionStateEntity>>(
+                (btConnectionState) => Right(
+                  btConnectionState,
+                ),
+              )
+              .onErrorReturnWith(
+            (e) {
+              kFacadeLogger.e(e.runtimeType);
+              return (e is ConnectionStreamException)
+                  ? e.when(
+                      unexpected: () => const Left(
+                        WatchBtConnectionFailure.unexpected(),
+                      ),
+                    )
+                  : const Left(
+                      WatchBtConnectionFailure.unexpected(),
                     );
             },
           );

@@ -6,8 +6,9 @@ import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
 
 import '../../../../core/loggers/data/hardware_data_source.dart';
-import '../../../../domain/entities/bluetooth_state/bluetooth_state_entity.dart';
+import '../../../../domain/entities/bt_connection_state/bt_connection_state_entity.dart';
 import '../../../../domain/entities/bt_device/bt_device_entity.dart';
+import '../../../../domain/entities/bt_hardware_state/bt_hardware_state_entity.dart';
 import '../../../models/bluetooth_state/bluetooth_state_model.dart';
 import '../../../models/bt_device/bt_device_model.dart';
 
@@ -17,6 +18,9 @@ abstract class BluetoothHardwareDataSourceDec {
   const BluetoothHardwareDataSourceDec();
 
   Future<void> bondBtDevice({
+    @required BtDeviceEntity btDevice,
+  });
+  Stream<BtConnectionStateEntity> connectionStream({
     @required BtDeviceEntity btDevice,
   });
   Future<void> connectToBtDevice({
@@ -30,7 +34,7 @@ abstract class BluetoothHardwareDataSourceDec {
     @required BtDeviceEntity btDevice,
     @required Uint8List data,
   });
-  Stream<BluetoothStateEntity> stateStream();
+  Stream<BtHardwareStateEntity> stateStream();
   Future<void> stopDiscovery();
   Stream<Uint8List> watchReceivedDataFromBtDevice({
     @required BtDeviceEntity btDevice,
@@ -39,10 +43,10 @@ abstract class BluetoothHardwareDataSourceDec {
 
 @LazySingleton(as: BluetoothHardwareDataSourceDec)
 class BluetoothHardwareDataSourceImp extends BluetoothHardwareDataSourceDec {
+  static final Map<String, BluetoothConnection> _bluetoothConnections = {};
   final FlutterBluetoothSerial bluetoothSerial;
-  final Map<String, BluetoothConnection> _bluetoothConnections = {};
 
-  BluetoothHardwareDataSourceImp({
+  const BluetoothHardwareDataSourceImp({
     @required this.bluetoothSerial,
   });
 
@@ -55,13 +59,43 @@ class BluetoothHardwareDataSourceImp extends BluetoothHardwareDataSourceDec {
             btDevice.macAddress,
           )) !=
           BluetoothBondState.bonded) {
-        await bluetoothSerial.bondDeviceAtAddress(
+        if (!await bluetoothSerial.bondDeviceAtAddress(
           btDevice.macAddress,
-        );
+        )) {
+          throw const BondBtDeviceException.couldNotBond();
+        }
       }
     } catch (e) {
       kHardwareDataSourceLogger.e(e.runtimeType);
       throw const BondBtDeviceException.unexpected();
+    }
+  }
+
+  @override
+  Stream<BtConnectionStateEntity> connectionStream({
+    @required BtDeviceEntity btDevice,
+  }) async* {
+    bool _lastIsConnected;
+    bool _currentIsConnected;
+    while (true) {
+      try {
+        _currentIsConnected = _isConnected(
+          btDevice: btDevice,
+        );
+        // Emulates `distinct` method.
+        if (_lastIsConnected != _currentIsConnected) {
+          _lastIsConnected = _currentIsConnected;
+          yield _currentIsConnected
+              ? const BtConnectionStateEntity.connected()
+              : const BtConnectionStateEntity.disconnected();
+        }
+        await Future.delayed(const Duration(milliseconds: 250));
+      } catch (e) {
+        kHardwareDataSourceLogger.e(e.runtimeType);
+        yield const BtConnectionStateEntity.failure(
+          message: 'Hubo un problema inesperado',
+        );
+      }
     }
   }
 
@@ -79,8 +113,9 @@ class BluetoothHardwareDataSourceImp extends BluetoothHardwareDataSourceDec {
     }
 
     try {
-      if (!_bluetoothConnections.containsKey(btDevice.macAddress) ||
-          !_bluetoothConnections[btDevice.macAddress].isConnected) {
+      if (!_isConnected(
+        btDevice: btDevice,
+      )) {
         _bluetoothConnections[btDevice.macAddress] =
             await BluetoothConnection.toAddress(
           btDevice.macAddress,
@@ -143,10 +178,11 @@ class BluetoothHardwareDataSourceImp extends BluetoothHardwareDataSourceDec {
   }
 
   @override
-  Stream<BluetoothStateEntity> stateStream() async* {
+  Stream<BtHardwareStateEntity> stateStream() async* {
     try {
-      yield BluetoothStateModel.fromBluetoothState(
-        await bluetoothSerial.state,
+      yield BtHardwareStateModel.fromBluetoothState(
+        bluetoothState: await bluetoothSerial.state,
+        throwExceptionOnError: true,
       );
     } catch (e) {
       kHardwareDataSourceLogger.e(e.runtimeType);
@@ -156,8 +192,9 @@ class BluetoothHardwareDataSourceImp extends BluetoothHardwareDataSourceDec {
     yield* bluetoothSerial
         .onStateChanged()
         .map(
-          (bluetoothState) => BluetoothStateModel.fromBluetoothState(
-            bluetoothState,
+          (bluetoothState) => BtHardwareStateModel.fromBluetoothState(
+            bluetoothState: bluetoothState,
+            throwExceptionOnError: true,
           ),
         )
         .handleError(
@@ -192,6 +229,12 @@ class BluetoothHardwareDataSourceImp extends BluetoothHardwareDataSourceDec {
     );
   }
 
+  bool _isConnected({
+    @required BtDeviceEntity btDevice,
+  }) =>
+      _bluetoothConnections.containsKey(btDevice.macAddress) &&
+      _bluetoothConnections[btDevice.macAddress].isConnected;
+
   Future<bool> _isPaired({
     @required String macAddress,
   }) async {
@@ -204,8 +247,16 @@ class BluetoothHardwareDataSourceImp extends BluetoothHardwareDataSourceDec {
 
 @freezed
 abstract class BondBtDeviceException with _$BondBtDeviceException {
+  const factory BondBtDeviceException.couldNotBond() =
+      _BondBtDeviceExceptionCouldNotBond;
   const factory BondBtDeviceException.unexpected() =
       _BondBtDeviceExceptionUnexpected;
+}
+
+@freezed
+abstract class ConnectionStreamException with _$ConnectionStreamException {
+  const factory ConnectionStreamException.unexpected() =
+      _ConnectionStreamExceptionUnexpected;
 }
 
 @freezed
@@ -239,13 +290,6 @@ abstract class SendDataToBtDeviceException with _$SendDataToBtDeviceException {
 }
 
 @freezed
-abstract class WatchReceivedDataFromBtDeviceException
-    with _$WatchReceivedDataFromBtDeviceException {
-  const factory WatchReceivedDataFromBtDeviceException.unexpected() =
-      _WatchReceivedDataFromBtDeviceExceptionUnexpected;
-}
-
-@freezed
 abstract class StateStreamException with _$StateStreamException {
   const factory StateStreamException.unexpected() =
       _StateStreamExceptionUnexpected;
@@ -255,4 +299,11 @@ abstract class StateStreamException with _$StateStreamException {
 abstract class StopDiscoveryException with _$StopDiscoveryException {
   const factory StopDiscoveryException.unexpected() =
       _StopDiscoveryExceptionUnexpected;
+}
+
+@freezed
+abstract class WatchReceivedDataFromBtDeviceException
+    with _$WatchReceivedDataFromBtDeviceException {
+  const factory WatchReceivedDataFromBtDeviceException.unexpected() =
+      _WatchReceivedDataFromBtDeviceExceptionUnexpected;
 }

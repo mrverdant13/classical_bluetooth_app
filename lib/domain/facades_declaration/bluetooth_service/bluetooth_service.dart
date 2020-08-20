@@ -4,8 +4,9 @@ import 'package:dartz/dartz.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:meta/meta.dart';
 
-import '../../entities/bluetooth_state/bluetooth_state_entity.dart';
+import '../../entities/bt_connection_state/bt_connection_state_entity.dart';
 import '../../entities/bt_device/bt_device_entity.dart';
+import '../../entities/bt_hardware_state/bt_hardware_state_entity.dart';
 
 part 'bluetooth_service.freezed.dart';
 
@@ -26,8 +27,13 @@ abstract class BluetoothServiceDec {
     @required String dataString,
   });
   Future<Either<StopBtDevicesWatchingFailure, void>> stopBtDevicesWatching();
+  Stream<Either<WatchBtConnectionFailure, BtConnectionStateEntity>>
+      watchBtConnectionState({
+    @required BtDeviceEntity btDevice,
+  });
   Stream<Either<WatchBtDevicesFailure, BtDeviceEntity>> watchBtDevices();
-  Stream<Either<WatchStatusFailure, BluetoothStateEntity>> watchBtStatus();
+  Stream<Either<WatchBtHardwareStateFailure, BtHardwareStateEntity>>
+      watchBtHardwareState();
   Stream<Either<WatchReceivedDataFromBtDeviceFailure, Uint8List>>
       watchReceivedDataFromBtDevice({
     @required BtDeviceEntity btDevice,
@@ -36,15 +42,16 @@ abstract class BluetoothServiceDec {
 
 @freezed
 abstract class BondBtDeviceFailure with _$BondBtDeviceFailure {
-  const factory BondBtDeviceFailure.notFound() = _BondBtDeviceFailureNotFound;
+  const factory BondBtDeviceFailure.couldNotBond() =
+      _BondBtDeviceFailureCouldNotBond;
   const factory BondBtDeviceFailure.unexpected() =
       _BondBtDeviceFailureUnexpected;
 }
 
 @freezed
 abstract class ConnectToBtDeviceFailure with _$ConnectToBtDeviceFailure {
-  const factory ConnectToBtDeviceFailure.notPaired() =
-      _ConnectToBtDeviceFailureNotPaired;
+  const factory ConnectToBtDeviceFailure.notBonded() =
+      _ConnectToBtDeviceFailureNotBonded;
   const factory ConnectToBtDeviceFailure.unexpected() =
       _ConnectToBtDeviceFailureUnexpected;
 }
@@ -72,9 +79,21 @@ abstract class StopBtDevicesWatchingFailure
 }
 
 @freezed
+abstract class WatchBtConnectionFailure with _$WatchBtConnectionFailure {
+  const factory WatchBtConnectionFailure.unexpected() =
+      _WatchBtDeviceConnectionFailureUnexpected;
+}
+
+@freezed
 abstract class WatchBtDevicesFailure with _$WatchBtDevicesFailure {
   const factory WatchBtDevicesFailure.unexpected() =
       _WatchBtDevicesFailureUnexpected;
+}
+
+@freezed
+abstract class WatchBtHardwareStateFailure with _$WatchBtHardwareStateFailure {
+  const factory WatchBtHardwareStateFailure.unexpected() =
+      _WatchStatusFailureUnexpected;
 }
 
 @freezed
@@ -82,9 +101,4 @@ abstract class WatchReceivedDataFromBtDeviceFailure
     with _$WatchReceivedDataFromBtDeviceFailure {
   const factory WatchReceivedDataFromBtDeviceFailure.unexpected() =
       _WatchReceivedDataFromBtDeviceFailureUnexpected;
-}
-
-@freezed
-abstract class WatchStatusFailure with _$WatchStatusFailure {
-  const factory WatchStatusFailure.unexpected() = _WatchStatusFailureUnexpected;
 }

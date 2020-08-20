@@ -1,31 +1,32 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:classical_bluetooth_app/core/use_cases/parameter_types/no_parameters.dart';
-import 'package:classical_bluetooth_app/domain/entities/bluetooth_state/bluetooth_state_entity.dart';
-import 'package:classical_bluetooth_app/domain/facades_declaration/bluetooth_service/bluetooth_service.dart';
-import 'package:classical_bluetooth_app/domain/use_cases/watch_bluetooth_state/watch_bluetooth_state.dart';
 import 'package:dartz/dartz.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
 
-@Injectable()
-class BluetoothStateCubit extends Cubit<BluetoothStateEntity> {
-  final WatchBluetoothStateUseCase watchBluetoothStateUseCase;
+import '../../../core/use_cases/parameter_types/no_parameters.dart';
+import '../../../domain/entities/bt_hardware_state/bt_hardware_state_entity.dart';
+import '../../../domain/facades_declaration/bluetooth_service/bluetooth_service.dart';
+import '../../../domain/use_cases/watch_bt_hardware_state/watch_bt_hardware_state.dart';
 
-  StreamSubscription<Either<WatchStatusFailure, BluetoothStateEntity>>
+@Injectable()
+class BtHardwareStateCubit extends Cubit<BtHardwareStateEntity> {
+  final WatchBtHardwareStateUseCase watchBluetoothStateUseCase;
+
+  StreamSubscription<Either<WatchBtHardwareStateFailure, BtHardwareStateEntity>>
       _failureOrBluetoothStateStreamSubscription;
 
-  BluetoothStateCubit({
+  BtHardwareStateCubit({
     @required this.watchBluetoothStateUseCase,
   }) : super(
-          const BluetoothStateEntity.changing(),
+          const BtHardwareStateEntity.changing(),
         );
 
   Future<void> subscribeToBluetoothState() async {
     emit(
-      const BluetoothStateEntity.changing(),
+      const BtHardwareStateEntity.changing(),
     );
     await _failureOrBluetoothStateStreamSubscription?.cancel();
 
@@ -40,13 +41,15 @@ class BluetoothStateCubit extends Cubit<BluetoothStateEntity> {
 
   void _updateObtainedBluetoothState({
     @required
-        Either<WatchStatusFailure, BluetoothStateEntity>
+        Either<WatchBtHardwareStateFailure, BtHardwareStateEntity>
             failureOrBluetoothState,
   }) =>
       emit(
         failureOrBluetoothState.fold(
           (failure) => failure.when(
-            unexpected: () => const BluetoothStateEntity.error(),
+            unexpected: () => const BtHardwareStateEntity.failure(
+              message: 'Hubo un problema inesperado',
+            ),
           ),
           (bluetoothState) => bluetoothState,
         ),

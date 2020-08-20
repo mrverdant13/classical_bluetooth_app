@@ -13,6 +13,11 @@ class _$BondBtDeviceExceptionTearOff {
   const _$BondBtDeviceExceptionTearOff();
 
 // ignore: unused_element
+  _BondBtDeviceExceptionCouldNotBond couldNotBond() {
+    return const _BondBtDeviceExceptionCouldNotBond();
+  }
+
+// ignore: unused_element
   _BondBtDeviceExceptionUnexpected unexpected() {
     return const _BondBtDeviceExceptionUnexpected();
   }
@@ -24,19 +29,23 @@ const $BondBtDeviceException = _$BondBtDeviceExceptionTearOff();
 mixin _$BondBtDeviceException {
   @optionalTypeArgs
   Result when<Result extends Object>({
+    @required Result couldNotBond(),
     @required Result unexpected(),
   });
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
+    Result couldNotBond(),
     Result unexpected(),
     @required Result orElse(),
   });
   @optionalTypeArgs
   Result map<Result extends Object>({
+    @required Result couldNotBond(_BondBtDeviceExceptionCouldNotBond value),
     @required Result unexpected(_BondBtDeviceExceptionUnexpected value),
   });
   @optionalTypeArgs
   Result maybeMap<Result extends Object>({
+    Result couldNotBond(_BondBtDeviceExceptionCouldNotBond value),
     Result unexpected(_BondBtDeviceExceptionUnexpected value),
     @required Result orElse(),
   });
@@ -55,6 +64,101 @@ class _$BondBtDeviceExceptionCopyWithImpl<$Res>
   final BondBtDeviceException _value;
   // ignore: unused_field
   final $Res Function(BondBtDeviceException) _then;
+}
+
+abstract class _$BondBtDeviceExceptionCouldNotBondCopyWith<$Res> {
+  factory _$BondBtDeviceExceptionCouldNotBondCopyWith(
+          _BondBtDeviceExceptionCouldNotBond value,
+          $Res Function(_BondBtDeviceExceptionCouldNotBond) then) =
+      __$BondBtDeviceExceptionCouldNotBondCopyWithImpl<$Res>;
+}
+
+class __$BondBtDeviceExceptionCouldNotBondCopyWithImpl<$Res>
+    extends _$BondBtDeviceExceptionCopyWithImpl<$Res>
+    implements _$BondBtDeviceExceptionCouldNotBondCopyWith<$Res> {
+  __$BondBtDeviceExceptionCouldNotBondCopyWithImpl(
+      _BondBtDeviceExceptionCouldNotBond _value,
+      $Res Function(_BondBtDeviceExceptionCouldNotBond) _then)
+      : super(_value, (v) => _then(v as _BondBtDeviceExceptionCouldNotBond));
+
+  @override
+  _BondBtDeviceExceptionCouldNotBond get _value =>
+      super._value as _BondBtDeviceExceptionCouldNotBond;
+}
+
+class _$_BondBtDeviceExceptionCouldNotBond
+    implements _BondBtDeviceExceptionCouldNotBond {
+  const _$_BondBtDeviceExceptionCouldNotBond();
+
+  @override
+  String toString() {
+    return 'BondBtDeviceException.couldNotBond()';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is _BondBtDeviceExceptionCouldNotBond);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  Result when<Result extends Object>({
+    @required Result couldNotBond(),
+    @required Result unexpected(),
+  }) {
+    assert(couldNotBond != null);
+    assert(unexpected != null);
+    return couldNotBond();
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeWhen<Result extends Object>({
+    Result couldNotBond(),
+    Result unexpected(),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (couldNotBond != null) {
+      return couldNotBond();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  Result map<Result extends Object>({
+    @required Result couldNotBond(_BondBtDeviceExceptionCouldNotBond value),
+    @required Result unexpected(_BondBtDeviceExceptionUnexpected value),
+  }) {
+    assert(couldNotBond != null);
+    assert(unexpected != null);
+    return couldNotBond(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeMap<Result extends Object>({
+    Result couldNotBond(_BondBtDeviceExceptionCouldNotBond value),
+    Result unexpected(_BondBtDeviceExceptionUnexpected value),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (couldNotBond != null) {
+      return couldNotBond(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _BondBtDeviceExceptionCouldNotBond
+    implements BondBtDeviceException {
+  const factory _BondBtDeviceExceptionCouldNotBond() =
+      _$_BondBtDeviceExceptionCouldNotBond;
 }
 
 abstract class _$BondBtDeviceExceptionUnexpectedCopyWith<$Res> {
@@ -98,6 +202,149 @@ class _$_BondBtDeviceExceptionUnexpected
   @override
   @optionalTypeArgs
   Result when<Result extends Object>({
+    @required Result couldNotBond(),
+    @required Result unexpected(),
+  }) {
+    assert(couldNotBond != null);
+    assert(unexpected != null);
+    return unexpected();
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeWhen<Result extends Object>({
+    Result couldNotBond(),
+    Result unexpected(),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (unexpected != null) {
+      return unexpected();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  Result map<Result extends Object>({
+    @required Result couldNotBond(_BondBtDeviceExceptionCouldNotBond value),
+    @required Result unexpected(_BondBtDeviceExceptionUnexpected value),
+  }) {
+    assert(couldNotBond != null);
+    assert(unexpected != null);
+    return unexpected(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeMap<Result extends Object>({
+    Result couldNotBond(_BondBtDeviceExceptionCouldNotBond value),
+    Result unexpected(_BondBtDeviceExceptionUnexpected value),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (unexpected != null) {
+      return unexpected(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _BondBtDeviceExceptionUnexpected
+    implements BondBtDeviceException {
+  const factory _BondBtDeviceExceptionUnexpected() =
+      _$_BondBtDeviceExceptionUnexpected;
+}
+
+class _$ConnectionStreamExceptionTearOff {
+  const _$ConnectionStreamExceptionTearOff();
+
+// ignore: unused_element
+  _ConnectionStreamExceptionUnexpected unexpected() {
+    return const _ConnectionStreamExceptionUnexpected();
+  }
+}
+
+// ignore: unused_element
+const $ConnectionStreamException = _$ConnectionStreamExceptionTearOff();
+
+mixin _$ConnectionStreamException {
+  @optionalTypeArgs
+  Result when<Result extends Object>({
+    @required Result unexpected(),
+  });
+  @optionalTypeArgs
+  Result maybeWhen<Result extends Object>({
+    Result unexpected(),
+    @required Result orElse(),
+  });
+  @optionalTypeArgs
+  Result map<Result extends Object>({
+    @required Result unexpected(_ConnectionStreamExceptionUnexpected value),
+  });
+  @optionalTypeArgs
+  Result maybeMap<Result extends Object>({
+    Result unexpected(_ConnectionStreamExceptionUnexpected value),
+    @required Result orElse(),
+  });
+}
+
+abstract class $ConnectionStreamExceptionCopyWith<$Res> {
+  factory $ConnectionStreamExceptionCopyWith(ConnectionStreamException value,
+          $Res Function(ConnectionStreamException) then) =
+      _$ConnectionStreamExceptionCopyWithImpl<$Res>;
+}
+
+class _$ConnectionStreamExceptionCopyWithImpl<$Res>
+    implements $ConnectionStreamExceptionCopyWith<$Res> {
+  _$ConnectionStreamExceptionCopyWithImpl(this._value, this._then);
+
+  final ConnectionStreamException _value;
+  // ignore: unused_field
+  final $Res Function(ConnectionStreamException) _then;
+}
+
+abstract class _$ConnectionStreamExceptionUnexpectedCopyWith<$Res> {
+  factory _$ConnectionStreamExceptionUnexpectedCopyWith(
+          _ConnectionStreamExceptionUnexpected value,
+          $Res Function(_ConnectionStreamExceptionUnexpected) then) =
+      __$ConnectionStreamExceptionUnexpectedCopyWithImpl<$Res>;
+}
+
+class __$ConnectionStreamExceptionUnexpectedCopyWithImpl<$Res>
+    extends _$ConnectionStreamExceptionCopyWithImpl<$Res>
+    implements _$ConnectionStreamExceptionUnexpectedCopyWith<$Res> {
+  __$ConnectionStreamExceptionUnexpectedCopyWithImpl(
+      _ConnectionStreamExceptionUnexpected _value,
+      $Res Function(_ConnectionStreamExceptionUnexpected) _then)
+      : super(_value, (v) => _then(v as _ConnectionStreamExceptionUnexpected));
+
+  @override
+  _ConnectionStreamExceptionUnexpected get _value =>
+      super._value as _ConnectionStreamExceptionUnexpected;
+}
+
+class _$_ConnectionStreamExceptionUnexpected
+    implements _ConnectionStreamExceptionUnexpected {
+  const _$_ConnectionStreamExceptionUnexpected();
+
+  @override
+  String toString() {
+    return 'ConnectionStreamException.unexpected()';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is _ConnectionStreamExceptionUnexpected);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  Result when<Result extends Object>({
     @required Result unexpected(),
   }) {
     assert(unexpected != null);
@@ -120,7 +367,7 @@ class _$_BondBtDeviceExceptionUnexpected
   @override
   @optionalTypeArgs
   Result map<Result extends Object>({
-    @required Result unexpected(_BondBtDeviceExceptionUnexpected value),
+    @required Result unexpected(_ConnectionStreamExceptionUnexpected value),
   }) {
     assert(unexpected != null);
     return unexpected(this);
@@ -129,7 +376,7 @@ class _$_BondBtDeviceExceptionUnexpected
   @override
   @optionalTypeArgs
   Result maybeMap<Result extends Object>({
-    Result unexpected(_BondBtDeviceExceptionUnexpected value),
+    Result unexpected(_ConnectionStreamExceptionUnexpected value),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -140,10 +387,10 @@ class _$_BondBtDeviceExceptionUnexpected
   }
 }
 
-abstract class _BondBtDeviceExceptionUnexpected
-    implements BondBtDeviceException {
-  const factory _BondBtDeviceExceptionUnexpected() =
-      _$_BondBtDeviceExceptionUnexpected;
+abstract class _ConnectionStreamExceptionUnexpected
+    implements ConnectionStreamException {
+  const factory _ConnectionStreamExceptionUnexpected() =
+      _$_ConnectionStreamExceptionUnexpected;
 }
 
 class _$ConnectToBtDeviceExceptionTearOff {
@@ -930,155 +1177,6 @@ abstract class _SendDataToBtDeviceExceptionUnexpected
       _$_SendDataToBtDeviceExceptionUnexpected;
 }
 
-class _$WatchReceivedDataFromBtDeviceExceptionTearOff {
-  const _$WatchReceivedDataFromBtDeviceExceptionTearOff();
-
-// ignore: unused_element
-  _WatchReceivedDataFromBtDeviceExceptionUnexpected unexpected() {
-    return const _WatchReceivedDataFromBtDeviceExceptionUnexpected();
-  }
-}
-
-// ignore: unused_element
-const $WatchReceivedDataFromBtDeviceException =
-    _$WatchReceivedDataFromBtDeviceExceptionTearOff();
-
-mixin _$WatchReceivedDataFromBtDeviceException {
-  @optionalTypeArgs
-  Result when<Result extends Object>({
-    @required Result unexpected(),
-  });
-  @optionalTypeArgs
-  Result maybeWhen<Result extends Object>({
-    Result unexpected(),
-    @required Result orElse(),
-  });
-  @optionalTypeArgs
-  Result map<Result extends Object>({
-    @required
-        Result unexpected(
-            _WatchReceivedDataFromBtDeviceExceptionUnexpected value),
-  });
-  @optionalTypeArgs
-  Result maybeMap<Result extends Object>({
-    Result unexpected(_WatchReceivedDataFromBtDeviceExceptionUnexpected value),
-    @required Result orElse(),
-  });
-}
-
-abstract class $WatchReceivedDataFromBtDeviceExceptionCopyWith<$Res> {
-  factory $WatchReceivedDataFromBtDeviceExceptionCopyWith(
-          WatchReceivedDataFromBtDeviceException value,
-          $Res Function(WatchReceivedDataFromBtDeviceException) then) =
-      _$WatchReceivedDataFromBtDeviceExceptionCopyWithImpl<$Res>;
-}
-
-class _$WatchReceivedDataFromBtDeviceExceptionCopyWithImpl<$Res>
-    implements $WatchReceivedDataFromBtDeviceExceptionCopyWith<$Res> {
-  _$WatchReceivedDataFromBtDeviceExceptionCopyWithImpl(this._value, this._then);
-
-  final WatchReceivedDataFromBtDeviceException _value;
-  // ignore: unused_field
-  final $Res Function(WatchReceivedDataFromBtDeviceException) _then;
-}
-
-abstract class _$WatchReceivedDataFromBtDeviceExceptionUnexpectedCopyWith<
-    $Res> {
-  factory _$WatchReceivedDataFromBtDeviceExceptionUnexpectedCopyWith(
-          _WatchReceivedDataFromBtDeviceExceptionUnexpected value,
-          $Res Function(_WatchReceivedDataFromBtDeviceExceptionUnexpected)
-              then) =
-      __$WatchReceivedDataFromBtDeviceExceptionUnexpectedCopyWithImpl<$Res>;
-}
-
-class __$WatchReceivedDataFromBtDeviceExceptionUnexpectedCopyWithImpl<$Res>
-    extends _$WatchReceivedDataFromBtDeviceExceptionCopyWithImpl<$Res>
-    implements
-        _$WatchReceivedDataFromBtDeviceExceptionUnexpectedCopyWith<$Res> {
-  __$WatchReceivedDataFromBtDeviceExceptionUnexpectedCopyWithImpl(
-      _WatchReceivedDataFromBtDeviceExceptionUnexpected _value,
-      $Res Function(_WatchReceivedDataFromBtDeviceExceptionUnexpected) _then)
-      : super(
-            _value,
-            (v) =>
-                _then(v as _WatchReceivedDataFromBtDeviceExceptionUnexpected));
-
-  @override
-  _WatchReceivedDataFromBtDeviceExceptionUnexpected get _value =>
-      super._value as _WatchReceivedDataFromBtDeviceExceptionUnexpected;
-}
-
-class _$_WatchReceivedDataFromBtDeviceExceptionUnexpected
-    implements _WatchReceivedDataFromBtDeviceExceptionUnexpected {
-  const _$_WatchReceivedDataFromBtDeviceExceptionUnexpected();
-
-  @override
-  String toString() {
-    return 'WatchReceivedDataFromBtDeviceException.unexpected()';
-  }
-
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other is _WatchReceivedDataFromBtDeviceExceptionUnexpected);
-  }
-
-  @override
-  int get hashCode => runtimeType.hashCode;
-
-  @override
-  @optionalTypeArgs
-  Result when<Result extends Object>({
-    @required Result unexpected(),
-  }) {
-    assert(unexpected != null);
-    return unexpected();
-  }
-
-  @override
-  @optionalTypeArgs
-  Result maybeWhen<Result extends Object>({
-    Result unexpected(),
-    @required Result orElse(),
-  }) {
-    assert(orElse != null);
-    if (unexpected != null) {
-      return unexpected();
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  Result map<Result extends Object>({
-    @required
-        Result unexpected(
-            _WatchReceivedDataFromBtDeviceExceptionUnexpected value),
-  }) {
-    assert(unexpected != null);
-    return unexpected(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  Result maybeMap<Result extends Object>({
-    Result unexpected(_WatchReceivedDataFromBtDeviceExceptionUnexpected value),
-    @required Result orElse(),
-  }) {
-    assert(orElse != null);
-    if (unexpected != null) {
-      return unexpected(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _WatchReceivedDataFromBtDeviceExceptionUnexpected
-    implements WatchReceivedDataFromBtDeviceException {
-  const factory _WatchReceivedDataFromBtDeviceExceptionUnexpected() =
-      _$_WatchReceivedDataFromBtDeviceExceptionUnexpected;
-}
-
 class _$StateStreamExceptionTearOff {
   const _$StateStreamExceptionTearOff();
 
@@ -1349,4 +1447,153 @@ abstract class _StopDiscoveryExceptionUnexpected
     implements StopDiscoveryException {
   const factory _StopDiscoveryExceptionUnexpected() =
       _$_StopDiscoveryExceptionUnexpected;
+}
+
+class _$WatchReceivedDataFromBtDeviceExceptionTearOff {
+  const _$WatchReceivedDataFromBtDeviceExceptionTearOff();
+
+// ignore: unused_element
+  _WatchReceivedDataFromBtDeviceExceptionUnexpected unexpected() {
+    return const _WatchReceivedDataFromBtDeviceExceptionUnexpected();
+  }
+}
+
+// ignore: unused_element
+const $WatchReceivedDataFromBtDeviceException =
+    _$WatchReceivedDataFromBtDeviceExceptionTearOff();
+
+mixin _$WatchReceivedDataFromBtDeviceException {
+  @optionalTypeArgs
+  Result when<Result extends Object>({
+    @required Result unexpected(),
+  });
+  @optionalTypeArgs
+  Result maybeWhen<Result extends Object>({
+    Result unexpected(),
+    @required Result orElse(),
+  });
+  @optionalTypeArgs
+  Result map<Result extends Object>({
+    @required
+        Result unexpected(
+            _WatchReceivedDataFromBtDeviceExceptionUnexpected value),
+  });
+  @optionalTypeArgs
+  Result maybeMap<Result extends Object>({
+    Result unexpected(_WatchReceivedDataFromBtDeviceExceptionUnexpected value),
+    @required Result orElse(),
+  });
+}
+
+abstract class $WatchReceivedDataFromBtDeviceExceptionCopyWith<$Res> {
+  factory $WatchReceivedDataFromBtDeviceExceptionCopyWith(
+          WatchReceivedDataFromBtDeviceException value,
+          $Res Function(WatchReceivedDataFromBtDeviceException) then) =
+      _$WatchReceivedDataFromBtDeviceExceptionCopyWithImpl<$Res>;
+}
+
+class _$WatchReceivedDataFromBtDeviceExceptionCopyWithImpl<$Res>
+    implements $WatchReceivedDataFromBtDeviceExceptionCopyWith<$Res> {
+  _$WatchReceivedDataFromBtDeviceExceptionCopyWithImpl(this._value, this._then);
+
+  final WatchReceivedDataFromBtDeviceException _value;
+  // ignore: unused_field
+  final $Res Function(WatchReceivedDataFromBtDeviceException) _then;
+}
+
+abstract class _$WatchReceivedDataFromBtDeviceExceptionUnexpectedCopyWith<
+    $Res> {
+  factory _$WatchReceivedDataFromBtDeviceExceptionUnexpectedCopyWith(
+          _WatchReceivedDataFromBtDeviceExceptionUnexpected value,
+          $Res Function(_WatchReceivedDataFromBtDeviceExceptionUnexpected)
+              then) =
+      __$WatchReceivedDataFromBtDeviceExceptionUnexpectedCopyWithImpl<$Res>;
+}
+
+class __$WatchReceivedDataFromBtDeviceExceptionUnexpectedCopyWithImpl<$Res>
+    extends _$WatchReceivedDataFromBtDeviceExceptionCopyWithImpl<$Res>
+    implements
+        _$WatchReceivedDataFromBtDeviceExceptionUnexpectedCopyWith<$Res> {
+  __$WatchReceivedDataFromBtDeviceExceptionUnexpectedCopyWithImpl(
+      _WatchReceivedDataFromBtDeviceExceptionUnexpected _value,
+      $Res Function(_WatchReceivedDataFromBtDeviceExceptionUnexpected) _then)
+      : super(
+            _value,
+            (v) =>
+                _then(v as _WatchReceivedDataFromBtDeviceExceptionUnexpected));
+
+  @override
+  _WatchReceivedDataFromBtDeviceExceptionUnexpected get _value =>
+      super._value as _WatchReceivedDataFromBtDeviceExceptionUnexpected;
+}
+
+class _$_WatchReceivedDataFromBtDeviceExceptionUnexpected
+    implements _WatchReceivedDataFromBtDeviceExceptionUnexpected {
+  const _$_WatchReceivedDataFromBtDeviceExceptionUnexpected();
+
+  @override
+  String toString() {
+    return 'WatchReceivedDataFromBtDeviceException.unexpected()';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is _WatchReceivedDataFromBtDeviceExceptionUnexpected);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  Result when<Result extends Object>({
+    @required Result unexpected(),
+  }) {
+    assert(unexpected != null);
+    return unexpected();
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeWhen<Result extends Object>({
+    Result unexpected(),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (unexpected != null) {
+      return unexpected();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  Result map<Result extends Object>({
+    @required
+        Result unexpected(
+            _WatchReceivedDataFromBtDeviceExceptionUnexpected value),
+  }) {
+    assert(unexpected != null);
+    return unexpected(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeMap<Result extends Object>({
+    Result unexpected(_WatchReceivedDataFromBtDeviceExceptionUnexpected value),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (unexpected != null) {
+      return unexpected(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _WatchReceivedDataFromBtDeviceExceptionUnexpected
+    implements WatchReceivedDataFromBtDeviceException {
+  const factory _WatchReceivedDataFromBtDeviceExceptionUnexpected() =
+      _$_WatchReceivedDataFromBtDeviceExceptionUnexpected;
 }

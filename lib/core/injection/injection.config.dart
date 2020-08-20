@@ -12,10 +12,11 @@ import '../../data/data_source/hardware/bluetooth/bluetooth.dart';
 import '../../data/data_source/hardware/bluetooth/external/injection.dart';
 import '../../domain/facades_declaration/bluetooth_service/bluetooth_service.dart';
 import '../../data/facades_implementation/bluetooth_service.dart';
-import '../../presentation/ui_logic_holders/bluetooth_state_cubit/bluetooth_state_cubit.dart';
 import '../../domain/use_cases/bond_bt_device/bond_bt_device.dart';
 import '../../presentation/ui_logic_holders/bt_bonding_cubit/bt_bonding_cubit.dart';
-import '../../presentation/ui_logic_holders/bt_connection_cubit/bt_connection_cubit.dart';
+import '../../presentation/ui_logic_holders/bt_connection_manager_cubit/bt_connection_manager_cubit.dart';
+import '../../presentation/ui_logic_holders/bt_connection_watcher_cubit_cubit/bt_connection_watcher_cubit.dart';
+import '../../presentation/ui_logic_holders/bt_hardware_state_cubit/bt_hardware_state_cubit.dart';
 import '../../domain/use_cases/connect_to_bt_device/connect_to_bt_device.dart';
 import '../../domain/use_cases/disconnect_from_bt_device/disconnect_from_bt_device.dart';
 import '../../presentation/ui_logic_holders/discovered_bt_devices_cubit/discovered_bt_devices_cubit.dart';
@@ -25,7 +26,8 @@ import '../../presentation/ui_logic_holders/received_data_from_bt_device_cubit/r
 import '../../domain/use_cases/send_data_to_bt_device/send_data_to_bt_device.dart';
 import '../../domain/use_cases/stop_bt_devices_watching/stop_bt_devices_watching.dart';
 import '../../domain/use_cases/watch_available_bt_devices/watch_available_bt_devices.dart';
-import '../../domain/use_cases/watch_bluetooth_state/watch_bluetooth_state.dart';
+import '../../domain/use_cases/watch_bt_device_connection/watch_bt_device_connection.dart';
+import '../../domain/use_cases/watch_bt_hardware_state/watch_bt_hardware_state.dart';
 import '../../domain/use_cases/watch_received_data_from_bt_device/watch_received_data_from_bt_device.dart';
 
 /// adds generated dependencies
@@ -64,16 +66,22 @@ GetIt $initGetIt(
   gh.lazySingleton<WatchAvailableBtDevicesUseCase>(() =>
       WatchAvailableBtDevicesUseCase(
           bluetoothService: get<BluetoothServiceDec>()));
-  gh.lazySingleton<WatchBluetoothStateUseCase>(() =>
-      WatchBluetoothStateUseCase(bluetoothService: get<BluetoothServiceDec>()));
+  gh.lazySingleton<WatchBtDeviceConnectionUseCase>(() =>
+      WatchBtDeviceConnectionUseCase(
+          bluetoothService: get<BluetoothServiceDec>()));
+  gh.lazySingleton<WatchBtHardwareStateUseCase>(() =>
+      WatchBtHardwareStateUseCase(
+          bluetoothService: get<BluetoothServiceDec>()));
   gh.lazySingleton<WatchReceivedDataFromBtDeviceUseCase>(() =>
       WatchReceivedDataFromBtDeviceUseCase(
           bluetoothService: get<BluetoothServiceDec>()));
-  gh.factory<BluetoothStateCubit>(() => BluetoothStateCubit(
-      watchBluetoothStateUseCase: get<WatchBluetoothStateUseCase>()));
-  gh.factory<BtConnectionCubit>(() => BtConnectionCubit(
+  gh.factory<BtConnectionManagerCubit>(() => BtConnectionManagerCubit(
       connectToBtDeviceUseCase: get<ConnectToBtDeviceUseCase>(),
       disconnectFromBtDeviceUseCase: get<DisconnectFromBtDeviceUseCase>()));
+  gh.factory<BtConnectionWatcherCubit>(() => BtConnectionWatcherCubit(
+      watchBtDeviceConnectionUseCase: get<WatchBtDeviceConnectionUseCase>()));
+  gh.factory<BtHardwareStateCubit>(() => BtHardwareStateCubit(
+      watchBluetoothStateUseCase: get<WatchBtHardwareStateUseCase>()));
   gh.factory<DiscoveredBtDevicesCubit>(() => DiscoveredBtDevicesCubit(
       watchAvailableBtDevicesUseCase: get<WatchAvailableBtDevicesUseCase>(),
       stopBtDevicesWatchingUseCase: get<StopBtDevicesWatchingUseCase>()));

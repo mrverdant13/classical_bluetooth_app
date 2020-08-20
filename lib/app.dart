@@ -6,9 +6,10 @@ import 'package:provider/provider.dart';
 
 import 'core/injection/injection.dart';
 import 'core/presentation/routing/router.gr.dart' as router;
-import 'presentation/ui_logic_holders/bluetooth_state_cubit/bluetooth_state_cubit.dart';
 import 'presentation/ui_logic_holders/bt_bonding_cubit/bt_bonding_cubit.dart';
-import 'presentation/ui_logic_holders/bt_connection_cubit/bt_connection_cubit.dart';
+import 'presentation/ui_logic_holders/bt_connection_manager_cubit/bt_connection_manager_cubit.dart';
+import 'presentation/ui_logic_holders/bt_connection_watcher_cubit_cubit/bt_connection_watcher_cubit.dart';
+import 'presentation/ui_logic_holders/bt_hardware_state_cubit/bt_hardware_state_cubit.dart';
 import 'presentation/ui_logic_holders/discovered_bt_devices_cubit/discovered_bt_devices_cubit.dart';
 import 'presentation/ui_logic_holders/jay_counter_current_setup_change_notifier/jay_counter_current_setup_change_notifier.dart';
 import 'presentation/ui_logic_holders/jay_counter_setup_form_bloc/jay_counter_setup_form_bloc.dart';
@@ -22,9 +23,9 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         // ! BLOCs
-        BlocProvider<BluetoothStateCubit>(
+        BlocProvider<BtHardwareStateCubit>(
           create: (_) =>
-              getIt<BluetoothStateCubit>()..subscribeToBluetoothState(),
+              getIt<BtHardwareStateCubit>()..subscribeToBluetoothState(),
         ),
         BlocProvider<DiscoveredBtDevicesCubit>(
           create: (context) => getIt<DiscoveredBtDevicesCubit>(),
@@ -32,8 +33,11 @@ class MyApp extends StatelessWidget {
         BlocProvider<BtBondingCubit>(
           create: (context) => getIt<BtBondingCubit>(),
         ),
-        BlocProvider<BtConnectionCubit>(
-          create: (context) => getIt<BtConnectionCubit>(),
+        BlocProvider<BtConnectionManagerCubit>(
+          create: (context) => getIt<BtConnectionManagerCubit>(),
+        ),
+        BlocProvider<BtConnectionWatcherCubit>(
+          create: (context) => getIt<BtConnectionWatcherCubit>(),
         ),
         BlocProvider<JayCounterSetupFormBloc>(
           create: (context) => getIt<JayCounterSetupFormBloc>(),
@@ -54,6 +58,9 @@ class MyApp extends StatelessWidget {
         ),
         theme: ThemeData(
           fontFamily: GoogleFonts.alata().fontFamily,
+          appBarTheme: const AppBarTheme(
+            centerTitle: true,
+          ),
         ),
       ),
     );

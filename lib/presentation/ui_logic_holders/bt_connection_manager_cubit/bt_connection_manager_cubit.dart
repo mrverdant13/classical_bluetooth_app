@@ -1,30 +1,34 @@
 import 'package:bloc/bloc.dart';
-import 'package:classical_bluetooth_app/domain/use_cases/disconnect_from_bt_device/disconnect_from_bt_device.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
 
-import '../../../domain/entities/bt_connection_state/bt_connection_state.dart';
 import '../../../domain/entities/bt_device/bt_device_entity.dart';
 import '../../../domain/use_cases/connect_to_bt_device/connect_to_bt_device.dart';
+import '../../../domain/use_cases/disconnect_from_bt_device/disconnect_from_bt_device.dart';
+
+part 'bt_connection_manager_cubit.freezed.dart';
+part 'bt_connection_manager_state.dart';
 
 @Injectable()
-class BtConnectionCubit extends Cubit<BtConnectionState> {
+class BtConnectionManagerCubit extends Cubit<BtConnectionManagerState> {
   final ConnectToBtDeviceUseCase connectToBtDeviceUseCase;
   final DisconnectFromBtDeviceUseCase disconnectFromBtDeviceUseCase;
 
-  BtConnectionCubit({
+  BtConnectionManagerCubit({
     @required this.connectToBtDeviceUseCase,
     @required this.disconnectFromBtDeviceUseCase,
   }) : super(
-          const BtConnectionState.disconnected(),
+          const BtConnectionManagerState.idle(),
         );
 
   Future<void> connect({
     @required BtDeviceEntity btDevice,
   }) async {
     emit(
-      const BtConnectionState.changing(),
+      const BtConnectionManagerState.message(
+        'Estableciendo conexión...',
+      ),
     );
 
     final _failureOrVoid = await connectToBtDeviceUseCase(
@@ -33,13 +37,13 @@ class BtConnectionCubit extends Cubit<BtConnectionState> {
 
     emit(
       _failureOrVoid.fold(
-        (failure) => BtConnectionState.failure(
-          message: failure.when(
-            notPaired: () => 'El dispositivo no está emparejado.',
+        (failure) => BtConnectionManagerState.message(
+          failure.when(
+            notBonded: () => 'El dispositivo no está emparejado.',
             unexpected: () => 'No se pudo establecer la conexión',
           ),
         ),
-        (_) => const BtConnectionState.connected(),
+        (_) => const BtConnectionManagerState.idle(),
       ),
     );
   }
@@ -48,7 +52,7 @@ class BtConnectionCubit extends Cubit<BtConnectionState> {
     @required BtDeviceEntity btDevice,
   }) async {
     emit(
-      const BtConnectionState.changing(),
+      const BtConnectionManagerState.message('Desconectando...'),
     );
 
     final _failureOrVoid = await disconnectFromBtDeviceUseCase(
@@ -57,12 +61,12 @@ class BtConnectionCubit extends Cubit<BtConnectionState> {
 
     emit(
       _failureOrVoid.fold(
-        (failure) => BtConnectionState.failure(
-          message: failure.when(
+        (failure) => BtConnectionManagerState.message(
+          failure.when(
             unexpected: () => 'Hubo un problema inesperado',
           ),
         ),
-        (_) => const BtConnectionState.disconnected(),
+        (_) => const BtConnectionManagerState.idle(),
       ),
     );
   }

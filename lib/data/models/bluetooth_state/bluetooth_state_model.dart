@@ -1,23 +1,28 @@
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
+import 'package:meta/meta.dart';
 
-import '../../../domain/entities/bluetooth_state/bluetooth_state_entity.dart';
+import '../../../domain/entities/bt_hardware_state/bt_hardware_state_entity.dart';
 
-extension BluetoothStateModel on BluetoothStateEntity {
-  static BluetoothStateEntity fromBluetoothState(
-      BluetoothState bluetoothState) {
-    if (bluetoothState == BluetoothState.ERROR) {
-      return const BluetoothStateEntity.error();
-    } else if (bluetoothState == BluetoothState.STATE_BLE_ON ||
+extension BtHardwareStateModel on BtHardwareStateEntity {
+  static BtHardwareStateEntity fromBluetoothState({
+    @required BluetoothState bluetoothState,
+    @required bool throwExceptionOnError,
+  }) {
+    if (bluetoothState == BluetoothState.STATE_BLE_ON ||
         bluetoothState == BluetoothState.STATE_ON) {
-      return const BluetoothStateEntity.on();
+      return const BtHardwareStateEntity.on();
     } else if (bluetoothState == BluetoothState.STATE_BLE_TURNING_OFF ||
         bluetoothState == BluetoothState.STATE_BLE_TURNING_ON ||
         bluetoothState == BluetoothState.STATE_TURNING_OFF ||
         bluetoothState == BluetoothState.STATE_TURNING_ON) {
-      return const BluetoothStateEntity.changing();
+      return const BtHardwareStateEntity.changing();
     } else if (bluetoothState == BluetoothState.STATE_OFF) {
-      return const BluetoothStateEntity.off();
+      return const BtHardwareStateEntity.off();
     }
-    return const BluetoothStateEntity.unknown();
+    if (throwExceptionOnError) {
+      throw Exception('Unexpected BtHardwareStateEntity value');
+    } else {
+      return const BtHardwareStateEntity.off();
+    }
   }
 }

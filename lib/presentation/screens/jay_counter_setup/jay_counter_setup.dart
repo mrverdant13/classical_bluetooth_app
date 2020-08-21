@@ -1,12 +1,11 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:classical_bluetooth_app/core/loggers/presentation/widget.dart';
-import 'package:classical_bluetooth_app/presentation/ui_logic_holders/bt_connection_watcher_cubit_cubit/bt_connection_watcher_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 import 'package:provider/provider.dart';
 
+import '../../../core/loggers/presentation/widget.dart';
 import '../../../core/other_helpers/no_action_functions.dart';
 import '../../../core/presentation/routing/router.gr.dart';
 import '../../../domain/entities/bt_bonding_state/bt_bonding_state_entity.dart';
@@ -14,6 +13,7 @@ import '../../../domain/entities/bt_connection_state/bt_connection_state_entity.
 import '../../../domain/entities/bt_hardware_state/bt_hardware_state_entity.dart';
 import '../../ui_logic_holders/bt_bonding_cubit/bt_bonding_cubit.dart';
 import '../../ui_logic_holders/bt_connection_manager_cubit/bt_connection_manager_cubit.dart';
+import '../../ui_logic_holders/bt_connection_watcher_cubit_cubit/bt_connection_watcher_cubit.dart';
 import '../../ui_logic_holders/bt_hardware_state_cubit/bt_hardware_state_cubit.dart';
 import '../../ui_logic_holders/jay_counter_current_setup_change_notifier/jay_counter_current_setup_change_notifier.dart';
 import '../../ui_logic_holders/jay_counter_setup_form_bloc/jay_counter_setup_form_bloc.dart';
@@ -247,75 +247,81 @@ class _JayCounterSetupForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        TextFieldBlocBuilder(
-          textFieldBloc: context
-              .bloc<JayCounterSetupFormBloc>()
-              .currentCapacityTextFieldBloc,
-          decoration: const InputDecoration(
-            labelText: 'Personas presentes: ',
-            border: OutlineInputBorder(),
+    return SingleChildScrollView(
+      physics: const BouncingScrollPhysics(
+        parent: AlwaysScrollableScrollPhysics(),
+      ),
+      child: Column(
+        children: [
+          TextFieldBlocBuilder(
+            textFieldBloc: context
+                .bloc<JayCounterSetupFormBloc>()
+                .currentCapacityTextFieldBloc,
+            decoration: const InputDecoration(
+              labelText: 'Personas presentes: ',
+              border: OutlineInputBorder(),
+            ),
+            keyboardType: TextInputType.number,
+            inputFormatters: [
+              FilteringTextInputFormatter.digitsOnly,
+            ],
           ),
-          keyboardType: TextInputType.number,
-          inputFormatters: [
-            FilteringTextInputFormatter.digitsOnly,
-          ],
-        ),
-        TextFieldBlocBuilder(
-          textFieldBloc:
-              context.bloc<JayCounterSetupFormBloc>().maxCapacityTextFieldBloc,
-          decoration: const InputDecoration(
-            labelText: 'Aforo (capacidad máxima): ',
-            border: OutlineInputBorder(),
+          TextFieldBlocBuilder(
+            textFieldBloc: context
+                .bloc<JayCounterSetupFormBloc>()
+                .maxCapacityTextFieldBloc,
+            decoration: const InputDecoration(
+              labelText: 'Aforo (capacidad máxima): ',
+              border: OutlineInputBorder(),
+            ),
+            keyboardType: TextInputType.number,
+            inputFormatters: [
+              FilteringTextInputFormatter.digitsOnly,
+            ],
           ),
-          keyboardType: TextInputType.number,
-          inputFormatters: [
-            FilteringTextInputFormatter.digitsOnly,
-          ],
-        ),
-        Row(
-          children: [
-            Expanded(
-              child: RaisedButton(
-                color: Colors.red.shade700,
-                onPressed: () {
-                  context.bloc<BtConnectionManagerCubit>().disconnect(
-                        btDevice: context
-                            .read<JayCounterCurrentSetupChangeNotifier>()
-                            .btDevice,
-                      );
-                },
-                child: const Text(
-                  'DESCONECTAR',
-                  style: TextStyle(
-                    color: Colors.white,
+          Row(
+            children: [
+              Expanded(
+                child: RaisedButton(
+                  color: Colors.red.shade700,
+                  onPressed: () {
+                    context.bloc<BtConnectionManagerCubit>().disconnect(
+                          btDevice: context
+                              .read<JayCounterCurrentSetupChangeNotifier>()
+                              .btDevice,
+                        );
+                  },
+                  child: const Text(
+                    'DESCONECTAR',
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
                   ),
                 ),
               ),
-            ),
-            const SizedBox(width: 10.0),
-            Expanded(
-              child: RaisedButton(
-                color: Colors.blue.shade700,
-                onPressed: () {
-                  context.bloc<JayCounterSetupFormBloc>().submit(
-                        btDevice: context
-                            .read<JayCounterCurrentSetupChangeNotifier>()
-                            .btDevice,
-                      );
-                },
-                child: const Text(
-                  'CONFIGURAR',
-                  style: TextStyle(
-                    color: Colors.white,
+              const SizedBox(width: 10.0),
+              Expanded(
+                child: RaisedButton(
+                  color: Colors.blue.shade700,
+                  onPressed: () {
+                    context.bloc<JayCounterSetupFormBloc>().submit(
+                          btDevice: context
+                              .read<JayCounterCurrentSetupChangeNotifier>()
+                              .btDevice,
+                        );
+                  },
+                  child: const Text(
+                    'CONFIGURAR',
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
-        ),
-      ],
+            ],
+          ),
+        ],
+      ),
     );
   }
 }
